@@ -486,7 +486,7 @@ EXTRA = {
         "sr.agri": "Agricultural / Agri-PV",
         "sr.subscription": "Subscription plan",
         "sr.plan_basic": "Basic – €9/mo",
-        "sr.plan_basic_desc": "14-day free trial · profile & 2 free enquiries",
+        "sr.plan_basic_desc": "1-month free trial · profile & 2 free enquiries",
         "sr.plan_verified": "Verified – €29/mo",
         "sr.plan_verified_desc": "Verified badge, quote tools, 5 leads/mo",
         "sr.plan_premium": "Premium – €79/mo",

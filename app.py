@@ -103,10 +103,10 @@ SUPPLIER_PLANS = {
         "name": "Basic",
         "tier": "Starter",
         "price_eur": 9,
-        "trial_days": 14,
+        "trial_days": 30,
         "lead_note": "2 free enquiries included · then pay per extra lead",
         "features": [
-            "14-day free trial — full listing access",
+            "1-month free trial — full listing access",
             "Visible profile & service area",
             "Contact form on your listing",
             "Basic directory placement",
