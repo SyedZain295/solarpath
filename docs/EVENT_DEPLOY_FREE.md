@@ -54,7 +54,7 @@ Replace `YOUR_USERNAME` with your GitHub username. Sign in when Git asks.
 |-----|--------|
 | `DATABASE_URL` | *(paste Neon connection string)* |
 | `SUPPORT_EMAIL` | `zainhaseeb0716@gmail.com` |
-| `BETA_ACCESS_PASSWORD` | `H90Gh_ffx_jlSQ` |
+| `BETA_ACCESS_PASSWORD` | *(set in Render dashboard — do not commit)* |
 | `BETA_INVITE_TOKENS` | `solarpath-beta-2026` |
 
 `SECRET_KEY` and `ADMIN_TOKEN` are auto-generated — copy **ADMIN_TOKEN** from the env list for `/admin`.

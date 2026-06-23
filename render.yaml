@@ -29,7 +29,7 @@ services:
       - key: SMTP_FROM
         value: zainhaseeb0716@gmail.com
       - key: BETA_ACCESS_PASSWORD
-        value: H90Gh_ffx_jlSQ
+        sync: false
       - key: BETA_INVITE_TOKENS
         value: solarpath-beta-2026
       - key: REGION_FOCUS

@@ -8,7 +8,7 @@ echo  Paste it into Render as DATABASE_URL when prompted.
 echo.
 echo  Also paste these in Render:
 echo    SUPPORT_EMAIL=zainhaseeb0716@gmail.com
-echo    BETA_ACCESS_PASSWORD=H90Gh_ffx_jlSQ
+echo    BETA_ACCESS_PASSWORD=(set in Render dashboard)
 echo    BETA_INVITE_TOKENS=solarpath-beta-2026
 echo.
 start https://console.neon.tech/app/projects

@@ -19,7 +19,7 @@ echo  Paste these when Render asks:
 echo.
 echo    DATABASE_URL        = (from Neon)
 echo    SUPPORT_EMAIL       = zainhaseeb0716@gmail.com
-echo    BETA_ACCESS_PASSWORD= H90Gh_ffx_jlSQ
+echo    BETA_ACCESS_PASSWORD= (set in Render dashboard)
 echo    BETA_INVITE_TOKENS  = solarpath-beta-2026
 echo.
 echo  After deploy (~10 min), test:
