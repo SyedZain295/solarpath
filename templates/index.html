@@ -3,7 +3,7 @@
 {% block body_class %}home-page{% endblock %}
 
 {% block head %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}?v=33">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}?v=34">
 {% endblock %}
 
 {% block content %}
@@ -214,19 +214,27 @@
       <article class="pricing-card pricing-card-enhanced pricing-card-clickable" data-plan="basic">
         <div class="pricing-card-top">
           <span class="pricing-tier">{{ t('plans.basic.tier') }}</span>
+          {% if plans.basic.trial_days %}<span class="pricing-trial-badge">{{ t('home.pricing.trial_badge') }}</span>{% endif %}
           <h3>{{ t('plans.basic.name') }}</h3>
           <p class="pricing-tagline">{{ t('plans.basic.tagline') }}</p>
         </div>
         <div class="pricing-price">
+          {% if plans.basic.trial_days %}
+          <span class="pricing-amount">€0</span>
+          <span class="pricing-period">{{ t('home.pricing.today') }}</span>
+          {% else %}
           <span class="pricing-amount">€{{ plans.basic.price_eur }}</span>
           <span class="pricing-period">{{ t('home.pricing.month') }}</span>
+          {% endif %}
         </div>
+        {% if plans.basic.trial_days %}<p class="pricing-trial-note">{{ t('plans.basic.trial_note') }}</p>{% endif %}
         <p class="pricing-lead-note">{{ t('plans.basic.lead_note') }}</p>
         <ul class="pricing-features">
           <li>{{ t('plans.basic.feature0') }}</li>
           <li>{{ t('plans.basic.feature1') }}</li>
           <li>{{ t('plans.basic.feature2') }}</li>
           <li>{{ t('plans.basic.feature3') }}</li>
+          <li>{{ t('plans.basic.feature4') }}</li>
         </ul>
         <div class="pricing-card-foot">
           <a href="/suppliers/checkout?plan=basic" class="btn btn-pricing btn-block">{{ t('plans.basic.cta') }}</a>
@@ -280,6 +288,7 @@
         </div>
       </article>
     </div>
+    <p class="pricing-lead-explainer">{{ t('home.pricing.lead_explainer') }}</p>
   </div>
 </section>
 

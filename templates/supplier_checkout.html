@@ -17,10 +17,18 @@
           <span class="checkout-tier">{{ plan.tier }}</span>
           {% if plan.featured %}<span class="checkout-popular">{{ t('sc.most_popular') }}</span>{% endif %}
           <h2>{{ plan.name }}</h2>
+          {% if plan.trial_days %}
+          <p class="checkout-trial-banner">{{ t('home.pricing.trial_badge') }} — {{ plan.trial_note or t('plans.basic.trial_note') }}</p>
+          {% endif %}
           <p class="checkout-tagline">{{ plan.lead_note }}</p>
           <div class="checkout-price-row">
+            {% if plan.trial_days %}
+            <span class="checkout-price">€0</span>
+            <span class="checkout-period">{{ t('home.pricing.today') }}</span>
+            {% else %}
             <span class="checkout-price">€{{ plan.price_eur }}</span>
             <span class="checkout-period">{{ t('sc.period') }}</span>
+            {% endif %}
           </div>
         </div>
         <div class="checkout-summary-body">
@@ -126,12 +134,12 @@
               <span class="checkout-total-label">{{ t('sc.due_today') }}</span>
               <span class="checkout-total-sub">{{ t('sc.renews') }}</span>
             </div>
-            <strong class="checkout-total-amount">€{{ plan.price_eur }}.00</strong>
+            <strong class="checkout-total-amount">{% if plan.trial_days %}€0.00{% else %}€{{ plan.price_eur }}.00{% endif %}</strong>
           </div>
 
           <p id="checkoutError" class="form-error hidden"></p>
-          <button type="submit" class="btn btn-primary btn-lg btn-block checkout-pay-btn" data-price="{{ plan.price_eur }}">
-            {{ t('sc.pay_btn').replace('{price}', plan.price_eur|string) }}
+          <button type="submit" class="btn btn-primary btn-lg btn-block checkout-pay-btn" data-price="{% if plan.trial_days %}0{% else %}{{ plan.price_eur }}{% endif %}">
+            {% if plan.trial_days %}{{ t('sc.trial_btn') }}{% else %}{{ t('sc.pay_btn').replace('{price}', plan.price_eur|string) }}{% endif %}
           </button>
           <p class="checkout-legal">{{ t('sc.legal_before') }} <a href="/terms">{{ t('terms.title') }}</a>. {{ t('sc.legal_after') }}</p>
         </form>
