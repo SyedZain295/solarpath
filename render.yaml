@@ -25,10 +25,12 @@ services:
       - key: DATABASE_URL
         sync: false
       - key: SUPPORT_EMAIL
-        sync: false
+        value: zainhaseeb0716@gmail.com
+      - key: SMTP_FROM
+        value: zainhaseeb0716@gmail.com
       - key: BETA_ACCESS_PASSWORD
-        sync: false
+        value: H90Gh_ffx_jlSQ
       - key: BETA_INVITE_TOKENS
-        sync: false
+        value: solarpath-beta-2026
       - key: REGION_FOCUS
         value: Bayern
