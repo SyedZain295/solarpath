@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="{% block meta_description %}{{ t('meta.description') }}{% endblock %}">
   <meta name="theme-color" content="#0f766e">
-  <meta property="og:title" content="{% block og_title %}SolarPath{% endblock %} – {{ t('meta.site_suffix') }}">
+  <meta property="og:title" content="{% block og_title %}Solar Path{% endblock %} – {{ t('meta.site_suffix') }}">
   <meta property="og:description" content="{% block og_description %}{{ t('meta.description') }}{% endblock %}">
   <meta property="og:type" content="website">
   <link rel="icon" href="{{ url_for('static', filename='favicon.svg') }}" type="image/svg+xml">
-  <title>{% block title %}SolarPath{% endblock %} – {{ t('meta.site_suffix') }}</title>
+  <title>{% block title %}Solar Path{% endblock %} – {{ t('meta.site_suffix') }}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=44">
@@ -24,7 +24,7 @@
     <div class="container nav-inner">
       <a href="/" class="logo">
         <span class="logo-icon" aria-hidden="true">☀️</span>
-        <span class="logo-text">SolarPath</span>
+        <span class="logo-text">Solar Path</span>
       </a>
 
       <div class="nav-panel" id="navMenu">
@@ -77,7 +77,7 @@
     <div class="container footer-inner">
       <div class="footer-brand">
         <span class="logo-icon">☀️</span>
-        <span>SolarPath</span>
+        <span>Solar Path</span>
         <p>{{ t('footer.brand') }}</p>
       </div>
       <div class="footer-links">
@@ -101,7 +101,7 @@
       </div>
     </div>
     <div class="footer-bottom container">
-      <p>&copy; 2026 SolarPath. {{ t('footer.copyright') }}{% block photo_credit %}{% endblock %}</p>
+      <p>&copy; 2026 Solar Path. {{ t('footer.copyright') }}{% block photo_credit %}{% endblock %}</p>
     </div>
   </footer>
 

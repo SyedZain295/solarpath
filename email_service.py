@@ -101,7 +101,7 @@ def send_email_with_attachment(
 
 def notify_quote_request(quote: dict, supplier_emails: list) -> None:
     customer = quote.get("customer_name", "Customer")
-    subject = f"New SolarPath lead: {customer}"
+    subject = f"New Solar Path lead: {customer}"
     lp = quote.get("lead_profile") or {}
     energy = lp.get("energy") or {}
     prefs = lp.get("preferences") or {}
@@ -122,5 +122,5 @@ def notify_quote_request(quote: dict, supplier_emails: list) -> None:
     for email in supplier_emails:
         if email:
             send_email(email, subject, body)
-    send_email(quote.get("customer_email", ""), "SolarPath – quote request received",
+    send_email(quote.get("customer_email", ""), "Solar Path – quote request received",
                "We received your quote request. Matched suppliers will contact you within 1–2 business days.")

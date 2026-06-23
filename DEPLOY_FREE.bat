@@ -1,5 +1,5 @@
 @echo off
-title SolarPath - Free cloud deploy
+title Solar Path - Free cloud deploy
 echo.
 echo  Opening Neon (free database) and Render (free hosting)...
 echo.

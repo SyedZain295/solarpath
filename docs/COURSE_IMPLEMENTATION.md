@@ -1,4 +1,4 @@
-# SolarPath Course Implementation Notes
+# Solar Path Course Implementation Notes
 
 ## Business Milestones
 

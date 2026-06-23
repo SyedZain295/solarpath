@@ -3,13 +3,13 @@ def test_health(client):
     assert r.status_code == 200
     data = r.get_json()
     assert data["status"] == "ok"
-    assert data["service"] == "solarpath"
+    assert data["service"] == "solar-path"
 
 
 def test_homepage(client):
     r = client.get("/")
     assert r.status_code == 200
-    assert b"SolarPath" in r.data
+    assert b"Solar Path" in r.data
 
 
 def test_calculator_page(client):

@@ -1,4 +1,4 @@
-# SolarPath — System Architecture
+# Solar Path — System Architecture
 
 **Product:** Bavaria-focused home energy platform (PV sizing, installer matching, quote comparison)  
 **Pattern:** Monolithic Flask application with server-rendered UI and REST JSON APIs  
@@ -153,7 +153,7 @@ i18n*.py               EN/DE translations
 
 ## Team roles mapping (course)
 
-| Role | SolarPath ownership |
+| Role | Solar Path ownership |
 |------|---------------------|
 | **Frontend** | Templates, CSS design system, calculator/compare/compatibility JS |
 | **Backend** | Flask API, engines, JSON persistence, external API clients |

@@ -31,7 +31,7 @@ def main() -> None:
 
     print()
     print("=" * 50)
-    print("  SolarPath — EVENT MODE")
+    print("  Solar Path — EVENT MODE")
     print("=" * 50)
     print()
     print(f"  Same WiFi (share QR or type on phones):")

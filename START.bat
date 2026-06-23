@@ -1,10 +1,10 @@
 @echo off
-title SolarPath
+title Solar Path
 cd /d "%~dp0"
 
 echo.
 echo  ========================================
-echo   SolarPath - Solar Pre-Assessment App
+echo   Solar Path - Solar Pre-Assessment App
 echo  ========================================
 echo.
 

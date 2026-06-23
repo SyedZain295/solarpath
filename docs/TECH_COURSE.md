@@ -1,4 +1,4 @@
-# SolarPath — Tech Course Deliverables
+# Solar Path — Tech Course Deliverables
 
 **Use this document for all tech presentations (10 min each).**  
 Business milestones are documented separately in [COURSE_IMPLEMENTATION.md](./COURSE_IMPLEMENTATION.md).

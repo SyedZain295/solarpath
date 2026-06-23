@@ -1,4 +1,4 @@
-# SolarPath – Energy Platform for Bavaria (closed beta)
+# Solar Path – Energy Platform for Bavaria (closed beta)
 
 Home energy platform for **Bavaria (Bayern)**: PV sizing, heat pump & battery goals, quote comparison, installer directory, and project tracking.
 

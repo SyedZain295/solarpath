@@ -1,4 +1,4 @@
-# SolarPath closed beta — validation playbook
+# Solar Path closed beta — validation playbook
 
 Use this during the **10–15 homeowner / 5–10 installer** pilot in Bavaria.
 

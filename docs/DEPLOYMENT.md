@@ -65,7 +65,7 @@ Without Azure secrets, the deploy workflow still validates the build and prints 
 
 After deploy, verify:
 
-- `/health` — `{"status":"ok","service":"solarpath"}`
+- `/health` — `{"status":"ok","service":"solar-path"}`
 - `/` — homepage (EN/DE)
 - `/calculator` — full wizard
 - `/suppliers?postcode=10115&radius_km=10` — nearby installers

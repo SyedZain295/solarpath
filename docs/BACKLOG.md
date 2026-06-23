@@ -1,4 +1,4 @@
-# SolarPath — Product Backlog (Tech)
+# Solar Path — Product Backlog (Tech)
 
 **Last updated:** Course semester 2026  
 **Method:** MoSCoW + sprint-ready user stories

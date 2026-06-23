@@ -199,7 +199,7 @@ def _t(lang: str, key: str, default: str | None = None) -> str:
 
 def _header_block(st, lang: str) -> list:
     bar = Table(
-        [[Paragraph("SolarPath", st["brand"]), Paragraph(_t(lang, "pdf.title"), st["title"])]],
+        [[Paragraph("Solar Path", st["brand"]), Paragraph(_t(lang, "pdf.title"), st["title"])]],
         colWidths=[4 * cm, 12 * cm],
     )
     bar.setStyle(
@@ -589,7 +589,7 @@ def generate_decision_report_pdf(
         topMargin=1.6 * cm,
         bottomMargin=1.8 * cm,
         title=_t(lang, "pdf.title"),
-        author="SolarPath",
+        author="Solar Path",
     )
 
     elements = []

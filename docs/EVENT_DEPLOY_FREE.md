@@ -9,7 +9,7 @@ Host the app for **$0** using **Render** (free web) + **Neon** (free Postgres).
 ## Part 1 — Neon database (5 min)
 
 1. Go to [neon.tech](https://neon.tech) → sign up (free).
-2. **New project** → name it `solarpath` → region **EU (Frankfurt)** if available.
+2. **New project** → name it **Solar Path** → region **EU (Frankfurt)** if available.
 3. Copy the **connection string** (starts with `postgresql://...`).
 4. Keep it safe — you’ll paste it into Render in Part 3.
 
@@ -30,7 +30,7 @@ Git is required to connect Render.
 cd "c:\Users\DELL\Downloads\Solar Website"
 git init
 git add .
-git commit -m "SolarPath closed beta for event"
+git commit -m "Solar Path closed beta for event"
 git branch -M main
 git remote add origin https://github.com/YOUR_USERNAME/solarpath.git
 git push -u origin main
@@ -48,7 +48,7 @@ Replace `YOUR_USERNAME` with your GitHub username. Sign in when Git asks.
 2. **New → Blueprint** (or use [one-click deploy](https://render.com/deploy?repo=https://github.com/SyedZain295/solarpath)).
 3. Connect the repo you just pushed.
 4. When asked for the blueprint file, use **`render.yaml`** (free tier).
-5. After the blueprint is created, open the **solarpath** web service → **Environment** and add:
+5. After the blueprint is created, open the **solar-path** web service → **Environment** and add:
 
 | Key | Value |
 |-----|--------|

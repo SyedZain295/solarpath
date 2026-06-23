@@ -2,7 +2,7 @@
 
 services:
   - type: web
-    name: solarpath
+    name: solar-path
     runtime: python
     plan: starter
     buildCommand: pip install -r requirements.txt
@@ -29,11 +29,11 @@ services:
         sync: false
       - key: DATABASE_URL
         fromDatabase:
-          name: solarpath-db
+          name: solar-path-db
           property: connectionString
 
 databases:
-  - name: solarpath-db
+  - name: solar-path-db
     plan: starter
-    databaseName: solarpath
-    user: solarpath
+    databaseName: solar_path
+    user: solar_path

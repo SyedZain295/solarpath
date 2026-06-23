@@ -684,7 +684,7 @@ def health():
     db = db_health()
     return jsonify({
         "status": "ok" if db.get("ok") else "degraded",
-        "service": "solarpath",
+        "service": "solar-path",
         "region_focus": REGION_FOCUS,
         "database": db,
         "stripe": stripe_enabled(),
@@ -1800,13 +1800,13 @@ def api_report_email():
     pdf_bytes = buffer.read()
     filename = "solar-entscheidungsbericht.pdf" if lang == "de" else "solar-decision-report.pdf"
     if lang == "de":
-        subject = "SolarPath – Solar-Entscheidungsbericht"
+        subject = "Solar Path – Solar-Entscheidungsbericht"
         body = (
             "Anbei der Solar-Vorab-Bewertungsbericht.\n\n"
             "Dies ist nur eine informative Schätzung — endgültige Preise erfordern eine Vor-Ort-Besichtigung."
         )
     else:
-        subject = "SolarPath – Solar Decision Report"
+        subject = "Solar Path – Solar Decision Report"
         body = (
             "Please find the attached solar pre-assessment report.\n\n"
             "This is an informational estimate only — final pricing requires a site survey."
