@@ -1,0 +1,223 @@
+{% extends "base.html" %}
+{% block title %}{{ t('calculator.title') }}{% endblock %}
+{% block body_class %}app-page{% endblock %}
+
+{% block content %}
+<div class="calculator-page page-bg-wrap">
+  <div class="page-bg" aria-hidden="true"></div>
+  <div class="page-content">
+    <div class="page-header-hero">
+      <h1>{{ t('calculator.hero_title') }}</h1>
+      <p>{{ t('calculator.hero_sub') }}</p>
+    </div>
+
+    <div class="glass-panel">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-steps" id="progressSteps">
+      <span class="active">{{ t('calc.step.goals') }}</span>
+      <span>{{ t('calc.step.home') }}</span>
+      <span>{{ t('calc.step.location') }}</span>
+      <span>{{ t('calc.step.usage') }}</span>
+      <span>{{ t('calc.step.property') }}</span>
+      <span>{{ t('calc.step.profile') }}</span>
+      <span>{{ t('calc.step.budget') }}</span>
+    </div>
+
+    <form id="calculatorForm" class="calc-form">
+      <!-- Step 1: Goals -->
+      <div class="calc-step active" data-step="1">
+        <h2>{{ t('calc.s1_title') }}</h2>
+        <p class="step-desc">{{ t('calc.s1_sub') }}</p>
+        <div class="goal-grid">
+          <label class="goal-card"><input type="checkbox" name="goals" value="lower_bill"><span class="goal-icon">💡</span><span class="goal-title">{{ t('home.goal.lower_bill') }}</span><span class="goal-desc">{{ t('home.goal.lower_bill_desc') }}</span></label>
+          <label class="goal-card"><input type="checkbox" name="goals" value="backup"><span class="goal-icon">🔋</span><span class="goal-title">{{ t('home.goal.backup') }}</span><span class="goal-desc">{{ t('home.goal.backup_desc') }}</span></label>
+          <label class="goal-card"><input type="checkbox" name="goals" value="hot_water"><span class="goal-icon">🚿</span><span class="goal-title">{{ t('home.goal.hot_water') }}</span><span class="goal-desc">{{ t('home.goal.hot_water_desc') }}</span></label>
+          <label class="goal-card"><input type="checkbox" name="goals" value="space_heating"><span class="goal-icon">🏠</span><span class="goal-title">{{ t('home.goal.space_heating') }}</span><span class="goal-desc">{{ t('home.goal.space_heating_desc') }}</span></label>
+          <label class="goal-card"><input type="checkbox" name="goals" value="business"><span class="goal-icon">🏢</span><span class="goal-title">{{ t('home.goal.business') }}</span><span class="goal-desc">{{ t('home.goal.business_desc') }}</span></label>
+          <label class="goal-card"><input type="checkbox" name="goals" value="farming"><span class="goal-icon">🌾</span><span class="goal-title">{{ t('home.goal.farming') }}</span><span class="goal-desc">{{ t('home.goal.farming_desc') }}</span></label>
+          <label class="goal-card"><input type="checkbox" name="goals" value="ev_charging"><span class="goal-icon">⚡</span><span class="goal-title">{{ t('home.goal.ev_charging') }}</span><span class="goal-desc">{{ t('home.goal.ev_charging_desc') }}</span></label>
+        </div>
+      </div>
+
+      <!-- Step 2: Housing -->
+      <div class="calc-step" data-step="2">
+        <h2>{{ t('calc.s2_title') }}</h2>
+        <p class="step-desc">{{ t('calc.s2_sub') }}</p>
+        <div class="form-group">
+          <label for="housing_type">{{ t('calc.property_type') }}</label>
+          <select id="housing_type" name="housing_type">
+            <option value="detached">{{ t('calc.housing.detached') }}</option>
+            <option value="semi_detached">{{ t('calc.housing.semi_detached') }}</option>
+            <option value="terraced">{{ t('calc.housing.terraced') }}</option>
+            <option value="apartment_renter">{{ t('calc.housing.apartment_renter') }}</option>
+            <option value="apartment_owner">{{ t('calc.housing.apartment_owner') }}</option>
+            <option value="landlord">{{ t('calc.housing.landlord') }}</option>
+            <option value="housing_association">{{ t('calc.housing.housing_association') }}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="owner_status">{{ t('calc.owner_status') }}</label>
+          <select id="owner_status" name="owner_status">
+            <option value="owner">{{ t('calc.owner_status.owner') }}</option>
+            <option value="tenant">{{ t('calc.owner_status.tenant') }}</option>
+            <option value="landlord">{{ t('calc.owner_status.landlord') }}</option>
+          </select>
+        </div>
+        <div id="apartmentNotice" class="info-box hidden">
+          {{ t('calc.apartment_note') }}
+        </div>
+      </div>
+
+      <!-- Step 3: Location -->
+      <div class="calc-step" data-step="3">
+        <h2>{{ t('calc.s3_title') }}</h2>
+        <p class="step-desc">{{ t('calc.s3_sub') }}</p>
+        <div class="form-group">
+          <label for="postcode">{{ t('calc.postcode') }}</label>
+          <input type="text" id="postcode" name="postcode" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" placeholder="{{ t('calc.postcode_ph') }}">
+        </div>
+        <div class="form-group">
+          <label for="location">{{ t('calc.location') }}</label>
+          <input type="text" id="location" name="location_name" placeholder="{{ t('calc.location_ph') }}">
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label for="latitude">{{ t('calc.latitude') }}</label><input type="number" id="latitude" step="0.0001"></div>
+          <div class="form-group"><label for="longitude">{{ t('calc.longitude') }}</label><input type="number" id="longitude" step="0.0001"></div>
+        </div>
+      </div>
+
+      <!-- Step 4: Usage -->
+      <div class="calc-step" data-step="4">
+        <h2>{{ t('calc.s4_title') }}</h2>
+        <p class="step-desc">{{ t('calc.s4_sub') }}</p>
+        <div class="form-row">
+          <div class="form-group"><label for="monthly_bill">{{ t('calc.monthly_bill') }}</label><input type="number" id="monthly_bill" min="0" step="1" placeholder="120"></div>
+          <div class="form-group"><label for="monthly_kwh">{{ t('calc.monthly_kwh') }}</label><input type="number" id="monthly_kwh" min="0" step="1" placeholder="350"></div>
+        </div>
+        <div class="form-group">
+          <label for="electricity_price">{{ t('calc.electricity_price') }}</label>
+          <input type="number" id="electricity_price" value="32" min="1" step="0.1">
+        </div>
+        <div class="form-group">
+          <label for="feed_in_type">{{ t('calc.feed_in_type') }}</label>
+          <select id="feed_in_type" name="feed_in_type">
+            <option value="partial">{{ t('calc.feed_in_partial') }}</option>
+            <option value="full">{{ t('calc.feed_in_full') }}</option>
+          </select>
+        </div>
+        <label class="checkbox-inline">
+          <input type="checkbox" id="connect_meter" name="connect_meter">
+          {{ t('calc.connect_meter') }}
+        </label>
+      </div>
+
+      <!-- Step 5: Property -->
+      <div class="calc-step" data-step="5">
+        <h2>{{ t('calc.s5_title') }}</h2>
+        <div class="form-group">
+          <label for="roof_type">{{ t('calc.roof_type') }}</label>
+          <select id="roof_type" name="roof_type">
+            <option value="pitched_south">{{ t('calc.roof_type.pitched_south') }}</option>
+            <option value="pitched_east_west">{{ t('calc.roof_type.pitched_east_west') }}</option>
+            <option value="flat">{{ t('calc.roof_type.flat') }}</option>
+            <option value="balcony">{{ t('calc.roof_type.balcony') }}</option>
+            <option value="ground_mount">{{ t('calc.roof_type.ground_mount') }}</option>
+            <option value="pitched_north">{{ t('calc.roof_type.pitched_north') }}</option>
+            <option value="unknown">{{ t('calc.roof_type.unknown') }}</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label for="roof_area">{{ t('calc.roof_area') }}</label><input type="number" id="roof_area" min="0" placeholder="40"></div>
+          <div class="form-group">
+            <label for="shading">{{ t('calc.shading') }}</label>
+            <select id="shading" name="shading">
+              <option value="unknown">{{ t('calc.shading.unknown') }}</option>
+              <option value="none">{{ t('calc.shading.none') }}</option>
+              <option value="partial">{{ t('calc.shading.partial') }}</option>
+              <option value="significant">{{ t('calc.shading.significant') }}</option>
+            </select>
+          </div>
+        </div>
+        <label class="checkbox-inline"><input type="checkbox" id="has_roof_photos" name="has_roof_photos"> {{ t('calc.roof_photos') }}</label>
+      </div>
+
+      <!-- Step 6: Profile -->
+      <div class="calc-step" data-step="6">
+        <h2>{{ t('calc.s6_title') }}</h2>
+        <p class="step-desc">{{ t('calc.s6_sub') }}</p>
+        <div class="register-checks calc-loads">
+          <label><input type="checkbox" name="has_heat_pump" id="has_heat_pump"> {{ t('calc.loads.heat_pump') }}</label>
+          <label><input type="checkbox" name="has_ev" id="has_ev"> {{ t('calc.loads.ev') }}</label>
+          <label><input type="checkbox" name="planned_ev" id="planned_ev"> {{ t('calc.loads.planned_ev') }}</label>
+          <label><input type="checkbox" name="has_electric_water_heater" id="has_electric_water_heater"> {{ t('calc.loads.water_heater') }}</label>
+          <label><input type="checkbox" name="has_pool" id="has_pool"> {{ t('calc.loads.pool') }}</label>
+          <label><input type="checkbox" name="has_home_office" id="has_home_office"> {{ t('calc.loads.home_office') }}</label>
+          <label><input type="checkbox" name="has_ac" id="has_ac"> {{ t('calc.loads.ac') }}</label>
+          <label><input type="checkbox" name="high_daytime_use" id="high_daytime_use"> {{ t('calc.loads.daytime') }}</label>
+          <label><input type="checkbox" name="planned_extension" id="planned_extension"> {{ t('calc.loads.extension') }}</label>
+        </div>
+        <div class="form-group" style="margin-top:1rem">
+          <label for="installation_timeframe">{{ t('calc.install_timeframe') }}</label>
+          <select id="installation_timeframe" name="installation_timeframe">
+            <option value="asap">{{ t('calc.install_timeframe.asap') }}</option>
+            <option value="3_months">{{ t('calc.install_timeframe.3_months') }}</option>
+            <option value="6_months">{{ t('calc.install_timeframe.6_months') }}</option>
+            <option value="12_months">{{ t('calc.install_timeframe.12_months') }}</option>
+            <option value="not_sure">{{ t('calc.install_timeframe.not_sure') }}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="battery_interest">{{ t('calc.battery_interest') }}</label>
+          <select id="battery_interest" name="battery_interest">
+            <option value="unsure">{{ t('calc.battery_interest.unsure') }}</option>
+            <option value="yes">{{ t('common.yes') }}</option>
+            <option value="no">{{ t('common.no') }}</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Step 7: Budget -->
+      <div class="calc-step" data-step="7">
+        <h2>{{ t('calc.s7_title') }}</h2>
+        <label class="checkbox-inline" style="margin-bottom:1rem">
+          <input type="checkbox" id="budget_first_mode" name="budget_first_mode">
+          {{ t('calc.budget_first') }}
+        </label>
+        <div class="form-group">
+          <label for="budget">{{ t('calc.budget') }}</label>
+          <input type="number" id="budget" min="0" step="500" placeholder="15000">
+        </div>
+        <div class="form-group">
+          <label for="financing_interest">{{ t('calc.financing_interest') }}</label>
+          <select id="financing_interest" name="financing_interest">
+            <option value="no">{{ t('common.no') }}</option>
+            <option value="maybe">{{ t('common.maybe') }}</option>
+            <option value="yes">{{ t('common.yes') }}</option>
+          </select>
+        </div>
+        <div class="info-box">{{ t('calc.remember') }}</div>
+      </div>
+
+      <div id="calcError" class="form-error-banner hidden" role="alert"></div>
+
+      <div class="calc-nav">
+        <button type="button" class="btn btn-outline" id="prevBtn" disabled>{{ t('common.back') }}</button>
+        <button type="button" class="btn btn-primary" id="nextBtn">{{ t('common.next') }}</button>
+        <button type="submit" class="btn btn-primary hidden" id="submitBtn">{{ t('calc.get_recommendation') }}</button>
+      </div>
+    </form>
+
+      <div id="loadingOverlay" class="loading-overlay hidden" aria-live="polite" aria-busy="true">
+      <div class="loading-spinner"></div>
+      <p id="loadingMessage">{{ t('calc.loading') }}</p>
+      <p class="loading-hint">{{ t('calc.loading_hint') }}</p>
+    </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/intake_ref.js') }}?v=1"></script>
+<script src="{{ url_for('static', filename='js/calculator.js') }}?v=19"></script>
+{% endblock %}

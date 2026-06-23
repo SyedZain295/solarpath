@@ -1,0 +1,20 @@
+[
+  {
+    "id": "chk-a74992fb43",
+    "plan": "verified",
+    "email": "test@co.de",
+    "amount_eur": 79,
+    "status": "paid_demo",
+    "disclaimer": "Illustrative checkout – no real charge processed.",
+    "created_at": "2026-06-18T15:28:46.362422"
+  },
+  {
+    "id": "chk-3779ebead4",
+    "plan": "verified",
+    "email": "syed.zain-al-abidin@stud.th-deg.de",
+    "amount_eur": 79,
+    "status": "paid_demo",
+    "disclaimer": "Illustrative checkout – no real charge processed.",
+    "created_at": "2026-06-18T15:33:26.092629"
+  }
+]

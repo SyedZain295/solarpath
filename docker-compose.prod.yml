@@ -1,0 +1,22 @@
+version: "3.9"
+
+services:
+  web:
+    build: .
+    ports:
+      - "8000:5000"
+    environment:
+      SECRET_KEY: ${SECRET_KEY}
+      ADMIN_TOKEN: ${ADMIN_TOKEN}
+      BETA_ACCESS_PASSWORD: ${BETA_ACCESS_PASSWORD:-}
+      BETA_INVITE_TOKENS: ${BETA_INVITE_TOKENS:-}
+      SUPPORT_EMAIL: ${SUPPORT_EMAIL:-}
+      STRIPE_LIVE_ENABLED: "0"
+      FLASK_ENV: production
+      FLASK_DEBUG: "0"
+    volumes:
+      - solar_data:/app/data
+    restart: unless-stopped
+
+volumes:
+  solar_data:

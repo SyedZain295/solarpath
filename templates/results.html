@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+{% block title %}{{ t('results.title') }}{% endblock %}
+{% block body_class %}app-page{% endblock %}
+
+{% block content %}
+<div class="results-page page-bg-wrap" id="resultsPage">
+  <div class="page-bg" aria-hidden="true"></div>
+  <div class="page-content">
+    <div id="resultsLoading" class="loading-state loading-state-light">
+      <div class="loading-spinner"></div>
+      <p>{{ t('results.loading') }}</p>
+    </div>
+    <div id="resultsContent" class="hidden"></div>
+    <div id="resultsError" class="error-state error-state-light hidden">
+      <h2>{{ t('results.none') }}</h2>
+      <p>{{ t('results.complete_calculator') }} <a href="/calculator">{{ t('nav.calculator')|lower }}</a>.</p>
+    </div>
+  </div>
+</div>
+
+<div id="quoteModal" class="modal hidden">
+  <div class="modal-backdrop"></div>
+  <div class="modal-content modal-content-wide">
+    <button class="modal-close" id="closeQuoteModal">&times;</button>
+    <h2>{{ t('results.quote_title') }}</h2>
+    <p>{{ t('results.quote_sub') }}</p>
+    <p class="quote-qualified-note">{{ t('results.quote_qualified_note') }}</p>
+    <form id="quoteForm">
+      <fieldset class="quote-fieldset">
+        <legend>{{ t('results.quote_section_contact') }}</legend>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="quote_first_name">{{ t('results.first_name') }} *</label>
+            <input type="text" id="quote_first_name" name="customer_first_name" required autocomplete="given-name">
+          </div>
+          <div class="form-group">
+            <label for="quote_name">{{ t('results.last_name') }}</label>
+            <input type="text" id="quote_name" name="customer_name" autocomplete="family-name">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="quote_email">{{ t('results.email') }} *</label>
+            <input type="email" id="quote_email" name="customer_email" required autocomplete="email">
+          </div>
+          <div class="form-group">
+            <label for="quote_phone">{{ t('results.phone') }} *</label>
+            <input type="tel" id="quote_phone" name="customer_phone" required autocomplete="tel">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="quote_contact_time">{{ t('results.preferred_contact_time') }}</label>
+          <select id="quote_contact_time" name="preferred_contact_time">
+            <option value="any">{{ t('results.contact_time.any') }}</option>
+            <option value="morning">{{ t('results.contact_time.morning') }}</option>
+            <option value="afternoon">{{ t('results.contact_time.afternoon') }}</option>
+            <option value="evening">{{ t('results.contact_time.evening') }}</option>
+          </select>
+        </div>
+      </fieldset>
+
+      <fieldset class="quote-fieldset">
+        <legend>{{ t('results.quote_section_location') }}</legend>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="quote_postcode">{{ t('results.postcode') }} *</label>
+            <input type="text" id="quote_postcode" name="customer_postcode" required pattern="[0-9]{4,5}" maxlength="5" inputmode="numeric">
+          </div>
+          <div class="form-group">
+            <label for="quote_town">{{ t('results.town') }} *</label>
+            <input type="text" id="quote_town" name="customer_town" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="quote_address">{{ t('results.full_address') }}</label>
+          <input type="text" id="quote_address" name="full_address" autocomplete="street-address" placeholder="{{ t('results.full_address_ph') }}">
+          <p class="form-hint">{{ t('results.full_address_hint') }}</p>
+        </div>
+      </fieldset>
+
+      <fieldset class="quote-fieldset">
+        <legend>{{ t('results.quote_section_status') }}</legend>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="quote_owner">{{ t('calc.owner_status') }} *</label>
+            <select id="quote_owner" name="owner_status" required>
+              <option value="owner">{{ t('calc.owner_status.owner') }}</option>
+              <option value="landlord">{{ t('calc.owner_status.landlord') }}</option>
+              <option value="tenant">{{ t('calc.owner_status.tenant') }}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="quote_timeframe">{{ t('calc.install_timeframe') }} *</label>
+            <select id="quote_timeframe" name="installation_timeframe" required>
+              <option value="asap">{{ t('calc.install_timeframe.asap') }}</option>
+              <option value="3_months">{{ t('calc.install_timeframe.3_months') }}</option>
+              <option value="6_months">{{ t('calc.install_timeframe.6_months') }}</option>
+              <option value="12_months">{{ t('calc.install_timeframe.12_months') }}</option>
+              <option value="not_sure">{{ t('calc.install_timeframe.not_sure') }}</option>
+            </select>
+          </div>
+        </div>
+        <label class="checkbox-inline" id="confirmSeriousWrap">
+          <input type="checkbox" id="confirm_serious" name="confirm_serious">
+          {{ t('results.confirm_serious') }}
+        </label>
+      </fieldset>
+
+      <fieldset class="quote-fieldset">
+        <legend>{{ t('results.quote_section_preferences') }}</legend>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="quote_battery">{{ t('results.battery_interest') }}</label>
+            <select id="quote_battery" name="battery_interest">
+              <option value="unsure">{{ t('results.battery_interest.unsure') }}</option>
+              <option value="yes">{{ t('common.yes') }}</option>
+              <option value="no">{{ t('common.no') }}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="quote_financing">{{ t('results.financing_interest') }}</label>
+            <select id="quote_financing" name="financing_interest">
+              <option value="no">{{ t('common.no') }}</option>
+              <option value="maybe">{{ t('common.maybe') }}</option>
+              <option value="yes">{{ t('common.yes') }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="quote_message">{{ t('results.additional_notes') }}</label>
+          <textarea id="quote_message" name="message" rows="2" placeholder="{{ t('results.notes_placeholder') }}"></textarea>
+        </div>
+      </fieldset>
+
+      <fieldset class="quote-fieldset quote-consent">
+        <legend>{{ t('results.quote_section_consent') }}</legend>
+        <label class="checkbox-inline consent-check">
+          <input type="checkbox" id="consent_contact" name="consent_contact" required>
+          {{ t('results.consent_contact') }}
+        </label>
+        <label class="checkbox-inline consent-check">
+          <input type="checkbox" id="consent_share" name="consent_share_installers" required>
+          {{ t('results.consent_share') }}
+        </label>
+      </fieldset>
+
+      <div id="matchedSuppliers" class="matched-suppliers"></div>
+      <div id="quoteFormError" class="form-error hidden" role="alert"></div>
+      <button type="submit" class="btn btn-primary btn-block">{{ t('results.send_quote') }}</button>
+    </form>
+    <div id="quoteSuccess" class="hidden success-message">
+      <h3>{{ t('results.quote_sent') }}</h3>
+      <p>{{ t('results.quote_contact') }}</p>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/results_features.js') }}?v=27"></script>
+<script src="{{ url_for('static', filename='js/results.js') }}?v=27"></script>
+{% endblock %}

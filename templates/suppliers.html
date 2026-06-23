@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block title %}{{ t('suppliers.title') }}{% endblock %}
+{% block body_class %}app-page{% endblock %}
+
+{% block content %}
+<div class="suppliers-page page-bg-wrap">
+  <div class="page-bg" aria-hidden="true"></div>
+  <div class="page-content">
+    <div class="page-header-hero">
+      <h1>{{ t('suppliers.hero_title') }}</h1>
+      <p>{{ t('suppliers.hero_sub') }}</p>
+    </div>
+
+    <div class="glass-panel suppliers-search-panel mb-4">
+      <div class="suppliers-coverage" id="coverageBanner">
+        <span class="coverage-badge">{{ t('suppliers.region_badge') }}</span>
+        <span id="coverageText">{{ t('suppliers.loading') }}</span>
+      </div>
+
+      <div class="filter-bar suppliers-filter-bar">
+        <input type="text" id="filterCity" placeholder="{{ t('suppliers.city_placeholder') }}" class="filter-input" value="München">
+        <input type="text" id="filterPostcode" placeholder="{{ t('suppliers.postcode_placeholder') }}" class="filter-input" inputmode="numeric" maxlength="5">
+        <select id="filterRadius" class="filter-input" aria-label="{{ t('suppliers.radius') }}">
+          <option value="25">25 km</option>
+          <option value="50" selected>50 km</option>
+          <option value="100">100 km</option>
+          <option value="200">200 km</option>
+        </select>
+        <button class="btn btn-primary" id="filterBtn">{{ t('suppliers.search') }}</button>
+      </div>
+
+      <div class="city-quick-picks" id="cityQuickPicks" aria-label="{{ t('suppliers.quick_cities') }}">
+        <span class="quick-label">{{ t('suppliers.quick_cities') }}:</span>
+        <button type="button" class="city-chip active" data-city="München">München</button>
+        <button type="button" class="city-chip" data-city="Nürnberg">Nürnberg</button>
+        <button type="button" class="city-chip" data-city="Augsburg">Augsburg</button>
+        <button type="button" class="city-chip" data-city="Regensburg">Regensburg</button>
+        <button type="button" class="city-chip" data-city="Würzburg">Würzburg</button>
+        <button type="button" class="city-chip" data-city="Ingolstadt">Ingolstadt</button>
+        <button type="button" class="city-chip" data-city="Freising">Freising</button>
+        <button type="button" class="city-chip" data-city="Rosenheim">Rosenheim</button>
+      </div>
+
+      <p class="form-hint suppliers-hint">{{ t('suppliers.helper') }}</p>
+    </div>
+
+    <div id="resultSummary" class="suppliers-result-summary" hidden></div>
+
+    <div id="suppliersList" class="suppliers-grid"
+      data-loading="{{ t('suppliers.loading') }}"
+      data-empty="{{ t('suppliers.empty') }}"
+      data-register="{{ t('suppliers.register') }}"
+      data-error="{{ t('suppliers.error') }}"
+      data-nearest="{{ t('suppliers.nearest') }}"
+      data-quality="{{ t('suppliers.quality') }}"
+      data-installation="{{ t('suppliers.installation') }}"
+      data-estimate="{{ t('suppliers.estimate') }}"
+      data-showing="{{ t('suppliers.showing') }}"
+      data-of="{{ t('suppliers.of') }}"
+      data-region="{{ t('suppliers.region_label') }}"
+      data-no-reviews="{{ t('suppliers.no_reviews') }}"
+      data-reviews="{{ t('suppliers.reviews') }}"
+      data-contact-directory="{{ t('suppliers.contact_directory') }}"
+      data-contact-unavailable="{{ t('suppliers.contact_unavailable') }}"
+      data-directory-listing="{{ t('suppliers.directory_listing') }}"
+      data-website="{{ t('suppliers.website') }}"
+      data-verified="{{ t('suppliers.verified_badge') }}">
+      <div class="loading-state"><div class="loading-spinner"></div><p>{{ t('suppliers.loading') }}</p></div>
+    </div>
+
+    <div class="suppliers-pagination" id="suppliersPagination" hidden>
+      <button type="button" class="btn btn-glass btn-sm" id="prevPage" disabled>{{ t('suppliers.prev') }}</button>
+      <span id="pageInfo"></span>
+      <button type="button" class="btn btn-glass btn-sm" id="nextPage">{{ t('suppliers.next') }}</button>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/suppliers.js') }}?v=4"></script>
+{% endblock %}

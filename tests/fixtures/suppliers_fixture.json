@@ -1,0 +1,61 @@
+[
+  {
+    "id": "sup-pvr-dir-1",
+    "company_name": "PVR Directory München GmbH",
+    "email": "kontakt@pvr-directory-muenchen-gmbh.de",
+    "phone": "---",
+    "website": "",
+    "plan": "basic",
+    "verified": false,
+    "source": "photovoltaik-vergleichsrechner",
+    "regions": ["München"],
+    "latitude": 48.137,
+    "longitude": 11.575,
+    "rating": 3.8,
+    "reviews_count": 0
+  },
+  {
+    "id": "sup-pvr-dir-2",
+    "company_name": "PVR Directory Nürnberg GmbH",
+    "email": "kontakt@pvr-directory-nuernberg-gmbh.de",
+    "phone": "—",
+    "website": "",
+    "plan": "basic",
+    "verified": false,
+    "source": "photovoltaik-vergleichsrechner",
+    "regions": ["Nürnberg"],
+    "latitude": 49.452,
+    "longitude": 11.077,
+    "rating": 4.0,
+    "reviews_count": 0
+  },
+  {
+    "id": "sup-osm-munich",
+    "company_name": "OSM Solar München",
+    "email": "info@osm-solar-muenchen.de",
+    "phone": "+49 89 12345678",
+    "website": "https://www.osm-solar-muenchen.de",
+    "plan": "basic",
+    "verified": false,
+    "source": "openstreetmap",
+    "regions": ["München"],
+    "latitude": 48.1351,
+    "longitude": 11.582,
+    "rating": null,
+    "reviews_count": 0
+  },
+  {
+    "id": "sup-verified-munich",
+    "company_name": "Verified Solar München",
+    "email": "office@verified-solar.de",
+    "phone": "+49 89 98765432",
+    "website": "https://www.verified-solar.de",
+    "plan": "verified",
+    "verified": true,
+    "regions": ["München"],
+    "latitude": 48.140,
+    "longitude": 11.590,
+    "rating": 4.5,
+    "reviews_count": 42
+  }
+]

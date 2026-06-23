@@ -1,0 +1,265 @@
+{% extends "base.html" %}
+
+{% block title %}{{ t('sr.create_account') }}{% endblock %}
+
+{% block body_class %}app-page{% endblock %}
+
+
+
+{% block content %}
+
+<div class="register-page page-bg-wrap">
+
+  <div class="page-bg" aria-hidden="true"></div>
+
+  <div class="page-content">
+
+    <div class="page-header-hero">
+
+      <h1>{{ t('supplier_register.hero_title') }}</h1>
+
+      <p>{{ t('supplier_register.hero_sub') }}</p>
+
+    </div>
+
+
+
+    <div class="glass-panel register-panel">
+
+      <div class="register-switch" role="tablist" aria-label="{{ t('sr.subscription') }}">
+
+        <a href="/register" class="register-switch-btn">{{ t('supplier_register.homeowner') }}</a>
+
+        <a href="/suppliers/register" class="register-switch-btn active" aria-current="page">{{ t('supplier_register.solar_supplier') }}</a>
+
+      </div>
+
+
+
+      <form id="supplierRegisterForm" class="register-form">
+
+        <section class="form-section">
+
+          <h2 class="form-section-title">{{ t('sr.company_details') }}</h2>
+
+          <div class="form-group">
+
+            <label for="company_name">{{ t('sr.company_name') }} *</label>
+
+            <input type="text" id="company_name" name="company_name" required>
+
+          </div>
+
+          <div class="form-row">
+
+            <div class="form-group">
+
+              <label for="email">{{ t('common.email') }} *</label>
+
+              <input type="email" id="email" name="email" required>
+
+            </div>
+
+            <div class="form-group">
+
+              <label for="phone">{{ t('common.phone') }} *</label>
+
+              <input type="tel" id="phone" name="phone" required>
+
+            </div>
+
+          </div>
+
+          <div class="form-group">
+
+            <label for="website">{{ t('sr.website') }}</label>
+
+            <input type="url" id="website" name="website" placeholder="https://">
+
+          </div>
+
+          <div class="form-group">
+
+            <label for="description">{{ t('sr.description') }}</label>
+
+            <textarea id="description" name="description" rows="3" placeholder="{{ t('sr.description_ph') }}"></textarea>
+
+          </div>
+
+        </section>
+
+
+
+        <section class="form-section">
+
+          <h2 class="form-section-title">{{ t('sr.service_area') }}</h2>
+
+          <div class="form-group">
+
+            <label for="regions">{{ t('sr.regions') }}</label>
+
+            <input type="text" id="regions" name="regions" placeholder="{{ t('sr.regions_ph') }}">
+
+            <span class="form-hint">{{ t('sr.comma_sep') }}</span>
+
+          </div>
+
+          <div class="form-group">
+
+            <label for="postcodes">{{ t('sr.postcodes') }}</label>
+
+            <input type="text" id="postcodes" name="postcodes" placeholder="{{ t('sr.postcodes_ph') }}">
+
+            <span class="form-hint">{{ t('sr.comma_sep') }}</span>
+
+          </div>
+
+          <div class="form-group">
+
+            <label for="installation_availability">{{ t('sr.install_availability') }}</label>
+
+            <input type="text" id="installation_availability" name="installation_availability" placeholder="{{ t('sr.install_availability_ph') }}">
+
+          </div>
+
+        </section>
+
+
+
+        <section class="form-section">
+
+          <h2 class="form-section-title">{{ t('sr.products') }}</h2>
+
+          <div class="form-row">
+
+            <div class="form-group">
+
+              <label for="certifications">{{ t('sr.certifications') }}</label>
+
+              <input type="text" id="certifications" name="certifications" placeholder="{{ t('sr.certifications_ph') }}">
+
+            </div>
+
+            <div class="form-group">
+
+              <label for="financing">{{ t('sr.financing') }}</label>
+
+              <input type="text" id="financing" name="financing" placeholder="{{ t('sr.financing_ph') }}">
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+
+        <section class="form-section">
+          <h2 class="form-section-title">{{ t('sr.capabilities') }}</h2>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="earliest_survey_date">{{ t('sr.earliest_survey') }}</label>
+              <input type="date" id="earliest_survey_date" name="earliest_survey_date">
+            </div>
+            <div class="form-group">
+              <label for="earliest_install_weeks">{{ t('sr.earliest_install') }}</label>
+              <input type="number" id="earliest_install_weeks" name="earliest_install_weeks" min="1" placeholder="4">
+            </div>
+          </div>
+          <div class="register-checks">
+            <label><input type="checkbox" name="residential_available" checked> {{ t('sr.residential') }}</label>
+            <label><input type="checkbox" name="commercial_available"> {{ t('sr.commercial') }}</label>
+            <label><input type="checkbox" name="battery_capable" checked> {{ t('sr.battery') }}</label>
+            <label><input type="checkbox" name="ev_charger_capable"> {{ t('sr.ev_charger') }}</label>
+            <label><input type="checkbox" name="heat_pump_capable"> {{ t('sr.heat_pump') }}</label>
+            <label><input type="checkbox" name="agricultural_available"> {{ t('sr.agri') }}</label>
+          </div>
+        </section>
+
+        <section class="form-section">
+          <h2 class="form-section-title">{{ t('sr.subscription') }}</h2>
+          <div class="plan-select">
+
+            <label class="plan-option">
+
+              <input type="radio" name="plan" value="basic" checked>
+
+              <div class="plan-card-sm">
+
+                <strong>{{ t('sr.plan_basic') }}</strong>
+
+                <span>{{ t('sr.plan_basic_desc') }}</span>
+
+              </div>
+
+            </label>
+
+            <label class="plan-option">
+
+              <input type="radio" name="plan" value="verified">
+
+              <div class="plan-card-sm">
+
+                <strong>{{ t('sr.plan_verified') }}</strong>
+
+                <span>{{ t('sr.plan_verified_desc') }}</span>
+
+              </div>
+
+            </label>
+
+            <label class="plan-option">
+
+              <input type="radio" name="plan" value="premium">
+
+              <div class="plan-card-sm">
+
+                <strong>{{ t('sr.plan_premium') }}</strong>
+
+                <span>{{ t('sr.plan_premium_desc') }}</span>
+
+              </div>
+
+            </label>
+
+          </div>
+
+        </section>
+
+
+
+        <button type="submit" class="btn btn-primary btn-lg btn-block">{{ t('sr.create_account') }}</button>
+
+      </form>
+
+
+
+      <div id="registerSuccess" class="register-success hidden">
+
+        <div class="success-icon">✓</div>
+
+        <h3>{{ t('sr.success_title') }}</h3>
+
+        <p>{{ t('sr.success_sub') }}</p>
+        <p id="registerIntakeLink" class="form-hint hidden"></p>
+        <a href="/suppliers/dashboard" class="btn btn-primary">{{ t('sr.go_dashboard') }}</a>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+{% endblock %}
+
+
+
+{% block scripts %}
+
+<script src="{{ url_for('static', filename='js/supplier_portal.js') }}?v=19"></script>
+
+{% endblock %}
+
+

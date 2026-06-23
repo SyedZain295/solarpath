@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}{{ t('privacy.title') }}{% endblock %}
+{% block body_class %}app-page{% endblock %}
+
+{% block content %}
+<div class="prose-page page-bg-wrap">
+  <div class="page-bg" aria-hidden="true"></div>
+  <div class="page-content">
+    <div class="page-header-hero">
+      <h1>{{ t('privacy.title') }}</h1>
+    </div>
+    <div class="glass-panel prose-panel">
+      <p>{{ t('privacy.p1') }}</p>
+      <p>{{ t('privacy.p2') }}</p>
+      <p>{{ t('privacy.p3') }}</p>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Runtime / local data overrides
+data/email_log.txt
+data/email_outbox/
+data/backups/
+data/solarpath.log
+data/beta_cookies.txt
+data/pvgis_cache.json
+data/test_solarpath.db
+data/solarpath.db
+*.log
+
+# Test artifacts
+.pytest_cache/
+.coverage
+htmlcov/

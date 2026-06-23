@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}{{ t('compare.title') }}{% endblock %}
+{% block body_class %}app-page{% endblock %}
+
+{% block content %}
+<div class="compare-page page-bg-wrap">
+  <div class="page-bg" aria-hidden="true"></div>
+  <div class="page-content">
+    <div class="page-header-hero">
+      <h1>{{ t('compare.hero_title') }}</h1>
+      <p>{{ t('compare.hero_sub') }}</p>
+    </div>
+    <div class="glass-panel" id="compareApp">
+      <section class="compare-upload-section">
+        <h2>{{ t('compare.upload_title') }}</h2>
+        <p class="section-sub">{{ t('compare.upload_sub') }}</p>
+        <textarea id="quotePaste" rows="6" placeholder="{{ t('compare.paste_ph') }}"></textarea>
+        <div class="compare-upload-actions">
+          <button type="button" class="btn btn-outline btn-sm" id="parseQuoteBtn">{{ t('compare.parse_btn') }}</button>
+          <button type="button" class="btn btn-outline btn-sm" id="loadSampleBtn">{{ t('compare.sample_btn') }}</button>
+          <label class="btn btn-outline btn-sm compare-file-btn">
+            {{ t('compare.upload_file') }}
+            <input type="file" id="quoteFile" accept=".pdf,.png,.jpg,.jpeg" hidden>
+          </label>
+        </div>
+        <p id="parseMsg" class="form-hint"></p>
+      </section>
+      <hr class="compare-divider">
+      <p class="section-sub">{{ t('compare.instructions') }}</p>
+      <div id="quoteForms" class="compare-forms"></div>
+      <div class="compare-actions">
+        <button type="button" class="btn btn-outline" id="addQuoteBtn">{{ t('compare.add_quote') }}</button>
+        <button type="button" class="btn btn-primary" id="compareBtn">{{ t('compare.run') }}</button>
+      </div>
+      <div id="compareResults" class="hidden compare-results"></div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/compare_quotes.js') }}?v=31"></script>
+{% endblock %}

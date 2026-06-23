@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}{% if supplier %}{{ supplier.company_name }} – {{ t('intake.title') }}{% else %}{{ t('intake.not_found') }}{% endif %}{% endblock %}
+{% block body_class %}app-page{% endblock %}
+
+{% block content %}
+<div class="intake-page page-bg-wrap">
+  <div class="page-bg" aria-hidden="true"></div>
+  <div class="page-content">
+    {% if supplier %}
+    <div class="intake-hero glass-panel">
+      <p class="intake-powered">{{ t('intake.powered_by') }}</p>
+      <h1>{{ supplier.company_name }}</h1>
+      {% if supplier.verified %}<span class="verified-badge">{{ t('intake.verified') }}</span>{% endif %}
+      <p class="intake-desc">{{ supplier.description or t('intake.default_desc') }}</p>
+      {% if supplier.certifications %}
+      <p class="intake-certs">{{ supplier.certifications | join(' · ') }}</p>
+      {% endif %}
+
+      <div class="intake-benefits">
+        <h2>{{ t('intake.before_call') }}</h2>
+        <ul>
+          <li>{{ t('intake.benefit_usage') }}</li>
+          <li>{{ t('intake.benefit_roof') }}</li>
+          <li>{{ t('intake.benefit_system') }}</li>
+          <li>{{ t('intake.benefit_budget') }}</li>
+          <li>{{ t('intake.benefit_timeframe') }}</li>
+        </ul>
+      </div>
+
+      <p class="intake-time">{{ t('intake.time_estimate') }}</p>
+      <a href="/calculator?ref={{ intake_slug }}" class="btn btn-primary btn-lg btn-block">{{ t('intake.start') }}</a>
+      <p class="intake-privacy">{{ t('intake.privacy') }}</p>
+    </div>
+    {% else %}
+    <div class="glass-panel error-state-light">
+      <h1>{{ t('intake.not_found') }}</h1>
+      <p>{{ t('intake.not_found_sub') }}</p>
+      <a href="/calculator" class="btn btn-primary">{{ t('nav.calculator') }}</a>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

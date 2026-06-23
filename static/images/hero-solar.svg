@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="sky" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0c4a6e"/>
+      <stop offset="40%" style="stop-color:#0f766e"/>
+      <stop offset="100%" style="stop-color:#134e4a"/>
+    </linearGradient>
+    <linearGradient id="sun" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#fde68a"/>
+      <stop offset="100%" style="stop-color:#f59e0b;stop-opacity:0.6"/>
+    </linearGradient>
+    <pattern id="grid" width="80" height="80" patternUnits="userSpaceOnUse">
+      <path d="M80 0 L0 0 0 80" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#sky)"/>
+  <rect width="1920" height="1080" fill="url(#grid)"/>
+  <circle cx="1600" cy="180" r="120" fill="url(#sun)" opacity="0.9"/>
+  <g opacity="0.15" fill="#fff">
+    <polygon points="0,700 400,500 800,650 1200,450 1600,600 1920,400 1920,1080 0,1080"/>
+  </g>
+  <!-- stylized panel rows -->
+  <g transform="translate(200,520)" opacity="0.25">
+    <rect x="0" y="0" width="140" height="90" rx="4" fill="#1e3a5f" stroke="#38bdf8" stroke-width="2"/>
+    <rect x="160" y="0" width="140" height="90" rx="4" fill="#1e3a5f" stroke="#38bdf8" stroke-width="2"/>
+    <rect x="320" y="0" width="140" height="90" rx="4" fill="#1e3a5f" stroke="#38bdf8" stroke-width="2"/>
+    <rect x="480" y="0" width="140" height="90" rx="4" fill="#1e3a5f" stroke="#38bdf8" stroke-width="2"/>
+    <rect x="80" y="110" width="140" height="90" rx="4" fill="#1e3a5f" stroke="#38bdf8" stroke-width="2"/>
+    <rect x="240" y="110" width="140" height="90" rx="4" fill="#1e3a5f" stroke="#38bdf8" stroke-width="2"/>
+    <rect x="400" y="110" width="140" height="90" rx="4" fill="#1e3a5f" stroke="#38bdf8" stroke-width="2"/>
+  </g>
+  <g transform="translate(1100,380)" opacity="0.2">
+    <rect x="0" y="0" width="120" height="75" rx="3" fill="#1e3a5f" stroke="#5eead4" stroke-width="1.5"/>
+    <rect x="135" y="0" width="120" height="75" rx="3" fill="#1e3a5f" stroke="#5eead4" stroke-width="1.5"/>
+    <rect x="270" y="0" width="120" height="75" rx="3" fill="#1e3a5f" stroke="#5eead4" stroke-width="1.5"/>
+    <rect x="67" y="90" width="120" height="75" rx="3" fill="#1e3a5f" stroke="#5eead4" stroke-width="1.5"/>
+    <rect x="202" y="90" width="120" height="75" rx="3" fill="#1e3a5f" stroke="#5eead4" stroke-width="1.5"/>
+  </g>
+</svg>

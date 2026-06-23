@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% block title %}{{ t('cr.title') }}{% endblock %}
+{% block body_class %}app-page{% endblock %}
+
+{% block content %}
+<div class="register-page page-bg-wrap">
+  <div class="page-bg" aria-hidden="true"></div>
+  <div class="page-content">
+    <div class="page-header-hero">
+      <h1>{{ t('cr.hero_title') }}</h1>
+      <p>{{ t('cr.hero_sub') }}</p>
+    </div>
+
+    <div class="glass-panel register-panel">
+      <div class="register-switch" role="tablist" aria-label="Registration type">
+        <a href="/register" class="register-switch-btn active" aria-current="page">{{ t('supplier_register.homeowner') }}</a>
+        <a href="/suppliers/register" class="register-switch-btn">{{ t('supplier_register.solar_supplier') }}</a>
+      </div>
+
+      <form id="customerRegisterForm" class="register-form" novalidate>
+        <section class="form-section">
+          <h2 class="form-section-title">{{ t('cr.your_details') }}</h2>
+          <div class="form-group">
+            <label for="customer_name">{{ t('cr.full_name') }} *</label>
+            <input type="text" id="customer_name" name="name" required autocomplete="name">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="customer_email">{{ t('common.email') }} *</label>
+              <input type="email" id="customer_email" name="email" required autocomplete="email">
+            </div>
+            <div class="form-group">
+              <label for="customer_phone">{{ t('common.phone') }} *</label>
+              <input type="tel" id="customer_phone" name="phone" required autocomplete="tel">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="customer_postcode">{{ t('results.postcode') }} *</label>
+              <input type="text" id="customer_postcode" name="postcode" required placeholder="{{ t('cr.postcode_ph') }}">
+            </div>
+            <div class="form-group">
+              <label for="housing_type">{{ t('calc.property_type') }}</label>
+              <select id="housing_type" name="housing_type">
+                <option value="detached">{{ t('calc.housing.detached') }}</option>
+                <option value="semi_detached">{{ t('calc.housing.semi_detached') }}</option>
+                <option value="terraced">{{ t('calc.housing.terraced') }}</option>
+                <option value="apartment_owner">{{ t('calc.housing.apartment_owner') }}</option>
+                <option value="apartment_renter">{{ t('calc.housing.apartment_renter') }}</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="customer_password">{{ t('auth.password') }} *</label>
+              <input type="password" id="customer_password" name="password" required minlength="8" autocomplete="new-password">
+            </div>
+            <div class="form-group">
+              <label for="customer_password2">{{ t('auth.confirm_password') }} *</label>
+              <input type="password" id="customer_password2" name="password2" required minlength="8" autocomplete="new-password">
+            </div>
+          </div>
+        </section>
+
+        <section class="form-section">
+          <h2 class="form-section-title">{{ t('cr.interests_title') }}</h2>
+          <div class="register-checks">
+            <label><input type="checkbox" name="interests" value="quotes" checked> {{ t('cr.interest.quotes') }}</label>
+            <label><input type="checkbox" name="interests" value="save_results" checked> {{ t('cr.interest.save_results') }}</label>
+            <label><input type="checkbox" name="interests" value="price_alerts"> {{ t('cr.interest.price_alerts') }}</label>
+            <label><input type="checkbox" name="interests" value="energy_tips"> {{ t('cr.interest.energy_tips') }}</label>
+          </div>
+        </section>
+
+        <p class="register-note">{{ t('cr.note_before') }} <a href="/calculator">{{ t('nav.calculator')|lower }}</a> {{ t('cr.note_after') }} {{ t('auth.already_have') }} <a href="/login">{{ t('auth.sign_in') }}</a></p>
+
+        <button type="submit" class="btn btn-primary btn-lg btn-block">{{ t('cr.create_account') }}</button>
+        <div id="registerError" class="register-error hidden" role="alert"></div>
+      </form>
+
+      <div id="registerSuccess" class="register-success hidden">
+        <div class="success-icon">✓</div>
+        <h3>{{ t('cr.welcome') }}</h3>
+        <p>{{ t('cr.success_sub') }}</p>
+        <div class="register-success-actions">
+          <a href="/calculator" class="btn btn-primary">{{ t('cr.start_assessment') }}</a>
+          <a href="/energy-advisor" class="btn btn-outline">{{ t('cr.energy_advisor') }}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/customer_register.js') }}?v=17"></script>
+{% endblock %}

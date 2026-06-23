@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% block title %}{{ t('ea.title') }}{% endblock %}
+{% block body_class %}app-page{% endblock %}
+
+{% block content %}
+<div class="energy-advisor-page page-bg-wrap">
+  <div class="page-bg" aria-hidden="true"></div>
+  <div class="page-content">
+    <div class="page-header-hero">
+      <h1>{{ t('ea.title') }}</h1>
+      <p>{{ t('ea.sub') }}</p>
+    </div>
+
+    <div class="glass-panel" style="margin-bottom:2rem">
+      <h2 style="font-size:1.35rem;margin-bottom:1.25rem">{{ t('ea.quick_check') }}</h2>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="ea_bill">{{ t('ea.monthly_bill') }}</label>
+          <input type="number" id="ea_bill" placeholder="120" min="0">
+        </div>
+        <div class="form-group">
+          <label for="ea_housing">{{ t('ea.living_situation') }}</label>
+          <select id="ea_housing">
+            <option value="apartment_renter">{{ t('calc.housing.apartment_renter') }}</option>
+            <option value="apartment_owner">{{ t('calc.housing.apartment_owner') }}</option>
+            <option value="detached">{{ t('calc.housing.detached') }}</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn btn-primary btn-block" id="eaAnalyze">{{ t('ea.analyze') }}</button>
+    </div>
+
+    <div id="eaResults"></div>
+
+    <div class="glass-panel" style="margin-top:2rem">
+      <h2 style="font-size:1.35rem;margin-bottom:1.25rem;text-align:center">{{ t('ea.no_rooftop_title') }}</h2>
+      <div class="steps-grid">
+        <div class="step-card step-card-enhanced">
+          <div class="step-icon-wrap">☀️</div>
+          <h3>{{ t('ea.balcony_title') }}</h3>
+          <p>{{ t('ea.balcony_desc') }}</p>
+        </div>
+        <div class="step-card step-card-enhanced">
+          <div class="step-icon-wrap">📊</div>
+          <h3>{{ t('ea.usage_title') }}</h3>
+          <p>{{ t('ea.usage_desc') }}</p>
+        </div>
+        <div class="step-card step-card-enhanced">
+          <div class="step-icon-wrap">⏰</div>
+          <h3>{{ t('ea.scheduling_title') }}</h3>
+          <p>{{ t('ea.scheduling_desc') }}</p>
+        </div>
+      </div>
+      <p class="text-center mt-4"><a href="/calculator" class="btn btn-primary btn-lg">{{ t('ea.full_assessment') }}</a></p>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.getElementById('eaAnalyze').addEventListener('click', async () => {
+  const bill = parseFloat(document.getElementById('ea_bill').value) || 120;
+  const housing = document.getElementById('ea_housing').value;
+  const monthly_kwh = bill / 0.32;
+  const resp = await fetch('/api/calculate', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      location_name: 'Berlin',
+      monthly_bill_eur: bill,
+      monthly_kwh: monthly_kwh,
+      goals: ['lower_bill'],
+      housing_type: housing,
+      roof_type: 'unknown',
+    }),
+  });
+  const d = await resp.json();
+  const breakdown = d.usage_breakdown || [];
+  const ap = d.apartment_path || {};
+  const mt = d.meter_timeline || {};
+
+  let html = `<section class="result-section"><h2>${tr('ea.usage_breakdown')}</h2><div class="result-card">`;
+  breakdown.forEach(b => {
+    html += `<div class="usage-row"><div>${b.icon} ${b.label}</div><div class="usage-bar-wrap"><div class="usage-bar" style="width:${b.pct}%"></div></div><div class="usage-cost">${formatCurrency(b.annual_cost_eur)}/yr</div></div>`;
+    html += `<div class="usage-tips">${b.tips.map(t => `<span class="tip-chip">${t}</span>`).join('')}</div>`;
+  });
+  html += '</div></section>';
+
+  if (ap.options) {
+    html += `<section class="result-section"><h2>${tr('ea.recommended')}</h2>`;
+    ap.options.forEach(o => {
+      const saves = tr('ea.saves').replace('{amount}', o.annual_savings_eur);
+      html += `<div class="lead-card"><h4>${o.name}</h4><p>${o.description}</p><p><strong>${saves}</strong></p></div>`;
+    });
+    html += '</section>';
+  }
+
+  html += `<div class="result-card"><h3>${tr('ea.ten_year_without')}: ${formatCurrency(mt.ten_year_cost_without || 0)}</h3><p class="form-hint">${tr('ea.ten_year_with')}: ${formatCurrency(mt.ten_year_cost_with || 0)}</p></div>`;
+
+  document.getElementById('eaResults').innerHTML = html;
+});
+</script>
+{% endblock %}

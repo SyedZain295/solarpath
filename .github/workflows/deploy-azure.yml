@@ -1,0 +1,53 @@
+name: Deploy to Azure
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+env:
+  IMAGE_NAME: solarpath-web
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Syntax and import smoke test
+        run: |
+          python -m py_compile app.py i18n.py pdf_report.py
+          python -c "import app; from i18n import TRANSLATIONS; assert len(TRANSLATIONS['en']) > 100"
+
+      - name: Build Docker image
+        run: docker build -t ${{ env.IMAGE_NAME }}:${{ github.sha }} .
+
+      - name: Azure login
+        if: env.AZURE_CREDENTIALS != ''
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Deploy to Azure Web App
+        if: env.AZURE_CREDENTIALS != ''
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ secrets.AZURE_WEBAPP_NAME }}
+          images: ${{ env.IMAGE_NAME }}:${{ github.sha }}
+
+      - name: Deployment note
+        if: env.AZURE_CREDENTIALS == ''
+        run: |
+          echo "Azure secrets not configured. CI build succeeded."
+          echo "To enable live deploy, add AZURE_CREDENTIALS and AZURE_WEBAPP_NAME repository secrets."
+        env:
+          AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}

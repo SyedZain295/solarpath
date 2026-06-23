@@ -1,0 +1,292 @@
+{% extends "base.html" %}
+{% block title %}{{ t('survey.c.title') }}{% endblock %}
+{% block body_class %}app-page{% endblock %}
+
+{% block content %}
+<div class="survey-page page-bg-wrap">
+  <div class="page-bg" aria-hidden="true"></div>
+  <div class="page-content">
+    <div class="page-header-hero">
+      <p class="survey-breadcrumb"><a href="/survey">{{ t('survey.breadcrumb.all_surveys') }}</a> · {{ t('survey.c.companies') }}</p>
+      <h1>{{ t('survey.c.title') }}</h1>
+      <p>{{ t('survey.c.sub') }}</p>
+    </div>
+
+    <div class="glass-panel survey-panel survey-panel-wide">
+      <div id="surveyError" class="survey-error hidden" role="alert"></div>
+
+      <form id="surveyForm" class="survey-form" data-survey-type="company" novalidate>
+
+        <fieldset>
+          <legend>{{ t('survey.c.sec1') }}</legend>
+          <div class="survey-questions-grid survey-questions-single">
+
+          <div class="survey-q full-width">
+            <label for="s1_monthly_inquiries">{{ t('survey.c.q1.label') }}</label>
+            <select id="s1_monthly_inquiries" name="s1_monthly_inquiries" required>
+              <option value="">{{ t('common.select') }}</option>
+              <option value="under10">{{ t('survey.c.q1.opt.under10') }}</option>
+              <option value="10-25">{{ t('survey.c.q1.opt.10_25') }}</option>
+              <option value="26-50">{{ t('survey.c.q1.opt.26_50') }}</option>
+              <option value="51-100">{{ t('survey.c.q1.opt.51_100') }}</option>
+              <option value="over100">{{ t('survey.c.q1.opt.over100') }}</option>
+            </select>
+          </div>
+
+          <div class="survey-q full-width">
+            <label for="s1_weekly_qual_time">{{ t('survey.c.q2.label') }}</label>
+            <select id="s1_weekly_qual_time" name="s1_weekly_qual_time" required>
+              <option value="">{{ t('common.select') }}</option>
+              <option value="under2">{{ t('survey.c.q2.opt.under2') }}</option>
+              <option value="2-5">{{ t('survey.c.q2.opt.2_5') }}</option>
+              <option value="6-10">{{ t('survey.c.q2.opt.6_10') }}</option>
+              <option value="11-20">{{ t('survey.c.q2.opt.11_20') }}</option>
+              <option value="over20">{{ t('survey.c.q2.opt.over20') }}</option>
+              <option value="unsure">{{ t('common.not_sure') }}</option>
+            </select>
+          </div>
+
+          <div class="survey-q full-width">
+            <label>{{ t('survey.c.q3.label') }} <span class="survey-hint">{{ t('common.select_up_to_3') }}</span></label>
+            <div class="checkbox-group" data-max="3">
+              <label><input type="checkbox" name="s1_loss_reasons" value="comparing_prices"> {{ t('survey.c.q3.opt.comparing_prices') }}</label>
+              <label><input type="checkbox" name="s1_loss_reasons" value="budget_low"> {{ t('survey.c.q3.opt.budget_low') }}</label>
+              <label><input type="checkbox" name="s1_loss_reasons" value="roof_unsuitable"> {{ t('survey.c.q3.opt.roof_unsuitable') }}</label>
+              <label><input type="checkbox" name="s1_loss_reasons" value="usage_low"> {{ t('survey.c.q3.opt.usage_low') }}</label>
+              <label><input type="checkbox" name="s1_loss_reasons" value="not_owner"> {{ t('survey.c.q3.opt.not_owner') }}</label>
+              <label><input type="checkbox" name="s1_loss_reasons" value="not_ready"> {{ t('survey.c.q3.opt.not_ready') }}</label>
+              <label><input type="checkbox" name="s1_loss_reasons" value="bad_contact"> {{ t('survey.c.q3.opt.bad_contact') }}</label>
+              <label><input type="checkbox" name="s1_loss_reasons" value="outside_area"> {{ t('survey.c.q3.opt.outside_area') }}</label>
+              <label><input type="checkbox" name="s1_loss_reasons" value="long_timeline"> {{ t('survey.c.q3.opt.long_timeline') }}</label>
+              <label><input type="checkbox" name="s1_loss_reasons" value="financing"> {{ t('survey.c.q3.opt.financing') }}</label>
+            </div>
+            <label for="s1_loss_reasons_other" class="survey-other-label">{{ t('common.other') }}</label>
+            <input type="text" id="s1_loss_reasons_other" name="s1_loss_reasons_other" placeholder="{{ t('survey.c.q3.other_placeholder') }}">
+          </div>
+
+          <div class="survey-q full-width">
+            <label for="s1_loss_stage">{{ t('survey.c.q4.label') }}</label>
+            <select id="s1_loss_stage" name="s1_loss_stage" required>
+              <option value="">{{ t('common.select') }}</option>
+              <option value="before_contact">{{ t('survey.c.q4.opt.before_contact') }}</option>
+              <option value="initial_qualification">{{ t('survey.c.q4.opt.initial_qualification') }}</option>
+              <option value="after_site_assessment">{{ t('survey.c.q4.opt.after_site_assessment') }}</option>
+              <option value="after_quote">{{ t('survey.c.q4.opt.after_quote') }}</option>
+              <option value="financing_contract">{{ t('survey.c.q4.opt.financing_contract') }}</option>
+              <option value="before_install">{{ t('survey.c.q4.opt.before_install') }}</option>
+              <option value="unsure">{{ t('common.not_sure') }}</option>
+            </select>
+          </div>
+
+          <div class="survey-q full-width">
+            <label>{{ t('survey.c.q5.label') }} <span class="survey-hint">{{ t('common.select_all') }}</span></label>
+            <div class="checkbox-group">
+              <label><input type="checkbox" name="s1_info_needed" value="electricity_bill"> {{ t('survey.c.q5.opt.electricity_bill') }}</label>
+              <label><input type="checkbox" name="s1_info_needed" value="roof_dimensions"> {{ t('survey.c.q5.opt.roof_dimensions') }}</label>
+              <label><input type="checkbox" name="s1_info_needed" value="roof_orientation"> {{ t('survey.c.q5.opt.roof_orientation') }}</label>
+              <label><input type="checkbox" name="s1_info_needed" value="shading_photos"> {{ t('survey.c.q5.opt.shading_photos') }}</label>
+              <label><input type="checkbox" name="s1_info_needed" value="meter_panel"> {{ t('survey.c.q5.opt.meter_panel') }}</label>
+              <label><input type="checkbox" name="s1_info_needed" value="ownership"> {{ t('survey.c.q5.opt.ownership') }}</label>
+              <label><input type="checkbox" name="s1_info_needed" value="existing_equipment"> {{ t('survey.c.q5.opt.existing_equipment') }}</label>
+              <label><input type="checkbox" name="s1_info_needed" value="timeframe"> {{ t('survey.c.q5.opt.timeframe') }}</label>
+              <label><input type="checkbox" name="s1_info_needed" value="budget"> {{ t('survey.c.q5.opt.budget') }}</label>
+              <label><input type="checkbox" name="s1_info_needed" value="financing"> {{ t('survey.c.q5.opt.financing') }}</label>
+            </div>
+            <label for="s1_info_needed_other" class="survey-other-label">{{ t('common.other') }}</label>
+            <input type="text" id="s1_info_needed_other" name="s1_info_needed_other" placeholder="{{ t('survey.c.q5.other_placeholder') }}">
+          </div>
+
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>{{ t('survey.c.sec2') }}</legend>
+          <p class="survey-fieldset-intro">{{ t('survey.c.sec2_intro') }}</p>
+          <div class="survey-questions-grid survey-questions-single">
+
+          <div class="survey-q full-width">
+            <label>{{ t('survey.c.q6.label') }} <span class="survey-hint">{{ t('common.select_up_to_3') }}</span></label>
+            <div class="checkbox-group" data-max="3">
+              <label><input type="checkbox" name="s2_useful_parts" value="consumption"> {{ t('survey.c.q6.opt.consumption') }}</label>
+              <label><input type="checkbox" name="s2_useful_parts" value="roof_details"> {{ t('survey.c.q6.opt.roof_details') }}</label>
+              <label><input type="checkbox" name="s2_useful_parts" value="production"> {{ t('survey.c.q6.opt.production') }}</label>
+              <label><input type="checkbox" name="s2_useful_parts" value="budget"> {{ t('survey.c.q6.opt.budget') }}</label>
+              <label><input type="checkbox" name="s2_useful_parts" value="timeline"> {{ t('survey.c.q6.opt.timeline') }}</label>
+              <label><input type="checkbox" name="s2_useful_parts" value="battery"> {{ t('survey.c.q6.opt.battery') }}</label>
+              <label><input type="checkbox" name="s2_useful_parts" value="ev_heat"> {{ t('survey.c.q6.opt.ev_heat') }}</label>
+              <label><input type="checkbox" name="s2_useful_parts" value="system_size"> {{ t('survey.c.q6.opt.system_size') }}</label>
+              <label><input type="checkbox" name="s2_useful_parts" value="component_list"> {{ t('survey.c.q6.opt.component_list') }}</label>
+              <label><input type="checkbox" name="s2_useful_parts" value="financing"> {{ t('survey.c.q6.opt.financing') }}</label>
+            </div>
+            <label for="s2_useful_parts_other" class="survey-other-label">{{ t('common.other') }}</label>
+            <input type="text" id="s2_useful_parts_other" name="s2_useful_parts_other" placeholder="{{ t('survey.c.q6.other_placeholder') }}">
+          </div>
+
+          <div class="survey-q full-width">
+            <label for="s2_time_reduction">{{ t('survey.c.q7.label') }}</label>
+            <select id="s2_time_reduction" name="s2_time_reduction" required>
+              <option value="">{{ t('common.select') }}</option>
+              <option value="none">{{ t('survey.c.q7.opt.none') }}</option>
+              <option value="under15">{{ t('survey.c.q7.opt.under15') }}</option>
+              <option value="15-30">{{ t('survey.c.q7.opt.15_30') }}</option>
+              <option value="30-60">{{ t('survey.c.q7.opt.30_60') }}</option>
+              <option value="over60">{{ t('survey.c.q7.opt.over60') }}</option>
+              <option value="unsure">{{ t('common.not_sure') }}</option>
+            </select>
+          </div>
+
+          <div class="survey-q full-width">
+            <label for="s2_quote_ready_value">{{ t('survey.c.q8.label') }}</label>
+            <p class="survey-hint">{{ t('survey.c.scale_hint') }}</p>
+            <div class="survey-scale-wrap">
+              <input type="range" id="s2_quote_ready_value" name="s2_quote_ready_value" min="1" max="10" step="1" value="5" class="survey-scale" aria-describedby="scaleValue">
+              <output id="scaleValue" class="survey-scale-value" for="s2_quote_ready_value">5</output>
+              <div class="survey-scale-labels"><span>1</span><span>10</span></div>
+            </div>
+          </div>
+
+          <div class="survey-q full-width">
+            <label>{{ t('survey.c.q9.label') }}</label>
+            <div class="checkbox-group">
+              <label><input type="checkbox" name="s2_trust_requirements" value="methodology"> {{ t('survey.c.q9.opt.methodology') }}</label>
+              <label><input type="checkbox" name="s2_trust_requirements" value="edit_override"> {{ t('survey.c.q9.opt.edit_override') }}</label>
+              <label><input type="checkbox" name="s2_trust_requirements" value="roof_photos"> {{ t('survey.c.q9.opt.roof_photos') }}</label>
+              <label><input type="checkbox" name="s2_trust_requirements" value="bill_evidence"> {{ t('survey.c.q9.opt.bill_evidence') }}</label>
+              <label><input type="checkbox" name="s2_trust_requirements" value="transparent_calc"> {{ t('survey.c.q9.opt.transparent_calc') }}</label>
+              <label><input type="checkbox" name="s2_trust_requirements" value="customer_confirm"> {{ t('survey.c.q9.opt.customer_confirm') }}</label>
+              <label><input type="checkbox" name="s2_trust_requirements" value="site_visit"> {{ t('survey.c.q9.opt.site_visit') }}</label>
+            </div>
+            <label for="s2_trust_requirements_other" class="survey-other-label">{{ t('common.other') }}</label>
+            <input type="text" id="s2_trust_requirements_other" name="s2_trust_requirements_other" placeholder="{{ t('survey.c.q9.other_placeholder') }}">
+          </div>
+
+          <div class="survey-q full-width">
+            <label for="s2_quote_ready_definition">{{ t('survey.c.q10.label') }}</label>
+            <textarea id="s2_quote_ready_definition" name="s2_quote_ready_definition" rows="3" required placeholder="{{ t('survey.c.q10.placeholder') }}"></textarea>
+          </div>
+
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>{{ t('survey.c.sec3') }}</legend>
+          <div class="survey-questions-grid survey-questions-single">
+
+          <div class="survey-q full-width">
+            <label for="s3_spend_model">{{ t('survey.c.q11.label') }}</label>
+            <select id="s3_spend_model" name="s3_spend_model" required>
+              <option value="">{{ t('common.select') }}</option>
+              <option value="no">{{ t('common.no') }}</option>
+              <option value="pay_per_lead">{{ t('survey.c.q11.opt.pay_per_lead') }}</option>
+              <option value="subscription">{{ t('survey.c.q11.opt.subscription') }}</option>
+              <option value="advertising">{{ t('survey.c.q11.opt.advertising') }}</option>
+              <option value="mix">{{ t('survey.c.q11.opt.mix') }}</option>
+              <option value="prefer_not">{{ t('survey.c.q11.opt.prefer_not') }}</option>
+            </select>
+          </div>
+
+          <div class="survey-q full-width">
+            <label for="s3_monthly_spend">{{ t('survey.c.q12.label') }}</label>
+            <select id="s3_monthly_spend" name="s3_monthly_spend" required>
+              <option value="">{{ t('common.select') }}</option>
+              <option value="0">€0</option>
+              <option value="under500">{{ t('survey.c.q12.opt.under500') }}</option>
+              <option value="500-1000">{{ t('survey.c.q12.opt.500_1000') }}</option>
+              <option value="1001-3000">{{ t('survey.c.q12.opt.1001_3000') }}</option>
+              <option value="3001-5000">{{ t('survey.c.q12.opt.3001_5000') }}</option>
+              <option value="over5000">{{ t('survey.c.q12.opt.over5000') }}</option>
+              <option value="prefer_not">{{ t('survey.c.q12.opt.prefer_not') }}</option>
+            </select>
+          </div>
+
+          <div class="survey-q full-width">
+            <label for="s3_commercial_preference">{{ t('survey.c.q13.label') }}</label>
+            <select id="s3_commercial_preference" name="s3_commercial_preference" required>
+              <option value="">{{ t('common.select') }}</option>
+              <option value="per_lead">{{ t('survey.c.q13.opt.per_lead') }}</option>
+              <option value="per_criteria">{{ t('survey.c.q13.opt.per_criteria') }}</option>
+              <option value="success_fee">{{ t('survey.c.q13.opt.success_fee') }}</option>
+              <option value="subscription">{{ t('survey.c.q13.opt.subscription') }}</option>
+              <option value="subscription_plus">{{ t('survey.c.q13.opt.subscription_plus') }}</option>
+              <option value="would_not_use">{{ t('survey.c.q13.opt.would_not_use') }}</option>
+            </select>
+            <label for="s3_commercial_preference_other" class="survey-other-label">{{ t('common.other') }}</label>
+            <input type="text" id="s3_commercial_preference_other" name="s3_commercial_preference_other" placeholder="{{ t('survey.c.q13.other_placeholder') }}">
+          </div>
+
+          <div class="survey-q full-width">
+            <label>{{ t('survey.c.q14.label') }} <span class="survey-hint">{{ t('common.select_up_to_3') }}</span></label>
+            <div class="checkbox-group" data-max="3">
+              <label><input type="checkbox" name="s3_worth_paying" value="decision_maker"> {{ t('survey.c.q14.opt.decision_maker') }}</label>
+              <label><input type="checkbox" name="s3_worth_paying" value="accurate_contact"> {{ t('survey.c.q14.opt.accurate_contact') }}</label>
+              <label><input type="checkbox" name="s3_worth_paying" value="service_area"> {{ t('survey.c.q14.opt.service_area') }}</label>
+              <label><input type="checkbox" name="s3_worth_paying" value="budget"> {{ t('survey.c.q14.opt.budget') }}</label>
+              <label><input type="checkbox" name="s3_worth_paying" value="consumption"> {{ t('survey.c.q14.opt.consumption') }}</label>
+              <label><input type="checkbox" name="s3_worth_paying" value="roof_details"> {{ t('survey.c.q14.opt.roof_details') }}</label>
+              <label><input type="checkbox" name="s3_worth_paying" value="timeframe"> {{ t('survey.c.q14.opt.timeframe') }}</label>
+              <label><input type="checkbox" name="s3_worth_paying" value="contact_consent"> {{ t('survey.c.q14.opt.contact_consent') }}</label>
+              <label><input type="checkbox" name="s3_worth_paying" value="limited_installers"> {{ t('survey.c.q14.opt.limited_installers') }}</label>
+              <label><input type="checkbox" name="s3_worth_paying" value="pre_assessment"> {{ t('survey.c.q14.opt.pre_assessment') }}</label>
+            </div>
+            <label for="s3_worth_paying_other" class="survey-other-label">{{ t('common.other') }}</label>
+            <input type="text" id="s3_worth_paying_other" name="s3_worth_paying_other" placeholder="{{ t('survey.c.q14.other_placeholder') }}">
+          </div>
+
+          <div class="survey-q full-width">
+            <label>{{ t('survey.c.q15.label') }}</label>
+            <div class="checkbox-group">
+              <label><input type="checkbox" name="s3_stop_using" value="poor_quality"> {{ t('survey.c.q15.opt.poor_quality') }}</label>
+              <label><input type="checkbox" name="s3_stop_using" value="not_serious"> {{ t('survey.c.q15.opt.not_serious') }}</label>
+              <label><input type="checkbox" name="s3_stop_using" value="too_many_installers"> {{ t('survey.c.q15.opt.too_many_installers') }}</label>
+              <label><input type="checkbox" name="s3_stop_using" value="unclear_pricing"> {{ t('survey.c.q15.opt.unclear_pricing') }}</label>
+              <label><input type="checkbox" name="s3_stop_using" value="high_fees"> {{ t('survey.c.q15.opt.high_fees') }}</label>
+              <label><input type="checkbox" name="s3_stop_using" value="inaccurate_data"> {{ t('survey.c.q15.opt.inaccurate_data') }}</label>
+              <label><input type="checkbox" name="s3_stop_using" value="no_control"> {{ t('survey.c.q15.opt.no_control') }}</label>
+              <label><input type="checkbox" name="s3_stop_using" value="slow_response"> {{ t('survey.c.q15.opt.slow_response') }}</label>
+              <label><input type="checkbox" name="s3_stop_using" value="no_transparency"> {{ t('survey.c.q15.opt.no_transparency') }}</label>
+            </div>
+            <label for="s3_stop_using_other" class="survey-other-label">{{ t('common.other') }}</label>
+            <input type="text" id="s3_stop_using_other" name="s3_stop_using_other" placeholder="{{ t('survey.c.q15.other_placeholder') }}">
+          </div>
+
+          <div class="survey-q full-width">
+            <label>{{ t('survey.c.q16.label') }}</label>
+            <div class="radio-group">
+              <label><input type="radio" name="s3_followup" value="yes" required> {{ t('common.yes') }}</label>
+              <label><input type="radio" name="s3_followup" value="no"> {{ t('common.no') }}</label>
+            </div>
+            <div id="followupFields" class="survey-followup-fields hidden">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="s3_followup_company">{{ t('survey.c.company_name') }}</label>
+                  <input type="text" id="s3_followup_company" name="s3_followup_company">
+                </div>
+                <div class="form-group">
+                  <label for="s3_followup_email">{{ t('common.email') }}</label>
+                  <input type="email" id="s3_followup_email" name="s3_followup_email">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          </div>
+        </fieldset>
+
+        <button type="submit" class="btn btn-primary btn-lg btn-block" id="surveySubmitBtn">{{ t('survey.c.submit') }}</button>
+      </form>
+
+      <div id="surveySuccess" class="hidden survey-success-panel">
+        <div class="success-icon">✓</div>
+        <h3>{{ t('common.thank_you') }}</h3>
+        <p>{{ t('survey.c.success') }}</p>
+        <p id="surveySuccessNote" class="hidden form-hint"></p>
+        <a href="/suppliers/register" class="btn btn-primary btn-lg" style="margin-top:1.5rem">{{ t('survey.c.register') }}</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/survey.js') }}?v=17"></script>
+{% endblock %}

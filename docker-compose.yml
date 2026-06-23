@@ -1,0 +1,12 @@
+version: "3.9"
+
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      SECRET_KEY: dev-solar-key-change-in-production
+    volumes:
+      - .:/app
+    command: python app.py

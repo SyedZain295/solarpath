@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="{% block meta_description %}{{ t('meta.description') }}{% endblock %}">
+  <meta name="theme-color" content="#0f766e">
+  <meta property="og:title" content="{% block og_title %}SolarPath{% endblock %} – {{ t('meta.site_suffix') }}">
+  <meta property="og:description" content="{% block og_description %}{{ t('meta.description') }}{% endblock %}">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="{{ url_for('static', filename='favicon.svg') }}" type="image/svg+xml">
+  <title>{% block title %}SolarPath{% endblock %} – {{ t('meta.site_suffix') }}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=44">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/nav.css') }}?v=44">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/pages.css') }}?v=44">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/ui-polish.css') }}?v=44">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/aesthetic.css') }}?v=37">
+  {% block head %}{% endblock %}
+</head>
+<body class="{% block body_class %}{% endblock %}">
+  <nav class="navbar">
+    <div class="container nav-inner">
+      <a href="/" class="logo">
+        <span class="logo-icon" aria-hidden="true">☀️</span>
+        <span class="logo-text">SolarPath</span>
+      </a>
+
+      <div class="nav-panel" id="navMenu">
+        <div class="nav-pills">
+          <div class="nav-pill nav-pill--tools">
+            <span class="nav-drawer-label">{{ t('footer.platform') }}</span>
+            <div class="nav-pill-links">
+              <a href="/calculator" class="{% if request.path == '/calculator' %}nav-active{% endif %}">{{ t('nav.calculator') }}</a>
+              <a href="/suppliers" class="{% if request.path == '/suppliers' %}nav-active{% endif %}">{{ t('nav.suppliers') }}</a>
+              <a href="/compare-quotes" class="{% if request.path == '/compare-quotes' %}nav-active{% endif %}">{{ t('nav.compare_quotes') }}</a>
+              <a href="/compatibility" class="{% if request.path == '/compatibility' %}nav-active{% endif %}">{{ t('nav.compatibility') }}</a>
+              <a href="/energy-advisor" class="{% if request.path == '/energy-advisor' %}nav-active{% endif %}">{{ t('nav.energy_advisor') }}</a>
+              <a href="/survey" class="{% if request.path.startswith('/survey') %}nav-active{% endif %}">{{ t('nav.survey') }}</a>
+            </div>
+          </div>
+          <div class="nav-pill nav-pill--account">
+            <span class="nav-drawer-label">{{ t('nav.account') }}</span>
+            <div class="nav-pill-links">
+              <a href="/login" class="{% if request.path == '/login' %}nav-active{% endif %}">{{ t('nav.login') }}</a>
+              <a href="/register" class="{% if request.path == '/register' or request.path.startswith('/suppliers/register') %}nav-active{% endif %}">{{ t('nav.register') }}</a>
+              <a href="/suppliers/dashboard" class="{% if request.path.startswith('/suppliers/dashboard') %}nav-active{% endif %}">{{ t('nav.dashboard') }}</a>
+              <a href="/account" class="{% if request.path == '/account' %}nav-active{% endif %}">{{ t('nav.account') }}</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="nav-actions">
+          <a href="/calculator" class="btn btn-primary btn-sm nav-cta">{{ t('nav.get_started') }}</a>
+          <div class="lang-switch" aria-label="{{ t('nav.language') }}">
+            <a href="{{ lang_url('en') }}" class="{% if lang == 'en' %}active{% endif %}">{{ t('lang.en') }}</a>
+            <span aria-hidden="true">/</span>
+            <a href="{{ lang_url('de') }}" class="{% if lang == 'de' %}active{% endif %}">{{ t('lang.de') }}</a>
+          </div>
+        </div>
+      </div>
+
+      <button type="button" class="mobile-menu-btn" aria-label="Menu" aria-expanded="false" aria-controls="navMenu">
+        <span class="menu-bar"></span>
+        <span class="menu-bar"></span>
+        <span class="menu-bar"></span>
+      </button>
+    </div>
+  </nav>
+
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <span class="logo-icon">☀️</span>
+        <span>SolarPath</span>
+        <p>{{ t('footer.brand') }}</p>
+      </div>
+      <div class="footer-links">
+        <h4>{{ t('footer.platform') }}</h4>
+        <a href="/calculator">{{ t('footer.solar_calculator') }}</a>
+        <a href="/suppliers">{{ t('footer.find_suppliers') }}</a>
+        <a href="/compare-quotes">{{ t('footer.compare_quotes') }}</a>
+        <a href="/energy-advisor">{{ t('nav.energy_advisor') }}</a>
+        <a href="/survey">{{ t('footer.surveys') }}</a>
+        <a href="/register">{{ t('footer.create_account') }}</a>
+      </div>
+      <div class="footer-links">
+        <h4>{{ t('footer.for_suppliers') }}</h4>
+        <a href="/suppliers/register">{{ t('footer.supplier_registration') }}</a>
+        <a href="/suppliers/dashboard">{{ t('footer.dashboard') }}</a>
+      </div>
+      <div class="footer-links">
+        <h4>{{ t('footer.legal') }}</h4>
+        <a href="/privacy">{{ t('footer.privacy') }}</a>
+        <a href="/terms">{{ t('footer.terms') }}</a>
+      </div>
+    </div>
+    <div class="footer-bottom container">
+      <p>&copy; 2026 SolarPath. {{ t('footer.copyright') }}{% block photo_credit %}{% endblock %}</p>
+    </div>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}?v=44"></script>
+  <script>
+    window.APP_LANG = {{ lang|tojson }};
+    window.APP_TRANSLATIONS = {{ js_translations|tojson }};
+  </script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

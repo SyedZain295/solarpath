@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% block title %}{{ t('compat.title') }}{% endblock %}
+{% block body_class %}app-page compat-page{% endblock %}
+
+{% block content %}
+<div class="compare-page page-bg-wrap">
+  <div class="page-bg" aria-hidden="true"></div>
+  <div class="page-content">
+    <div class="page-header-hero">
+      <h1>{{ t('compat.hero_title') }}</h1>
+      <p>{{ t('compat.hero_sub') }}</p>
+    </div>
+    <div class="glass-panel" id="compatApp">
+      <p class="section-sub" id="compatCatalogStats">{{ t('compat.instructions') }}</p>
+
+      <div class="compat-size-presets" id="kwpPresets">
+        <span class="quick-label">{{ t('compat.size_presets') }}:</span>
+        <button type="button" class="city-chip" data-kwp="2">2 kWp</button>
+        <button type="button" class="city-chip" data-kwp="3">3 kWp</button>
+        <button type="button" class="city-chip" data-kwp="5">5 kWp</button>
+        <button type="button" class="city-chip" data-kwp="6">6 kWp</button>
+        <button type="button" class="city-chip" data-kwp="8">8 kWp</button>
+        <button type="button" class="city-chip active" data-kwp="10">10 kWp</button>
+        <button type="button" class="city-chip" data-kwp="12">12 kWp</button>
+        <button type="button" class="city-chip" data-kwp="15">15 kWp</button>
+        <button type="button" class="city-chip" data-kwp="20">20 kWp</button>
+        <button type="button" class="city-chip" data-kwp="25">25 kWp</button>
+        <button type="button" class="city-chip" data-kwp="30">30 kWp</button>
+      </div>
+
+      <form id="compatForm" class="register-form compat-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="compat_panel">{{ t('compat.panel') }}</label>
+            <select id="compat_panel" class="compat-select" required>
+              {% for p in catalog.panels %}
+              <option value="{{ p.id }}"{% if p.id == 'panel-balanced-420' %} selected{% endif %}>{{ p.label }}</option>
+              {% endfor %}
+            </select>
+            <div id="panelSpec" class="compat-spec-card"></div>
+          </div>
+          <div class="form-group">
+            <label for="compat_inverter">{{ t('compat.inverter') }}</label>
+            <select id="compat_inverter" class="compat-select" required>
+              {% for i in catalog.inverters %}
+              <option value="{{ i.id }}"{% if i.id == 'inv-balanced-6' %} selected{% endif %}>{{ i.label }}</option>
+              {% endfor %}
+            </select>
+            <div id="inverterSpec" class="compat-spec-card"></div>
+          </div>
+        </div>
+
+        <div class="compat-filters">
+          <span class="quick-label">{{ t('compat.filter_label') }}:</span>
+          <label>{{ t('compat.min_wp') }} <input type="number" id="filter_min_wp" min="300" max="650" step="10" placeholder="400"></label>
+          <label>{{ t('compat.min_ac_kw') }} <input type="number" id="filter_min_ac" min="2" max="30" step="0.5" placeholder="5"></label>
+          <label>{{ t('compat.min_kwh') }} <input type="number" id="filter_min_kwh" min="0" max="30" step="0.5" placeholder="0"></label>
+          <div class="compat-filter-actions">
+            <button type="button" class="btn btn-outline btn-sm" id="applyFilters">{{ t('compat.apply_filters') }}</button>
+            <button type="button" class="btn btn-outline btn-sm" id="clearFilters">{{ t('compat.clear_filters') }}</button>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="compat_battery">{{ t('compat.battery') }}</label>
+            <select id="compat_battery" class="compat-select">
+              <option value="">{{ t('compat.no_battery') }}</option>
+              {% for b in catalog.batteries %}
+              <option value="{{ b.id }}">{{ b.label }}</option>
+              {% endfor %}
+            </select>
+            <div id="batterySpec" class="compat-spec-card"></div>
+          </div>
+          <div class="form-group">
+            <label for="compat_kwp">{{ t('compat.system_kwp') }}</label>
+            <input type="number" id="compat_kwp" min="0.5" max="50" step="0.1" value="10">
+            <label for="compat_panels" class="compat-sub-label">{{ t('compat.panel_count') }}</label>
+            <input type="number" id="compat_panels" min="0" max="120" step="1" placeholder="{{ t('compat.auto_calc') }}">
+          </div>
+        </div>
+
+        <label class="checkbox-inline"><input type="checkbox" id="compat_backup"> {{ t('compat.backup_goal') }}</label>
+        <button type="submit" class="btn btn-primary compat-submit">{{ t('compat.run') }}</button>
+      </form>
+
+      <div id="compatResults" class="hidden compare-results"></div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  window.COMPAT_CATALOG = {{ catalog|tojson }};
+</script>
+<script src="{{ url_for('static', filename='js/compatibility.js') }}?v=30"></script>
+{% endblock %}

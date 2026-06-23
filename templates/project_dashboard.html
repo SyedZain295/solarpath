@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}{{ t('project.title') }}{% endblock %}
+{% block body_class %}app-page{% endblock %}
+
+{% block content %}
+<div class="project-page page-bg-wrap">
+  <div class="page-bg" aria-hidden="true"></div>
+  <div class="page-content">
+    <div class="page-header-hero">
+      <h1>{{ t('project.hero_title') }}</h1>
+      <p>{{ t('project.hero_sub') }}</p>
+    </div>
+    <div id="projectLoading" class="loading-state loading-state-light">
+      <div class="loading-spinner"></div>
+    </div>
+    <div id="projectContent" class="hidden glass-panel"></div>
+    <div id="projectEmpty" class="hidden glass-panel">
+      <p>{{ t('project.empty') }}</p>
+      <a href="/calculator" class="btn btn-primary">{{ t('nav.calculator') }}</a>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/project_dashboard.js') }}?v=19"></script>
+{% endblock %}
