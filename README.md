@@ -35,16 +35,32 @@ python scripts/backup_db.py
 
 Never commit `.env` — it is gitignored.
 
+## Free cloud deploy (event — no laptop)
+
+**Repo:** [github.com/SyedZain295/solarpath](https://github.com/SyedZain295/solarpath)
+
+Double-click **`DEPLOY_FREE.bat`** (opens Neon + Render), or:
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/SyedZain295/solarpath)
+
+1. **Neon** → new project (Frankfurt) → copy Postgres connection string  
+2. **Render** → deploy → paste when asked:
+
+| Key | Value |
+|-----|--------|
+| `DATABASE_URL` | *(from Neon)* |
+| `SUPPORT_EMAIL` | `zainhaseeb0716@gmail.com` |
+| `BETA_ACCESS_PASSWORD` | your beta password |
+| `BETA_INVITE_TOKENS` | `solarpath-beta-2026` |
+
+Guide: **[docs/EVENT_DEPLOY_FREE.md](docs/EVENT_DEPLOY_FREE.md)**
+
 ### Docker
 
 ```bash
 docker compose -f docker-compose.prod.yml up --build -d
 curl localhost:8000/health
 ```
-
-### Render
-
-Deploy via [render.yaml](render.yaml) blueprint. See **[docs/BETA.md](docs/BETA.md)** for pilot metrics and validation steps.
 
 ## Features
 

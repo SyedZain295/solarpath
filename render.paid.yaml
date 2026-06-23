@@ -1,11 +1,10 @@
-# Free event deploy — Render web (free) + Neon Postgres (free)
-# Set DATABASE_URL from Neon in the Render dashboard after deploy.
+# Paid Render deploy (web + Postgres) — use only when ready to pay ~$14/mo
 
 services:
   - type: web
     name: solarpath
     runtime: python
-    plan: free
+    plan: starter
     buildCommand: pip install -r requirements.txt
     startCommand: gunicorn --bind 0.0.0.0:$PORT --workers 2 --timeout 120 app:app
     healthCheckPath: /health
@@ -22,13 +21,19 @@ services:
         generateValue: true
       - key: ADMIN_TOKEN
         generateValue: true
-      - key: DATABASE_URL
-        sync: false
-      - key: SUPPORT_EMAIL
-        sync: false
       - key: BETA_ACCESS_PASSWORD
+        generateValue: true
+      - key: SUPPORT_EMAIL
         sync: false
       - key: BETA_INVITE_TOKENS
         sync: false
-      - key: REGION_FOCUS
-        value: Bayern
+      - key: DATABASE_URL
+        fromDatabase:
+          name: solarpath-db
+          property: connectionString
+
+databases:
+  - name: solarpath-db
+    plan: starter
+    databaseName: solarpath
+    user: solarpath
