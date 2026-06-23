@@ -15,7 +15,7 @@ if errorlevel 1 (
   exit /b 1
 )
 
-echo [1/3] Installing dependencies...
+echo [1/4] Installing dependencies...
 pip install -r requirements.txt -q
 if errorlevel 1 (
   echo ERROR: pip install failed
@@ -23,13 +23,21 @@ if errorlevel 1 (
   exit /b 1
 )
 
-echo [2/3] Checking data files...
+if not exist ".env" (
+  echo [2/4] Creating .env from .env.example...
+  copy /Y .env.example .env >nul
+  echo        Edit .env later for admin/beta passwords. Dev defaults work for now.
+) else (
+  echo [2/4] Using existing .env
+)
+
+echo [3/4] Checking data files...
 python scripts/ensure_ready.py
 if errorlevel 1 (
   echo WARNING: Some data missing — app may have limited features.
 )
 
-echo [3/3] Starting server...
+echo [4/4] Starting server...
 echo.
 echo  Open in your browser:  http://127.0.0.1:5000
 echo.
