@@ -102,7 +102,7 @@ SUPPLIER_PLANS = {
         "id": "basic",
         "name": "Basic",
         "tier": "Starter",
-        "price_eur": 29,
+        "price_eur": 9,
         "lead_note": "Pay per lead after 2 free enquiries",
         "features": [
             "Visible profile & service area",
@@ -116,7 +116,7 @@ SUPPLIER_PLANS = {
         "id": "verified",
         "name": "Verified",
         "tier": "Growth",
-        "price_eur": 79,
+        "price_eur": 29,
         "lead_note": "5 qualified leads included · then €12/lead",
         "features": [
             "Verified badge & higher ranking",
@@ -131,7 +131,7 @@ SUPPLIER_PLANS = {
         "id": "premium",
         "name": "Premium",
         "tier": "Scale",
-        "price_eur": 159,
+        "price_eur": 79,
         "lead_note": "15 qualified leads included · then €9/lead",
         "features": [
             "Priority & featured listing",
@@ -485,7 +485,7 @@ def supplier_nearest_distance_km(supplier: dict, origin: dict, search_postcode: 
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    return render_template("index.html", plans=SUPPLIER_PLANS)
 
 
 @app.route("/calculator")

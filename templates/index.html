@@ -218,7 +218,7 @@
           <p class="pricing-tagline">{{ t('plans.basic.tagline') }}</p>
         </div>
         <div class="pricing-price">
-          <span class="pricing-amount">€29</span>
+          <span class="pricing-amount">€{{ plans.basic.price_eur }}</span>
           <span class="pricing-period">{{ t('home.pricing.month') }}</span>
         </div>
         <p class="pricing-lead-note">{{ t('plans.basic.lead_note') }}</p>
@@ -243,7 +243,7 @@
           <span class="pricing-badge">{{ t('home.pricing.popular') }}</span>
         </div>
         <div class="pricing-price">
-          <span class="pricing-amount">€79</span>
+          <span class="pricing-amount">€{{ plans.verified.price_eur }}</span>
           <span class="pricing-period">{{ t('home.pricing.month') }}</span>
         </div>
         <p class="pricing-lead-note">{{ t('plans.verified.lead_note') }}</p>
@@ -265,7 +265,7 @@
           <p class="pricing-tagline">{{ t('plans.premium.tagline') }}</p>
         </div>
         <div class="pricing-price">
-          <span class="pricing-amount">€159</span>
+          <span class="pricing-amount">€{{ plans.premium.price_eur }}</span>
           <span class="pricing-period">{{ t('home.pricing.month') }}</span>
         </div>
         <p class="pricing-lead-note">{{ t('plans.premium.lead_note') }}</p>
