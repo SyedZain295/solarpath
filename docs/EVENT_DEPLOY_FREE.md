@@ -45,9 +45,9 @@ Replace `YOUR_USERNAME` with your GitHub username. Sign in when Git asks.
 ## Part 3 — Render web app (10 min)
 
 1. Go to [render.com](https://render.com) → sign up (free, connect GitHub).
-2. **New → Blueprint**.
+2. **New → Blueprint** (or use [one-click deploy](https://render.com/deploy?repo=https://github.com/SyedZain295/solarpath)).
 3. Connect the repo you just pushed.
-4. When asked for the blueprint file, use **`render.free.yaml`** (not `render.yaml`).
+4. When asked for the blueprint file, use **`render.yaml`** (free tier).
 5. After the blueprint is created, open the **solarpath** web service → **Environment** and add:
 
 | Key | Value |
