@@ -207,18 +207,19 @@
       </div>
       <div id="calcErrorBottom" class="form-error-banner hidden" role="alert" aria-live="polite"></div>
     </form>
+    </div>
 
-      <div id="loadingOverlay" class="loading-overlay hidden" aria-live="polite" aria-busy="true">
+    <div id="loadingOverlay" class="loading-overlay loading-overlay-calc hidden" aria-live="polite" aria-busy="true">
       <div class="loading-spinner"></div>
       <p id="loadingMessage">{{ t('calc.loading') }}</p>
       <p class="loading-hint">{{ t('calc.loading_hint') }}</p>
-    </div>
     </div>
   </div>
 </div>
 {% endblock %}
 
 {% block scripts %}
+<script>window.BETA_INVITE_DEFAULT = {{ beta_invite|tojson }};</script>
 <script src="{{ url_for('static', filename='js/intake_ref.js') }}?v=1"></script>
-<script src="{{ url_for('static', filename='js/calculator.js') }}?v=21"></script>
+<script src="{{ url_for('static', filename='js/calculator.js') }}?v=22"></script>
 {% endblock %}

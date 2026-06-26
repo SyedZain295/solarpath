@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('calculatorForm');
+  if (!form) return;
+
   const steps = document.querySelectorAll('.calc-step');
   const progressFill = document.getElementById('progressFill');
   const progressSteps = document.querySelectorAll('#progressSteps span');
@@ -9,9 +11,19 @@ document.addEventListener('DOMContentLoaded', () => {
   const loadingOverlay = document.getElementById('loadingOverlay');
   const housingType = document.getElementById('housing_type');
   const apartmentNotice = document.getElementById('apartmentNotice');
+  const submitBtnDefaultText = submitBtn?.textContent || '';
 
   let currentStep = 1;
   const totalSteps = steps.length;
+
+  const defaultInvite = window.BETA_INVITE_DEFAULT || '';
+  if (defaultInvite) {
+    try {
+      if (!sessionStorage.getItem('betaInviteToken')) {
+        sessionStorage.setItem('betaInviteToken', defaultInvite);
+      }
+    } catch (_) { /* private mode */ }
+  }
 
   housingType?.addEventListener('change', () => {
     const apt = ['apartment_renter', 'apartment_owner'].includes(housingType.value);
@@ -77,9 +89,15 @@ document.addEventListener('DOMContentLoaded', () => {
     loadingOverlay?.classList.toggle('hidden', !active);
     loadingOverlay?.setAttribute('aria-busy', active ? 'true' : 'false');
     [submitBtn, nextBtn, prevBtn].forEach(btn => { if (btn) btn.disabled = active; });
+    if (submitBtn) {
+      submitBtn.textContent = active
+        ? tr('calc.loading', 'Calculating your recommendation…')
+        : submitBtnDefaultText;
+    }
     if (active) {
       const msg = document.getElementById('loadingMessage');
       if (msg) msg.textContent = tr('calc.loading', 'Calculating your recommendation…');
+      loadingOverlay?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
   }
 
@@ -125,7 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     if (intakeSlug) payload.source_installer_slug = intakeSlug;
 
-    const betaInvite = sessionStorage.getItem('betaInviteToken') || '';
+    const betaInvite = sessionStorage.getItem('betaInviteToken') || window.BETA_INVITE_DEFAULT || '';
     const headers = { 'Content-Type': 'application/json', Accept: 'application/json' };
     if (betaInvite) headers['X-Beta-Invite'] = betaInvite;
 

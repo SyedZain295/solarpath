@@ -211,13 +211,35 @@ html { scroll-behavior: smooth; }
   outline: none;
 }
 
-.app-page label:not(.goal-card):not(.survey-choice-card),
-.glass-panel label:not(.goal-card):not(.survey-choice-card) {
+.app-page label:not(.goal-card):not(.survey-choice-card):not(.checkbox-inline),
+.glass-panel label:not(.goal-card):not(.survey-choice-card):not(.checkbox-inline) {
   font-weight: 600;
   font-size: 0.875rem;
   color: var(--color-teal-deep);
   margin-bottom: 0.35rem;
   display: block;
+}
+
+.glass-panel label.checkbox-inline {
+  display: flex !important;
+  align-items: flex-start;
+  gap: 0.65rem;
+  margin-bottom: 0.75rem;
+  cursor: pointer;
+  line-height: 1.45;
+}
+
+.glass-panel label.checkbox-inline input[type="checkbox"] {
+  margin-top: 0.2rem;
+  flex-shrink: 0;
+}
+
+.calculator-page .glass-panel {
+  overflow: visible;
+}
+
+.loading-overlay-calc {
+  z-index: 9999;
 }
 
 /* ── Chips & filters ────────────────────────────────── */

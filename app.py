@@ -501,7 +501,11 @@ def index():
 @app.route("/calculator")
 def calculator():
     ref = request.args.get("ref", "").strip()
-    return render_template("calculator.html", intake_ref=ref)
+    invite = (request.args.get("invite") or request.args.get("token") or "").strip()
+    if not invite:
+        tokens = [t.strip() for t in os.environ.get("BETA_INVITE_TOKENS", "").split(",") if t.strip()]
+        invite = tokens[0] if tokens else ""
+    return render_template("calculator.html", intake_ref=ref, beta_invite=invite)
 
 
 @app.route("/results")
