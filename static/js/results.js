@@ -27,7 +27,7 @@ function formatDisplayLabel(value) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  const raw = sessionStorage.getItem('solarRecommendation');
+  const raw = sessionStorage.getItem('solarRecommendation') || localStorage.getItem('solarRecommendation');
   if (!raw) {
     document.getElementById('resultsLoading').classList.add('hidden');
     document.getElementById('resultsError').classList.remove('hidden');

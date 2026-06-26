@@ -7,7 +7,7 @@ import beta_access
 
 def test_beta_gate_returns_json_for_api():
   app = Flask(__name__)
-  with app.test_request_context("/api/calculate", method="POST"):
+  with app.test_request_context("/api/other", method="POST"):
     with patch.object(beta_access, "beta_gate_enabled", return_value=True), patch.object(
       beta_access, "check_beta_access", return_value=False
     ):
@@ -16,6 +16,15 @@ def test_beta_gate_returns_json_for_api():
     body, status = resp
     assert status == 401
     assert body.json["error"]
+
+
+def test_beta_gate_exempts_calculate_post():
+  app = Flask(__name__)
+  with app.test_request_context("/api/calculate", method="POST"):
+    with patch.object(beta_access, "beta_gate_enabled", return_value=True), patch.object(
+      beta_access, "check_beta_access", return_value=False
+    ):
+      assert beta_access.beta_gate_before_request() is None
 
 
 def test_check_beta_access_accepts_invite_header():

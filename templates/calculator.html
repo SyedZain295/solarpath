@@ -203,7 +203,7 @@
       <div class="calc-nav">
         <button type="button" class="btn btn-outline" id="prevBtn" disabled>{{ t('common.back') }}</button>
         <button type="button" class="btn btn-primary" id="nextBtn">{{ t('common.next') }}</button>
-        <button type="submit" class="btn btn-primary hidden" id="submitBtn">{{ t('calc.get_recommendation') }}</button>
+        <button type="button" class="btn btn-primary hidden" id="submitBtn">{{ t('calc.get_recommendation') }}</button>
       </div>
       <div id="calcErrorBottom" class="form-error-banner hidden" role="alert" aria-live="polite"></div>
     </form>
@@ -221,5 +221,5 @@
 {% block scripts %}
 <script>window.BETA_INVITE_DEFAULT = {{ beta_invite|tojson }};</script>
 <script src="{{ url_for('static', filename='js/intake_ref.js') }}?v=1"></script>
-<script src="{{ url_for('static', filename='js/calculator.js') }}?v=22"></script>
+<script src="{{ url_for('static', filename='js/calculator.js') }}?v=23"></script>
 {% endblock %}

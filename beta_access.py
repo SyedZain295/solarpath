@@ -24,6 +24,10 @@ PUBLIC_PATH_PREFIXES = (
 PUBLIC_EXACT = {"/beta-login"}
 
 
+def _api_calculate_post() -> bool:
+    return request.path == "/api/calculate" and request.method == "POST"
+
+
 def beta_gate_enabled() -> bool:
     return bool(BETA_ACCESS_PASSWORD or BETA_INVITE_TOKENS)
 
@@ -56,6 +60,8 @@ def check_beta_access() -> bool:
 
 def beta_gate_before_request():
     if not beta_gate_enabled():
+        return None
+    if _api_calculate_post():
         return None
     if _path_exempt(request.path):
         return None
