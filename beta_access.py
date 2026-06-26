@@ -56,6 +56,11 @@ def beta_gate_before_request():
         return None
     if check_beta_access():
         return None
+    if request.path.startswith("/api/"):
+        from flask import jsonify
+        return jsonify({
+            "error": "Beta access required. Open your invite link or log in at /beta-login, then try again.",
+        }), 401
     nxt = request.full_path if request.query_string else request.path
     if nxt.endswith("?") and not request.query_string:
         nxt = request.path

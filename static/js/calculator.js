@@ -123,11 +123,21 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       const msg = document.getElementById('loadingMessage');
       if (msg) msg.textContent = tr('calc.loading_pvgis', 'Fetching solar yield from PVGIS…');
+      const slowTimer = setTimeout(() => {
+        const hint = document.querySelector('.loading-hint');
+        if (hint) hint.textContent = tr('calc.loading_slow', 'Still working… free hosting can take up to 60 seconds on first load.');
+      }, 12000);
       const resp = await fetch('/api/calculate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'same-origin',
+        redirect: 'manual',
         body: JSON.stringify(payload),
       });
+      clearTimeout(slowTimer);
+      if (resp.type === 'opaqueredirect' || resp.status === 302 || resp.status === 301) {
+        throw new Error(tr('calc.js.beta_required', 'Beta access required — open the invite link first, then try again.'));
+      }
       const data = await parseJsonResponse(resp);
       if (!resp.ok) throw new Error(data.error || tr('calc.js.calc_failed', 'Calculation failed'));
       if (intakeSlug) data.source_installer_slug = intakeSlug;
@@ -144,6 +154,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function parseJsonResponse(resp) {
   const text = await resp.text();
+  const ctype = resp.headers.get('content-type') || '';
+  if (!ctype.includes('application/json')) {
+    if (resp.status === 401) {
+      throw new Error(tr('calc.js.beta_required', 'Beta access required — open the invite link first, then try again.'));
+    }
+    throw new Error(tr('calc.js.server_error', 'Server error ({status}). Please try again.').replace('{status}', resp.status));
+  }
   try {
     return JSON.parse(text);
   } catch {
