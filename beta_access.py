@@ -34,12 +34,19 @@ def _path_exempt(path: str) -> bool:
     return any(path.startswith(p) for p in PUBLIC_PATH_PREFIXES)
 
 
+def _invite_token_from_request() -> str:
+    return (
+        (request.args.get("invite") or request.args.get("token") or request.headers.get("X-Beta-Invite") or "")
+        .strip()
+    )
+
+
 def check_beta_access() -> bool:
     if not beta_gate_enabled():
         return True
     if session.get("beta_authenticated"):
         return True
-    token = (request.args.get("invite") or request.args.get("token") or "").strip()
+    token = _invite_token_from_request()
     if token and token in BETA_INVITE_TOKENS:
         session["beta_authenticated"] = True
         session.permanent = True

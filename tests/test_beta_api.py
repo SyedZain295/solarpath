@@ -18,6 +18,16 @@ def test_beta_gate_returns_json_for_api():
     assert body.json["error"]
 
 
+def test_check_beta_access_accepts_invite_header():
+  app = Flask(__name__)
+  app.secret_key = "test"
+  with app.test_request_context("/api/calculate", method="POST", headers={"X-Beta-Invite": "tok"}):
+    with patch.object(beta_access, "BETA_INVITE_TOKENS", {"tok"}), patch.object(
+      beta_access, "BETA_ACCESS_PASSWORD", ""
+    ):
+      assert beta_access.check_beta_access() is True
+
+
 @patch("beta_access.beta_gate_enabled", return_value=True)
 @patch("beta_access.check_beta_access", return_value=True)
 @patch("app.get_pv_estimate", return_value={"specific_yield_kwh_kwp": 950, "monthly": []})

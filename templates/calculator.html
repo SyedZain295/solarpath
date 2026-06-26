@@ -205,6 +205,7 @@
         <button type="button" class="btn btn-primary" id="nextBtn">{{ t('common.next') }}</button>
         <button type="submit" class="btn btn-primary hidden" id="submitBtn">{{ t('calc.get_recommendation') }}</button>
       </div>
+      <div id="calcErrorBottom" class="form-error-banner hidden" role="alert" aria-live="polite"></div>
     </form>
 
       <div id="loadingOverlay" class="loading-overlay hidden" aria-live="polite" aria-busy="true">
@@ -219,5 +220,5 @@
 
 {% block scripts %}
 <script src="{{ url_for('static', filename='js/intake_ref.js') }}?v=1"></script>
-<script src="{{ url_for('static', filename='js/calculator.js') }}?v=20"></script>
+<script src="{{ url_for('static', filename='js/calculator.js') }}?v=21"></script>
 {% endblock %}

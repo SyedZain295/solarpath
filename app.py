@@ -51,9 +51,15 @@ FLASK_DEBUG = os.environ.get("FLASK_DEBUG", "0" if IS_PRODUCTION else "1") == "1
 setup_logging(production=IS_PRODUCTION)
 log = logging.getLogger("solarpath")
 
+from werkzeug.middleware.proxy_fix import ProxyFix
+
 app = Flask(__name__)
 app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "dev-solar-key-change-in-production")
 app.config["PERMANENT_SESSION_LIFETIME"] = 86400 * 30
+if IS_PRODUCTION:
+    app.config["SESSION_COOKIE_SECURE"] = True
+    app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
+    app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 if IS_PRODUCTION and app.config["SECRET_KEY"] == "dev-solar-key-change-in-production":
     log.warning("SECRET_KEY is still the dev default — set a strong SECRET_KEY in production.")
 if IS_PRODUCTION and os.environ.get("ADMIN_TOKEN", "dev-admin") == "dev-admin":
@@ -774,7 +780,7 @@ def api_calculate():
             pvgis.get("specific_yield_kwh_kwp", 0),
             gsa.get("specific_yield_kwh_kwp", 0),
         )
-        recommendation["gsa_yield"] = gsa
+        recommendation["gsa_yield"] = {k: v for k, v in gsa.items() if k != "raw"}
     source_slug = data.get("source_installer_slug", "").strip()
     if source_slug:
         recommendation["source_installer_slug"] = source_slug
@@ -786,7 +792,10 @@ def api_calculate():
         "longitude": float(lon),
         "name": location_name,
     }
-    recommendation["pvgis"] = pvgis
+    recommendation["pvgis"] = (
+        {k: pvgis.get(k) for k in ("specific_yield_kwh_kwp", "annual_kwh_per_kwp", "cached", "monthly") if pvgis.get(k) is not None}
+        if pvgis else None
+    )
     recommendation["pvgis_fallback"] = pvgis_fallback
     if pvgis_fallback:
         recommendation["pvgis_notice"] = (

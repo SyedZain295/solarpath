@@ -57,15 +57,20 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   function showCalcError(message) {
-    const el = document.getElementById('calcError');
-    if (!el) { alert(message); return; }
-    el.textContent = message;
-    el.classList.remove('hidden');
-    el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    [document.getElementById('calcError'), document.getElementById('calcErrorBottom')].forEach((el) => {
+      if (!el) return;
+      el.textContent = message;
+      el.classList.remove('hidden');
+    });
+    if (!document.getElementById('calcError')) alert(message);
+    (document.getElementById('calcErrorBottom') || document.getElementById('calcError'))
+      ?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 
   function clearCalcError() {
-    document.getElementById('calcError')?.classList.add('hidden');
+    [document.getElementById('calcError'), document.getElementById('calcErrorBottom')].forEach((el) => {
+      el?.classList.add('hidden');
+    });
   }
 
   function setLoading(active) {
@@ -120,6 +125,10 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     if (intakeSlug) payload.source_installer_slug = intakeSlug;
 
+    const betaInvite = sessionStorage.getItem('betaInviteToken') || '';
+    const headers = { 'Content-Type': 'application/json', Accept: 'application/json' };
+    if (betaInvite) headers['X-Beta-Invite'] = betaInvite;
+
     try {
       const msg = document.getElementById('loadingMessage');
       if (msg) msg.textContent = tr('calc.loading_pvgis', 'Fetching solar yield from PVGIS…');
@@ -127,24 +136,31 @@ document.addEventListener('DOMContentLoaded', () => {
         const hint = document.querySelector('.loading-hint');
         if (hint) hint.textContent = tr('calc.loading_slow', 'Still working… free hosting can take up to 60 seconds on first load.');
       }, 12000);
+      const controller = new AbortController();
+      const abortTimer = setTimeout(() => controller.abort(), 120000);
       const resp = await fetch('/api/calculate', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         credentials: 'same-origin',
-        redirect: 'manual',
+        signal: controller.signal,
         body: JSON.stringify(payload),
       });
       clearTimeout(slowTimer);
-      if (resp.type === 'opaqueredirect' || resp.status === 302 || resp.status === 301) {
-        throw new Error(tr('calc.js.beta_required', 'Beta access required — open the invite link first, then try again.'));
-      }
+      clearTimeout(abortTimer);
       const data = await parseJsonResponse(resp);
       if (!resp.ok) throw new Error(data.error || tr('calc.js.calc_failed', 'Calculation failed'));
       if (intakeSlug) data.source_installer_slug = intakeSlug;
-      sessionStorage.setItem('solarRecommendation', JSON.stringify(data));
+      try {
+        sessionStorage.setItem('solarRecommendation', JSON.stringify(data));
+      } catch (storageErr) {
+        throw new Error(tr('calc.js.storage_failed', 'Could not save results — try a normal browser window (not private mode).'));
+      }
       window.location.href = '/results';
     } catch (err) {
-      showCalcError(tr('common.error_prefix', 'Error') + ': ' + err.message);
+      const message = err.name === 'AbortError'
+        ? tr('calc.js.timeout', 'Request timed out — the server may be waking up. Wait 60 seconds and try again.')
+        : err.message;
+      showCalcError(tr('common.error_prefix', 'Error') + ': ' + message);
       setLoading(false);
     }
   });

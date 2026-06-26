@@ -438,6 +438,8 @@ EXTRA = {
         "calc.loading_pvgis": "Fetching solar yield from PVGIS…",
         "calc.loading_slow": "Still working… free hosting can take up to 60 seconds on first load.",
         "calc.js.beta_required": "Beta access required — open your invite link first, then try again.",
+        "calc.js.timeout": "Request timed out — the server may be waking up. Wait 60 seconds and try again.",
+        "calc.js.storage_failed": "Could not save results — try a normal browser window (not private mode).",
         # Energy advisor
         "ea.title": "Energy Advisor",
         "ea.sub": "Save money on electricity – with or without solar panels. Built for renters, apartments, and low-income households.",
@@ -999,6 +1001,8 @@ EXTRA = {
         "calc.loading_pvgis": "Solareträge von PVGIS werden abgerufen…",
         "calc.loading_slow": "Noch in Arbeit… beim ersten Aufruf kann kostenloses Hosting bis zu 60 Sekunden dauern.",
         "calc.js.beta_required": "Beta-Zugang erforderlich — bitte zuerst den Einladungslink öffnen und erneut versuchen.",
+        "calc.js.timeout": "Zeitüberschreitung — der Server startet ggf. gerade. 60 Sekunden warten und erneut versuchen.",
+        "calc.js.storage_failed": "Ergebnis konnte nicht gespeichert werden — normalen Browser verwenden (kein Privatmodus).",
         "ea.title": "Energieberater",
         "ea.sub": "Stromkosten sparen – mit oder ohne Solarmodule. Für Mieter, Wohnungen und Haushalte mit geringem Einkommen.",
         "ea.quick_check": "Schneller Spartest",
