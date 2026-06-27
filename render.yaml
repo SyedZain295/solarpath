@@ -32,5 +32,11 @@ services:
         sync: false
       - key: BETA_INVITE_TOKENS
         value: solarpath-beta-2026
+      - key: BETA_INVITE_DEFAULT
+        value: solarpath-beta-2026
+      - key: BETA_GATE_ENABLED
+        value: "0"
+      - key: BETA_DEMO_MODE
+        value: "1"
       - key: REGION_FOCUS
         value: Bayern

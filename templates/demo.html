@@ -1,0 +1,24 @@
+{% extends "results.html" %}
+{% block title %}Demo – {{ t('results.title') }}{% endblock %}
+
+{% block content %}
+<div class="demo-banner container" role="status">
+  <p><strong>{{ t('demo.banner_label', 'Demo mode') }}</strong> — {{ t('demo.banner_text', 'Sample household in München, Bayern (fixed data). Try the full calculator when you are ready.') }}
+    <a href="{{ invite_href('/calculator') }}">{{ t('demo.try_calculator', 'Open calculator') }}</a>
+  </p>
+</div>
+{{ super() }}
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function () {
+  const data = {{ demo_data|tojson }};
+  const serialized = JSON.stringify(data);
+  try { sessionStorage.setItem('solarRecommendation', serialized); } catch (_) {}
+  try { localStorage.setItem('solarRecommendation', serialized); } catch (_) {}
+  window.__DEMO_MODE__ = true;
+})();
+</script>
+{{ super() }}
+{% endblock %}

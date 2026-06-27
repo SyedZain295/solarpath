@@ -27,6 +27,30 @@ def test_beta_gate_exempts_calculate_post():
       assert beta_access.beta_gate_before_request() is None
 
 
+def test_beta_gate_disabled_via_env(monkeypatch):
+  monkeypatch.setattr(beta_access, "BETA_GATE_ENABLED", False)
+  monkeypatch.setattr(beta_access, "BETA_DEMO_MODE", True)
+  assert beta_access.beta_gate_enabled() is False
+
+
+def test_invite_href_appends_token():
+  with patch.object(beta_access, "default_beta_invite", return_value="solarpath-beta-2026"):
+    assert beta_access.invite_href("/calculator") == "/calculator?invite=solarpath-beta-2026"
+    assert beta_access.invite_href("/calculator?lang=de") == "/calculator?lang=de&invite=solarpath-beta-2026"
+    assert beta_access.invite_href("/calculator?invite=other") == "/calculator?invite=other"
+
+
+def test_persist_invite_session():
+  app = Flask(__name__)
+  app.secret_key = "test"
+  with app.test_request_context("/?invite=tok"):
+    with patch.object(beta_access, "BETA_INVITE_TOKENS", {"tok"}), patch.object(
+      beta_access, "beta_gate_enabled", return_value=True
+    ):
+      beta_access.persist_beta_invite_session()
+      assert beta_access.check_beta_access() is True
+
+
 def test_check_beta_access_accepts_invite_header():
   app = Flask(__name__)
   app.secret_key = "test"
@@ -54,3 +78,10 @@ def test_api_calculate_ok_when_beta_session(_gsa, _pvgis, _access, _enabled, cli
     )
     assert r.status_code == 200
     assert "system_kwp" in r.get_json()
+
+
+def test_demo_route_public(client):
+    r = client.get("/demo")
+    assert r.status_code == 200
+    assert b"Demo mode" in r.data or b"demo-banner" in r.data
+    assert b"M" in r.data  # München sample embedded in page JSON

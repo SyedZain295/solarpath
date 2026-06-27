@@ -1,0 +1,3627 @@
+{
+  "annual_production_kwh": 4644,
+  "apartment_path": null,
+  "assumptions": [
+    "Location: München, Bayern",
+    "Property type: Detached house",
+    "Annual electricity consumption: 4,200 kWh",
+    "Electricity price: 32.0 ct/kWh (escalation 2–6%/year modelled)",
+    "Feed-in tariff (partial): 7.78 ct/kWh",
+    "Specific yield: 922 kWh/kWp/year (PVGIS + shading adjustment)",
+    "Component costs from internal product catalog (Phase 1 — no supplier APIs)",
+    "Battery replacement assumed at year 12 (65% of original cost)",
+    "Inverter replacement assumed at year 15 (35% of original cost)",
+    "Maintenance allowance: 0.8%/year of system cost",
+    "CO₂ factor: 0.385 kg/kWh (German grid mix)",
+    "Production estimates from PVGIS via backend API (not browser-direct)",
+    "PVGIS terrain-based horizon modelling does not account for nearby trees, chimneys, or neighbouring buildings. A site survey is needed for final accuracy.",
+    "This is an estimate, not a guaranteed return. Your final result depends on roof conditions, shading, electricity usage, installed equipment, grid approval, and final installer quote."
+  ],
+  "battery_comparison": null,
+  "battery_kwh": 0,
+  "budget_first": null,
+  "calculator_inputs": {
+    "battery_interest": "unsure",
+    "budget_eur": 12000.0,
+    "electricity_price_ct": 32.0,
+    "financing_interest": "no",
+    "goals": [
+      "lower_bill"
+    ],
+    "has_ev": false,
+    "has_heat_pump": false,
+    "has_roof_photos": false,
+    "housing_type": "detached",
+    "installation_timeframe": "not_sure",
+    "location_name": "München, Bayern",
+    "monthly_bill_eur": 0.0,
+    "monthly_kwh": 350.0,
+    "owner_status": "owner",
+    "planned_ev": false,
+    "postcode": "80331",
+    "roof_area_m2": 45.0,
+    "roof_type": "pitched_south",
+    "shading": "unknown"
+  },
+  "components": [
+    {
+      "estimated_cost_eur": 1896,
+      "name": "LONGi Hi-MO 6 LR5-54HTH 420W (420 Wp)",
+      "notes": "Catalog: panel-balanced-420 · 5.04 kWp DC",
+      "quantity": 12,
+      "unit": "panels"
+    },
+    {
+      "estimated_cost_eur": 1350,
+      "name": "SMA Sunny Boy 6.0 AV-41",
+      "notes": "6.0 kW AC · hybrid=False",
+      "quantity": 1,
+      "unit": "unit"
+    },
+    {
+      "estimated_cost_eur": 907,
+      "name": "Pitched roof mounting set",
+      "notes": "From internal product catalog",
+      "quantity": 1,
+      "unit": "set"
+    },
+    {
+      "estimated_cost_eur": 2218,
+      "name": "Cabling, protection & installation",
+      "notes": "Labour, cables, breakers, commissioning",
+      "quantity": 1,
+      "unit": "set"
+    }
+  ],
+  "confidence": {
+    "estimated_accuracy": "±10%",
+    "factors": [
+      {
+        "item": "Postcode/location",
+        "points": 10,
+        "status": "provided"
+      },
+      {
+        "item": "Electricity consumption",
+        "points": 15,
+        "status": "provided"
+      },
+      {
+        "item": "Roof area",
+        "points": 10,
+        "status": "provided"
+      },
+      {
+        "item": "Roof orientation",
+        "points": 8,
+        "status": "provided"
+      },
+      {
+        "item": "PVGIS solar resource data",
+        "points": 12,
+        "status": "provided"
+      },
+      {
+        "item": "Property type",
+        "points": 5,
+        "status": "provided"
+      }
+    ],
+    "label": "High",
+    "level": "high",
+    "missing_data": [
+      "Shading assessment",
+      "Roof photos"
+    ],
+    "pvgis_limitation": "PVGIS terrain-based horizon modelling does not account for nearby trees, chimneys, or neighbouring buildings. A site survey is needed for final accuracy.",
+    "score": 90,
+    "summary": "We have your postcode and electricity use, but no shading assessment yet."
+  },
+  "decision_report": {
+    "primary_package_id": "best_value",
+    "quote_checklist": [
+      "Panel make, model, and quantity",
+      "Inverter make and model",
+      "Battery make and usable capacity (kWh)",
+      "Installation scope (roof, electrical, scaffolding)",
+      "Grid registration / Marktstammdatenregister support",
+      "Warranty terms (panels, inverter, battery, workmanship)",
+      "Estimated timeline from contract to commissioning",
+      "VAT treatment and what is included vs excluded",
+      "Maintenance and monitoring provisions"
+    ],
+    "sections": [
+      {
+        "id": "summary",
+        "included": true,
+        "title": "Property & energy summary"
+      },
+      {
+        "id": "readiness",
+        "included": true,
+        "title": "Solar suitability score"
+      },
+      {
+        "id": "packages",
+        "included": true,
+        "title": "Recommended system options"
+      },
+      {
+        "id": "scenarios",
+        "included": true,
+        "title": "Cost & savings scenarios"
+      },
+      {
+        "id": "payback",
+        "included": true,
+        "title": "Payback range"
+      },
+      {
+        "id": "co2",
+        "included": true,
+        "title": "CO₂ estimate"
+      },
+      {
+        "id": "battery",
+        "included": false,
+        "title": "Battery comparison"
+      },
+      {
+        "id": "assumptions",
+        "included": true,
+        "title": "Assumptions & uncertainty"
+      },
+      {
+        "id": "site_gaps",
+        "included": true,
+        "title": "Site information still needed"
+      },
+      {
+        "id": "installer_brief",
+        "included": true,
+        "title": "Installer-ready project brief"
+      },
+      {
+        "id": "quote_checklist",
+        "included": true,
+        "title": "Quote comparison checklist"
+      },
+      {
+        "id": "timeline",
+        "included": true,
+        "title": "Next-step timeline"
+      }
+    ],
+    "site_gaps": [
+      "Shading assessment",
+      "Roof photos"
+    ],
+    "title": "Solar Decision Report"
+  },
+  "disclaimer": "This is an estimate, not a guaranteed return. Your final result depends on roof conditions, shading, electricity usage, installed equipment, grid approval, and final installer quote.",
+  "energy_economics": {
+    "annual_savings_total": 754.98,
+    "electricity_price_ct": 32.0,
+    "export_premium_ratio": 4.1,
+    "exported_kwh": 3019,
+    "feed_in_income_annual": 234.85,
+    "feed_in_rate_ct": 7.78,
+    "feed_in_type": "partial",
+    "self_consumed_kwh": 1625,
+    "self_consumption_ratio": 35,
+    "self_consumption_savings_annual": 520.13,
+    "self_consumption_share_of_savings_pct": 69,
+    "value_per_kwh_export_ct": 7.78,
+    "value_per_kwh_self_use_ct": 32.0
+  },
+  "energy_roadmap": [
+    {
+      "detail": "Start with ~5.04 kWp as assessed",
+      "phase": "Now",
+      "priority": "high",
+      "title": "Rooftop PV"
+    },
+    {
+      "detail": "Add smart wallbox when you switch to an EV",
+      "phase": "Next",
+      "priority": "medium",
+      "title": "EV charger"
+    },
+    {
+      "detail": "Pair with PV for lower heating running costs",
+      "phase": "Next",
+      "priority": "medium",
+      "title": "Heat pump"
+    },
+    {
+      "detail": "Retrofit storage if backup or evening use becomes important",
+      "phase": "Later",
+      "priority": "low",
+      "title": "Add battery"
+    },
+    {
+      "detail": "Dynamic tariff to shift loads to cheap/solar hours",
+      "phase": "Later",
+      "priority": "low",
+      "title": "Smart tariff"
+    },
+    {
+      "detail": "Additional roof area may allow system expansion",
+      "phase": "Later",
+      "priority": "low",
+      "title": "Expand PV"
+    }
+  ],
+  "estimated_accuracy": "±10%",
+  "financial_model": {
+    "annual_savings": 754.98,
+    "battery_replacement": {
+      "estimated_cost": 0,
+      "year": 12
+    },
+    "disclaimer": "This is an estimate, not a guaranteed return. Your final result depends on roof conditions, shading, electricity usage, installed equipment, grid approval, and final installer quote.",
+    "electricity_escalation_assumptions": {
+      "expected": "4%/year",
+      "high": "6%/year",
+      "low": "2%/year"
+    },
+    "feed_in_income_annual": 234.85,
+    "financing": {
+      "apr_pct": 4.9,
+      "monthly_payment": 67.26,
+      "term_years": 10,
+      "total_interest": 1701,
+      "total_paid": 8072
+    },
+    "inverter_replacement": {
+      "estimated_cost": 633,
+      "year": 15
+    },
+    "maintenance_annual": 50.97,
+    "monthly_savings": 62.91,
+    "production_scenarios": {
+      "expected": "100%",
+      "high": "108%",
+      "low": "88%"
+    },
+    "projection_10yr": {
+      "net_benefit": 2183.69,
+      "yearly": [
+        {
+          "cumulative": -5666.99,
+          "maintenance": 50.97,
+          "net": 704.01,
+          "replacement_cost": 0,
+          "savings": 754.98,
+          "year": 1
+        },
+        {
+          "cumulative": -4932.78,
+          "maintenance": 50.97,
+          "net": 734.21,
+          "replacement_cost": 0,
+          "savings": 785.18,
+          "year": 2
+        },
+        {
+          "cumulative": -4167.16,
+          "maintenance": 50.97,
+          "net": 765.62,
+          "replacement_cost": 0,
+          "savings": 816.59,
+          "year": 3
+        },
+        {
+          "cumulative": -3368.88,
+          "maintenance": 50.97,
+          "net": 798.28,
+          "replacement_cost": 0,
+          "savings": 849.25,
+          "year": 4
+        },
+        {
+          "cumulative": -2536.62,
+          "maintenance": 50.97,
+          "net": 832.25,
+          "replacement_cost": 0,
+          "savings": 883.22,
+          "year": 5
+        },
+        {
+          "cumulative": -1669.04,
+          "maintenance": 50.97,
+          "net": 867.58,
+          "replacement_cost": 0,
+          "savings": 918.55,
+          "year": 6
+        },
+        {
+          "cumulative": -764.72,
+          "maintenance": 50.97,
+          "net": 904.32,
+          "replacement_cost": 0,
+          "savings": 955.29,
+          "year": 7
+        },
+        {
+          "cumulative": 177.81,
+          "maintenance": 50.97,
+          "net": 942.53,
+          "replacement_cost": 0,
+          "savings": 993.5,
+          "year": 8
+        },
+        {
+          "cumulative": 1160.09,
+          "maintenance": 50.97,
+          "net": 982.27,
+          "replacement_cost": 0,
+          "savings": 1033.24,
+          "year": 9
+        },
+        {
+          "cumulative": 2183.69,
+          "maintenance": 50.97,
+          "net": 1023.6,
+          "replacement_cost": 0,
+          "savings": 1074.57,
+          "year": 10
+        }
+      ]
+    },
+    "projection_20yr": {
+      "net_benefit": 14458.69,
+      "yearly": [
+        {
+          "cumulative": -5666.99,
+          "maintenance": 50.97,
+          "net": 704.01,
+          "replacement_cost": 0,
+          "savings": 754.98,
+          "year": 1
+        },
+        {
+          "cumulative": -4932.78,
+          "maintenance": 50.97,
+          "net": 734.21,
+          "replacement_cost": 0,
+          "savings": 785.18,
+          "year": 2
+        },
+        {
+          "cumulative": -4167.16,
+          "maintenance": 50.97,
+          "net": 765.62,
+          "replacement_cost": 0,
+          "savings": 816.59,
+          "year": 3
+        },
+        {
+          "cumulative": -3368.88,
+          "maintenance": 50.97,
+          "net": 798.28,
+          "replacement_cost": 0,
+          "savings": 849.25,
+          "year": 4
+        },
+        {
+          "cumulative": -2536.62,
+          "maintenance": 50.97,
+          "net": 832.25,
+          "replacement_cost": 0,
+          "savings": 883.22,
+          "year": 5
+        },
+        {
+          "cumulative": -1669.04,
+          "maintenance": 50.97,
+          "net": 867.58,
+          "replacement_cost": 0,
+          "savings": 918.55,
+          "year": 6
+        },
+        {
+          "cumulative": -764.72,
+          "maintenance": 50.97,
+          "net": 904.32,
+          "replacement_cost": 0,
+          "savings": 955.29,
+          "year": 7
+        },
+        {
+          "cumulative": 177.81,
+          "maintenance": 50.97,
+          "net": 942.53,
+          "replacement_cost": 0,
+          "savings": 993.5,
+          "year": 8
+        },
+        {
+          "cumulative": 1160.09,
+          "maintenance": 50.97,
+          "net": 982.27,
+          "replacement_cost": 0,
+          "savings": 1033.24,
+          "year": 9
+        },
+        {
+          "cumulative": 2183.69,
+          "maintenance": 50.97,
+          "net": 1023.6,
+          "replacement_cost": 0,
+          "savings": 1074.57,
+          "year": 10
+        },
+        {
+          "cumulative": 3250.28,
+          "maintenance": 50.97,
+          "net": 1066.59,
+          "replacement_cost": 0,
+          "savings": 1117.55,
+          "year": 11
+        },
+        {
+          "cumulative": 4361.57,
+          "maintenance": 50.97,
+          "net": 1111.29,
+          "replacement_cost": 0,
+          "savings": 1162.26,
+          "year": 12
+        },
+        {
+          "cumulative": 5519.35,
+          "maintenance": 50.97,
+          "net": 1157.78,
+          "replacement_cost": 0,
+          "savings": 1208.75,
+          "year": 13
+        },
+        {
+          "cumulative": 6725.48,
+          "maintenance": 50.97,
+          "net": 1206.13,
+          "replacement_cost": 0,
+          "savings": 1257.1,
+          "year": 14
+        },
+        {
+          "cumulative": 7349.09,
+          "maintenance": 50.97,
+          "net": 623.61,
+          "replacement_cost": 632.8,
+          "savings": 1307.38,
+          "year": 15
+        },
+        {
+          "cumulative": 8657.8,
+          "maintenance": 50.97,
+          "net": 1308.71,
+          "replacement_cost": 0,
+          "savings": 1359.68,
+          "year": 16
+        },
+        {
+          "cumulative": 10020.89,
+          "maintenance": 50.97,
+          "net": 1363.1,
+          "replacement_cost": 0,
+          "savings": 1414.06,
+          "year": 17
+        },
+        {
+          "cumulative": 11440.55,
+          "maintenance": 50.97,
+          "net": 1419.66,
+          "replacement_cost": 0,
+          "savings": 1470.63,
+          "year": 18
+        },
+        {
+          "cumulative": 12919.03,
+          "maintenance": 50.97,
+          "net": 1478.48,
+          "replacement_cost": 0,
+          "savings": 1529.45,
+          "year": 19
+        },
+        {
+          "cumulative": 14458.69,
+          "maintenance": 50.97,
+          "net": 1539.66,
+          "replacement_cost": 0,
+          "savings": 1590.63,
+          "year": 20
+        }
+      ]
+    },
+    "scenarios": {
+      "expected_prod_expected_price": {
+        "annual_savings_yr1": 754.98,
+        "electricity_price": "expected",
+        "net_10yr": 2183.69,
+        "net_20yr": 14458.69,
+        "payback_years": 8.4,
+        "production": "expected"
+      },
+      "expected_prod_high_price": {
+        "annual_savings_yr1": 770.08,
+        "electricity_price": "high",
+        "net_10yr": 3269.58,
+        "net_20yr": 20304.67,
+        "payback_years": 8.3,
+        "production": "expected"
+      },
+      "expected_prod_low_price": {
+        "annual_savings_yr1": 739.88,
+        "electricity_price": "low",
+        "net_10yr": 1220.8,
+        "net_20yr": 9953.99,
+        "payback_years": 8.6,
+        "production": "expected"
+      },
+      "high_prod_expected_price": {
+        "annual_savings_yr1": 815.38,
+        "electricity_price": "expected",
+        "net_10yr": 2908.84,
+        "net_20yr": 16257.24,
+        "payback_years": 7.8,
+        "production": "high"
+      },
+      "high_prod_high_price": {
+        "annual_savings_yr1": 831.69,
+        "electricity_price": "high",
+        "net_10yr": 4081.6,
+        "net_20yr": 22570.9,
+        "payback_years": 7.7,
+        "production": "high"
+      },
+      "high_prod_low_price": {
+        "annual_savings_yr1": 799.07,
+        "electricity_price": "low",
+        "net_10yr": 1868.92,
+        "net_20yr": 11392.16,
+        "payback_years": 8.0,
+        "production": "high"
+      },
+      "low_prod_expected_price": {
+        "annual_savings_yr1": 664.38,
+        "electricity_price": "expected",
+        "net_10yr": 1095.97,
+        "net_20yr": 11760.87,
+        "payback_years": 9.6,
+        "production": "low"
+      },
+      "low_prod_high_price": {
+        "annual_savings_yr1": 677.67,
+        "electricity_price": "high",
+        "net_10yr": 2051.55,
+        "net_20yr": 16905.33,
+        "payback_years": 9.4,
+        "production": "low"
+      },
+      "low_prod_low_price": {
+        "annual_savings_yr1": 651.09,
+        "electricity_price": "low",
+        "net_10yr": 248.63,
+        "net_20yr": 7796.73,
+        "payback_years": 9.8,
+        "production": "low"
+      }
+    },
+    "self_consumption_savings_annual": 520.13,
+    "upfront_cost": 6371
+  },
+  "financials": {
+    "annual_consumption_kwh": 4200,
+    "annual_savings": 754.98,
+    "co2_reduction_kg": 1788,
+    "co2_reduction_tonnes": 1.79,
+    "exported_kwh": 3019,
+    "feed_in_income_annual": 234.85,
+    "feed_in_rate_ct": 7.78,
+    "monthly_savings": 62.91,
+    "payback_years": 8.4,
+    "savings_10yr": 1179,
+    "savings_20yr": 8729,
+    "self_consumed_kwh": 1625,
+    "self_consumption_ratio": 35,
+    "self_consumption_savings_annual": 520.13,
+    "system_cost_max": 6690,
+    "system_cost_min": 6052,
+    "system_cost_typical": 6371
+  },
+  "financing_comparison": {
+    "cash": {
+      "label": "Cash purchase",
+      "monthly_payment": 0,
+      "monthly_savings_offset": 62.91,
+      "net_monthly_cash": 62.91,
+      "total_cost_10yr": 6371,
+      "upfront": 6371
+    },
+    "disclaimer": "Illustrative financing only – not an offer of credit. This is an estimate, not a guaranteed return. Your final result depends on roof conditions, shading, electricity usage, installed equipment, grid approval, and final installer quote.",
+    "loan": {
+      "label": "Loan (10 yr, 4.9% APR illustrative)",
+      "monthly_payment": 67.26,
+      "monthly_savings_offset": 62.91,
+      "net_monthly_cash": -4.35,
+      "total_cost_10yr": 8072,
+      "total_interest": 1701,
+      "upfront": 0
+    }
+  },
+  "goal_decisions": [
+    {
+      "alternatives": [],
+      "battery_default": false,
+      "battery_note": "A battery is not required to lower your bill. We show three honest options below.",
+      "components": [
+        "Grid-tied PV panels",
+        "String or hybrid inverter",
+        "Smart meter / energy monitor"
+      ],
+      "goal": "lower_bill",
+      "goal_label": "Lower electricity bill",
+      "icon": "💡",
+      "primary": "Rooftop PV sized around annual usage and daytime consumption"
+    }
+  ],
+  "goals": [
+    "lower_bill"
+  ],
+  "household_profile": {
+    "active_loads": [],
+    "adjusted_annual_kwh": 4200,
+    "base_annual_kwh": 4200,
+    "battery_sizing_note": "Standard sizing",
+    "lead_value_note": "Add more load details for better quotes",
+    "self_consumption_boost": 0.0
+  },
+  "housing_type": "detached",
+  "lead_qualification": {
+    "description": "Roof details, ownership, budget, timing, and contact preference",
+    "label": "Qualified",
+    "max_score": 9,
+    "score": 5,
+    "supplier_value": "€12/lead",
+    "tier": "qualified"
+  },
+  "legal_checklist": [
+    {
+      "detail_key": "legal.step1_detail",
+      "status": "pending",
+      "step": 1,
+      "title_key": "legal.step1_title"
+    },
+    {
+      "detail_key": "legal.step2_detail",
+      "status": "pending",
+      "step": 2,
+      "title_key": "legal.step2_title"
+    },
+    {
+      "detail_key": "legal.step3_detail",
+      "status": "pending",
+      "step": 3,
+      "title_key": "legal.step3_title"
+    },
+    {
+      "detail_key": "legal.step4_detail",
+      "status": "pending",
+      "step": 4,
+      "title_key": "legal.step4_title"
+    },
+    {
+      "detail_key": "legal.step5_detail",
+      "status": "pending",
+      "step": 5,
+      "title_key": "legal.step5_title"
+    },
+    {
+      "deadline_key": "legal.step6_deadline",
+      "detail_key": "legal.step6_detail",
+      "status": "pending",
+      "step": 6,
+      "title_key": "legal.step6_title"
+    },
+    {
+      "detail_key": "legal.step7_detail",
+      "status": "pending",
+      "step": 7,
+      "title_key": "legal.step7_title"
+    },
+    {
+      "detail_key": "legal.step8_detail",
+      "status": "pending",
+      "step": 8,
+      "title_key": "legal.step8_title",
+      "warning_key": "legal.step8_warning"
+    },
+    {
+      "detail_key": "legal.step9_detail",
+      "status": "pending",
+      "step": 9,
+      "title_key": "legal.step9_title"
+    },
+    {
+      "detail_key": "legal.step10_detail",
+      "status": "pending",
+      "step": 10,
+      "title_key": "legal.step10_title"
+    }
+  ],
+  "location": {
+    "latitude": 48.1351,
+    "longitude": 11.582,
+    "name": "München, Bayern"
+  },
+  "matched_suppliers": [
+    {
+      "agricultural_available": false,
+      "battery_capable": true,
+      "certifications": [
+        "VDE"
+      ],
+      "claim_profile": {},
+      "commercial_available": true,
+      "company_name": "Enerix GmbH",
+      "contact_verified": false,
+      "description": "Franchise network bundling local PV installers nationwide.",
+      "display_email": null,
+      "display_phone": null,
+      "display_rating": null,
+      "display_reviews": 0,
+      "display_website": null,
+      "email": "info@enerix.de",
+      "ev_charger_capable": false,
+      "financing_options": [],
+      "fit_label": "Strong fit",
+      "fit_reasons": [
+        "Regional coverage may include your area",
+        "Typical system cost within your budget range"
+      ],
+      "fit_score": 76,
+      "heat_pump_capable": false,
+      "id": "sup-enerix-gmbh",
+      "installation_availability": "2-6 weeks",
+      "intake_slug": "enerix-gmbh",
+      "is_demo_listing": true,
+      "is_directory_listing": true,
+      "last_verified": null,
+      "latitude": 49.0172771,
+      "listing_label": "Demo listing (beta sample)",
+      "listing_status": "demo",
+      "locations_served": [
+        "93047"
+      ],
+      "longitude": 12.0962225,
+      "phone": "—",
+      "plan": "premium",
+      "products": [
+        {
+          "name": "Residential PV system",
+          "price_per_unit": 0,
+          "type": "system",
+          "warranty_years": 0
+        }
+      ],
+      "quality_score": null,
+      "rating": 4.8,
+      "regions": [
+        "Regensburg",
+        "Bayern"
+      ],
+      "residential_available": true,
+      "reviews_count": 1800,
+      "service_area": [
+        "Regensburg",
+        "Bayern"
+      ],
+      "source": "public_directory",
+      "specialisms": [
+        "battery",
+        "commercial",
+        "residential"
+      ],
+      "verification": [
+        {
+          "description": "Company registration and contact details checked",
+          "id": "identity",
+          "label": "Identity verified",
+          "status": "submitted"
+        },
+        {
+          "description": "Public liability and professional indemnity on file",
+          "id": "insurance",
+          "label": "Insurance verified",
+          "status": "pending"
+        },
+        {
+          "description": "Relevant electrical and solar certifications reviewed",
+          "id": "certifications",
+          "label": "Certifications checked",
+          "status": "submitted"
+        },
+        {
+          "description": "Portfolio of completed projects in the last 24 months",
+          "id": "installations",
+          "label": "Recent installations",
+          "status": "verified"
+        },
+        {
+          "description": "Median first response to quote requests",
+          "id": "response_time",
+          "label": "Typical response time",
+          "status": "verified"
+        },
+        {
+          "description": "How often quotes include all checklist items",
+          "id": "quote_completeness",
+          "label": "Quote completeness score",
+          "status": "verified"
+        },
+        {
+          "description": "Verified reviews from completed installations",
+          "id": "ratings",
+          "label": "Customer rating history",
+          "status": "verified"
+        }
+      ],
+      "verified": false,
+      "website": "https://www.enerix.de"
+    },
+    {
+      "agricultural_available": false,
+      "battery_capable": true,
+      "certifications": [
+        "VDE"
+      ],
+      "claim_profile": {},
+      "commercial_available": true,
+      "company_name": "IBC SOLAR AG",
+      "contact_verified": false,
+      "description": "Major PV wholesaler and installation partner network.",
+      "display_email": null,
+      "display_phone": null,
+      "display_rating": null,
+      "display_reviews": 0,
+      "display_website": null,
+      "email": "info@ibc-solar.de",
+      "ev_charger_capable": false,
+      "financing_options": [],
+      "fit_label": "Strong fit",
+      "fit_reasons": [
+        "Regional coverage may include your area",
+        "Typical system cost within your budget range"
+      ],
+      "fit_score": 76,
+      "heat_pump_capable": false,
+      "id": "sup-ibc-solar-ag",
+      "installation_availability": "2-6 weeks",
+      "intake_slug": "ibc-solar-ag",
+      "is_demo_listing": true,
+      "is_directory_listing": true,
+      "last_verified": null,
+      "latitude": 50.1002335,
+      "listing_label": "Demo listing (beta sample)",
+      "listing_status": "demo",
+      "locations_served": [
+        "96231"
+      ],
+      "longitude": 11.0211021,
+      "phone": "—",
+      "plan": "premium",
+      "products": [
+        {
+          "name": "Residential PV system",
+          "price_per_unit": 0,
+          "type": "system",
+          "warranty_years": 0
+        }
+      ],
+      "quality_score": null,
+      "rating": 4.5,
+      "regions": [
+        "Bad Staffelstein",
+        "Bayern"
+      ],
+      "residential_available": true,
+      "reviews_count": 620,
+      "service_area": [
+        "Bad Staffelstein",
+        "Bayern"
+      ],
+      "source": "public_directory",
+      "specialisms": [
+        "battery",
+        "commercial",
+        "residential"
+      ],
+      "verification": [
+        {
+          "description": "Company registration and contact details checked",
+          "id": "identity",
+          "label": "Identity verified",
+          "status": "submitted"
+        },
+        {
+          "description": "Public liability and professional indemnity on file",
+          "id": "insurance",
+          "label": "Insurance verified",
+          "status": "pending"
+        },
+        {
+          "description": "Relevant electrical and solar certifications reviewed",
+          "id": "certifications",
+          "label": "Certifications checked",
+          "status": "submitted"
+        },
+        {
+          "description": "Portfolio of completed projects in the last 24 months",
+          "id": "installations",
+          "label": "Recent installations",
+          "status": "verified"
+        },
+        {
+          "description": "Median first response to quote requests",
+          "id": "response_time",
+          "label": "Typical response time",
+          "status": "verified"
+        },
+        {
+          "description": "How often quotes include all checklist items",
+          "id": "quote_completeness",
+          "label": "Quote completeness score",
+          "status": "verified"
+        },
+        {
+          "description": "Verified reviews from completed installations",
+          "id": "ratings",
+          "label": "Customer rating history",
+          "status": "verified"
+        }
+      ],
+      "verified": false,
+      "website": "https://www.ibc-solar.de"
+    },
+    {
+      "agricultural_available": false,
+      "battery_capable": true,
+      "certifications": [
+        "VDE"
+      ],
+      "claim_profile": {},
+      "commercial_available": true,
+      "company_name": "BayWa r.e. Solar Projects GmbH",
+      "contact_verified": false,
+      "description": "Large commercial and utility-scale solar developer and installer.",
+      "display_email": null,
+      "display_phone": null,
+      "display_rating": null,
+      "display_reviews": 0,
+      "display_website": null,
+      "email": "info@baywa-re.com",
+      "ev_charger_capable": false,
+      "financing_options": [],
+      "fit_label": "Strong fit",
+      "fit_reasons": [
+        "Regional coverage may include your area",
+        "Typical system cost within your budget range"
+      ],
+      "fit_score": 76,
+      "heat_pump_capable": false,
+      "id": "sup-baywa-r-e-solar-projects-gmbh",
+      "installation_availability": "2-6 weeks",
+      "intake_slug": "baywa-r-e-solar-projects-gmbh",
+      "is_demo_listing": true,
+      "is_directory_listing": true,
+      "last_verified": null,
+      "latitude": 48.1359146,
+      "listing_label": "Demo listing (beta sample)",
+      "listing_status": "demo",
+      "locations_served": [
+        "80331"
+      ],
+      "longitude": 11.5730984,
+      "phone": "—",
+      "plan": "premium",
+      "products": [
+        {
+          "name": "Residential PV system",
+          "price_per_unit": 0,
+          "type": "system",
+          "warranty_years": 0
+        }
+      ],
+      "quality_score": null,
+      "rating": 4.3,
+      "regions": [
+        "München",
+        "Bayern"
+      ],
+      "residential_available": true,
+      "reviews_count": 480,
+      "service_area": [
+        "München",
+        "Bayern"
+      ],
+      "source": "public_directory",
+      "specialisms": [
+        "battery",
+        "commercial",
+        "residential"
+      ],
+      "verification": [
+        {
+          "description": "Company registration and contact details checked",
+          "id": "identity",
+          "label": "Identity verified",
+          "status": "submitted"
+        },
+        {
+          "description": "Public liability and professional indemnity on file",
+          "id": "insurance",
+          "label": "Insurance verified",
+          "status": "pending"
+        },
+        {
+          "description": "Relevant electrical and solar certifications reviewed",
+          "id": "certifications",
+          "label": "Certifications checked",
+          "status": "submitted"
+        },
+        {
+          "description": "Portfolio of completed projects in the last 24 months",
+          "id": "installations",
+          "label": "Recent installations",
+          "status": "verified"
+        },
+        {
+          "description": "Median first response to quote requests",
+          "id": "response_time",
+          "label": "Typical response time",
+          "status": "verified"
+        },
+        {
+          "description": "How often quotes include all checklist items",
+          "id": "quote_completeness",
+          "label": "Quote completeness score",
+          "status": "verified"
+        },
+        {
+          "description": "Verified reviews from completed installations",
+          "id": "ratings",
+          "label": "Customer rating history",
+          "status": "verified"
+        }
+      ],
+      "verified": false,
+      "website": "https://www.baywa-re.com"
+    },
+    {
+      "agricultural_available": false,
+      "battery_capable": true,
+      "certifications": [
+        "VDE"
+      ],
+      "claim_profile": {},
+      "commercial_available": true,
+      "company_name": "GreenWatt Solutions",
+      "contact_verified": false,
+      "description": "Affordable solar solutions with excellent after-sales support.",
+      "display_email": null,
+      "display_phone": null,
+      "display_rating": null,
+      "display_reviews": 0,
+      "display_website": null,
+      "email": "info@greenwatt.example",
+      "ev_charger_capable": false,
+      "financing_options": [],
+      "fit_label": "Strong fit",
+      "fit_reasons": [
+        "Regional coverage may include your area",
+        "Typical system cost within your budget range"
+      ],
+      "fit_score": 76,
+      "heat_pump_capable": false,
+      "id": "sup-greenwatt-solutions",
+      "installation_availability": "2-6 weeks",
+      "intake_slug": "greenwatt-solutions",
+      "is_demo_listing": true,
+      "is_directory_listing": true,
+      "last_verified": null,
+      "latitude": 48.1455189,
+      "listing_label": "Demo listing (beta sample)",
+      "listing_status": "demo",
+      "locations_served": [
+        "80335"
+      ],
+      "longitude": 11.5539793,
+      "phone": "—",
+      "plan": "premium",
+      "products": [
+        {
+          "name": "Residential PV system",
+          "price_per_unit": 0,
+          "type": "system",
+          "warranty_years": 0
+        }
+      ],
+      "quality_score": null,
+      "rating": 4.6,
+      "regions": [
+        "München",
+        "Bayern"
+      ],
+      "residential_available": true,
+      "reviews_count": 89,
+      "service_area": [
+        "München",
+        "Bayern"
+      ],
+      "source": "public_directory",
+      "specialisms": [
+        "battery",
+        "commercial",
+        "residential"
+      ],
+      "verification": [
+        {
+          "description": "Company registration and contact details checked",
+          "id": "identity",
+          "label": "Identity verified",
+          "status": "submitted"
+        },
+        {
+          "description": "Public liability and professional indemnity on file",
+          "id": "insurance",
+          "label": "Insurance verified",
+          "status": "pending"
+        },
+        {
+          "description": "Relevant electrical and solar certifications reviewed",
+          "id": "certifications",
+          "label": "Certifications checked",
+          "status": "submitted"
+        },
+        {
+          "description": "Portfolio of completed projects in the last 24 months",
+          "id": "installations",
+          "label": "Recent installations",
+          "status": "verified"
+        },
+        {
+          "description": "Median first response to quote requests",
+          "id": "response_time",
+          "label": "Typical response time",
+          "status": "verified"
+        },
+        {
+          "description": "How often quotes include all checklist items",
+          "id": "quote_completeness",
+          "label": "Quote completeness score",
+          "status": "verified"
+        },
+        {
+          "description": "Verified reviews from completed installations",
+          "id": "ratings",
+          "label": "Customer rating history",
+          "status": "verified"
+        }
+      ],
+      "verified": false,
+      "website": "https://greenwatt.example"
+    },
+    {
+      "agricultural_available": false,
+      "battery_capable": true,
+      "certifications": [
+        "VDE"
+      ],
+      "claim_profile": {},
+      "commercial_available": true,
+      "company_name": "Sonnen GmbH",
+      "contact_verified": false,
+      "description": "Home battery and virtual power plant pioneer.",
+      "display_email": null,
+      "display_phone": null,
+      "display_rating": null,
+      "display_reviews": 0,
+      "display_website": null,
+      "email": "info@sonnen.de",
+      "ev_charger_capable": false,
+      "financing_options": [],
+      "fit_label": "Strong fit",
+      "fit_reasons": [
+        "Regional coverage may include your area",
+        "Typical system cost within your budget range"
+      ],
+      "fit_score": 76,
+      "heat_pump_capable": false,
+      "id": "sup-sonnen-gmbh",
+      "installation_availability": "2-6 weeks",
+      "intake_slug": "sonnen-gmbh",
+      "is_demo_listing": true,
+      "is_directory_listing": true,
+      "last_verified": null,
+      "latitude": 47.7757452,
+      "listing_label": "Demo listing (beta sample)",
+      "listing_status": "demo",
+      "locations_served": [
+        "87499"
+      ],
+      "longitude": 10.4153363,
+      "phone": "—",
+      "plan": "premium",
+      "products": [
+        {
+          "name": "Residential PV system",
+          "price_per_unit": 0,
+          "type": "system",
+          "warranty_years": 0
+        }
+      ],
+      "quality_score": null,
+      "rating": 4.3,
+      "regions": [
+        "Wildpoldsried",
+        "Bayern"
+      ],
+      "residential_available": true,
+      "reviews_count": 1100,
+      "service_area": [
+        "Wildpoldsried",
+        "Bayern"
+      ],
+      "source": "public_directory",
+      "specialisms": [
+        "battery",
+        "commercial",
+        "residential"
+      ],
+      "verification": [
+        {
+          "description": "Company registration and contact details checked",
+          "id": "identity",
+          "label": "Identity verified",
+          "status": "submitted"
+        },
+        {
+          "description": "Public liability and professional indemnity on file",
+          "id": "insurance",
+          "label": "Insurance verified",
+          "status": "pending"
+        },
+        {
+          "description": "Relevant electrical and solar certifications reviewed",
+          "id": "certifications",
+          "label": "Certifications checked",
+          "status": "submitted"
+        },
+        {
+          "description": "Portfolio of completed projects in the last 24 months",
+          "id": "installations",
+          "label": "Recent installations",
+          "status": "verified"
+        },
+        {
+          "description": "Median first response to quote requests",
+          "id": "response_time",
+          "label": "Typical response time",
+          "status": "verified"
+        },
+        {
+          "description": "How often quotes include all checklist items",
+          "id": "quote_completeness",
+          "label": "Quote completeness score",
+          "status": "verified"
+        },
+        {
+          "description": "Verified reviews from completed installations",
+          "id": "ratings",
+          "label": "Customer rating history",
+          "status": "verified"
+        }
+      ],
+      "verified": false,
+      "website": "https://www.sonnen.de"
+    }
+  ],
+  "meter_timeline": {
+    "current": {
+      "annual_cost": 1344,
+      "monthly_cost": 112.0,
+      "monthly_kwh": 350,
+      "year": "Current year"
+    },
+    "future_with_solar": [
+      {
+        "annual_cost": 643,
+        "savings": 755,
+        "year": "Year +1"
+      },
+      {
+        "annual_cost": 668,
+        "savings": 785,
+        "year": "Year +2"
+      },
+      {
+        "annual_cost": 695,
+        "savings": 817,
+        "year": "Year +3"
+      },
+      {
+        "annual_cost": 723,
+        "savings": 849,
+        "year": "Year +4"
+      },
+      {
+        "annual_cost": 752,
+        "savings": 883,
+        "year": "Year +5"
+      },
+      {
+        "annual_cost": 782,
+        "savings": 919,
+        "year": "Year +6"
+      },
+      {
+        "annual_cost": 813,
+        "savings": 955,
+        "year": "Year +7"
+      },
+      {
+        "annual_cost": 846,
+        "savings": 994,
+        "year": "Year +8"
+      },
+      {
+        "annual_cost": 880,
+        "savings": 1033,
+        "year": "Year +9"
+      },
+      {
+        "annual_cost": 915,
+        "savings": 1075,
+        "year": "Year +10"
+      }
+    ],
+    "future_without_solar": [
+      {
+        "annual_cost": 1398,
+        "year": "Year +1"
+      },
+      {
+        "annual_cost": 1454,
+        "year": "Year +2"
+      },
+      {
+        "annual_cost": 1512,
+        "year": "Year +3"
+      },
+      {
+        "annual_cost": 1572,
+        "year": "Year +4"
+      },
+      {
+        "annual_cost": 1635,
+        "year": "Year +5"
+      },
+      {
+        "annual_cost": 1701,
+        "year": "Year +6"
+      },
+      {
+        "annual_cost": 1769,
+        "year": "Year +7"
+      },
+      {
+        "annual_cost": 1839,
+        "year": "Year +8"
+      },
+      {
+        "annual_cost": 1913,
+        "year": "Year +9"
+      },
+      {
+        "annual_cost": 1989,
+        "year": "Year +10"
+      }
+    ],
+    "note": "Connect your smart meter for actual half-hourly data. These projections use 4%/year electricity price escalation.",
+    "past": [
+      {
+        "annual_cost": 1195,
+        "note": "Estimated from current usage",
+        "year": "Year -3"
+      },
+      {
+        "annual_cost": 1243,
+        "note": "Estimated from current usage",
+        "year": "Year -2"
+      },
+      {
+        "annual_cost": 1292,
+        "note": "Estimated from current usage",
+        "year": "Year -1"
+      }
+    ],
+    "ten_year_cost_with": 7717,
+    "ten_year_cost_without": 16782,
+    "ten_year_savings": 9065
+  },
+  "monthly_production_kwh": [],
+  "price_scenarios": {
+    "default_id": "expected",
+    "disclaimer": "Illustrative scenarios only – actual electricity prices are uncertain.",
+    "scenarios": [
+      {
+        "escalation_pct": 2.0,
+        "id": "stable",
+        "label": "Prices stay stable",
+        "note": "Low escalation – savings grow slowly",
+        "payback_years": 8.4,
+        "ten_year_net_eur": 1896
+      },
+      {
+        "escalation_pct": 4.0,
+        "id": "expected",
+        "label": "Prices rise moderately",
+        "note": "Central assumption (4%/year)",
+        "payback_years": 8.4,
+        "ten_year_net_eur": 2693
+      },
+      {
+        "escalation_pct": 7.0,
+        "id": "faster",
+        "label": "Prices rise faster",
+        "note": "Higher inflation / tariff shocks",
+        "payback_years": 7.8,
+        "ten_year_net_eur": 4060
+      }
+    ]
+  },
+  "primary_technology": {
+    "battery_reason": "Optional – increases self-consumption but adds cost",
+    "battery_recommended": false,
+    "description": "A grid-connected PV system converts sunlight into electricity, offsetting your grid consumption and earning feed-in tariff income on surplus generation.",
+    "icon": "☀️",
+    "primary": "Rooftop Photovoltaic (PV)",
+    "secondary": "Grid-tied solar panels with net metering"
+  },
+  "pvgis": {
+    "monthly": [
+      300,
+      350,
+      420,
+      480,
+      520,
+      550,
+      560,
+      540,
+      480,
+      400,
+      320,
+      280
+    ],
+    "specific_yield_kwh_kwp": 950
+  },
+  "pvgis_fallback": false,
+  "quote_quality_checklist": [
+    "Panel make, model, and quantity",
+    "Inverter make and model",
+    "Battery make and usable capacity (kWh)",
+    "Installation scope (roof, electrical, scaffolding)",
+    "Grid registration / Marktstammdatenregister support",
+    "Warranty terms (panels, inverter, battery, workmanship)",
+    "Estimated timeline from contract to commissioning",
+    "VAT treatment and what is included vs excluded",
+    "Maintenance and monitoring provisions"
+  ],
+  "quote_ready_profile": {
+    "consent_required": true,
+    "consumption": {
+      "annual_kwh": 4200,
+      "electricity_price_ct": 32.0,
+      "monthly_bill_eur": 0.0
+    },
+    "documents_needed": [
+      "Roof photos (all sides)",
+      "Electricity bill (last 12 months)",
+      "Meter number (Zählernummer)",
+      "Property ownership proof (if owner)"
+    ],
+    "existing_equipment": {
+      "electric_water_heater": false,
+      "ev": false,
+      "heat_pump": false,
+      "pool": false
+    },
+    "location": {
+      "address_or_postcode": "München, Bayern",
+      "latitude": 48.1351,
+      "longitude": 11.582
+    },
+    "project": {
+      "backup_priority": false,
+      "budget_eur": 12000.0,
+      "goals": [
+        "lower_bill"
+      ],
+      "selected_package": "",
+      "timeframe": "not_sure"
+    },
+    "property": {
+      "owner_status": "owner",
+      "roof_area_m2": 45.0,
+      "roof_type": "pitched_south",
+      "shading": "unknown",
+      "type": "detached"
+    },
+    "recommendation_summary": {
+      "battery_kwh": 0,
+      "confidence": "high",
+      "estimated_cost": 6371,
+      "primary_technology": "Rooftop Photovoltaic (PV)",
+      "system_kwp": 5.04
+    }
+  },
+  "readiness": {
+    "factors": [
+      {
+        "detail": "Pitched South – good solar yield",
+        "factor": "Roof orientation",
+        "impact": "positive"
+      },
+      {
+        "detail": "~4,200 kWh/year – enough load to justify PV",
+        "factor": "Usage pattern",
+        "impact": "positive"
+      },
+      {
+        "detail": "~922 kWh/kWp/year expected",
+        "factor": "Location solar resource",
+        "impact": "positive"
+      },
+      {
+        "detail": "Estimated payback ~8.4 years",
+        "factor": "Budget & payback",
+        "impact": "positive"
+      },
+      {
+        "detail": "~35% of generation used on-site (estimate)",
+        "factor": "Self-consumption potential",
+        "impact": "neutral"
+      }
+    ],
+    "label": "Excellent candidate",
+    "level": "excellent",
+    "score": 86,
+    "self_consumption_pct": 35,
+    "summary": "Excellent candidate for rooftop solar based on your inputs. Review the factors below before requesting quotes."
+  },
+  "selected_package": {
+    "annual_savings": 754.98,
+    "backup_capable": false,
+    "badge": "⚖️ Best Value",
+    "battery_contribution_pct": 0,
+    "battery_kwh": 0,
+    "co2_reduction_tonnes": 1.79,
+    "export_income_annual": 234.85,
+    "financial_model": {
+      "annual_savings": 754.98,
+      "battery_replacement": {
+        "estimated_cost": 0,
+        "year": 12
+      },
+      "disclaimer": "This is an estimate, not a guaranteed return. Your final result depends on roof conditions, shading, electricity usage, installed equipment, grid approval, and final installer quote.",
+      "electricity_escalation_assumptions": {
+        "expected": "4%/year",
+        "high": "6%/year",
+        "low": "2%/year"
+      },
+      "feed_in_income_annual": 234.85,
+      "financing": {
+        "apr_pct": 4.9,
+        "monthly_payment": 67.26,
+        "term_years": 10,
+        "total_interest": 1701,
+        "total_paid": 8072
+      },
+      "inverter_replacement": {
+        "estimated_cost": 633,
+        "year": 15
+      },
+      "maintenance_annual": 50.97,
+      "monthly_savings": 62.91,
+      "production_scenarios": {
+        "expected": "100%",
+        "high": "108%",
+        "low": "88%"
+      },
+      "projection_10yr": {
+        "net_benefit": 2183.69,
+        "yearly": [
+          {
+            "cumulative": -5666.99,
+            "maintenance": 50.97,
+            "net": 704.01,
+            "replacement_cost": 0,
+            "savings": 754.98,
+            "year": 1
+          },
+          {
+            "cumulative": -4932.78,
+            "maintenance": 50.97,
+            "net": 734.21,
+            "replacement_cost": 0,
+            "savings": 785.18,
+            "year": 2
+          },
+          {
+            "cumulative": -4167.16,
+            "maintenance": 50.97,
+            "net": 765.62,
+            "replacement_cost": 0,
+            "savings": 816.59,
+            "year": 3
+          },
+          {
+            "cumulative": -3368.88,
+            "maintenance": 50.97,
+            "net": 798.28,
+            "replacement_cost": 0,
+            "savings": 849.25,
+            "year": 4
+          },
+          {
+            "cumulative": -2536.62,
+            "maintenance": 50.97,
+            "net": 832.25,
+            "replacement_cost": 0,
+            "savings": 883.22,
+            "year": 5
+          },
+          {
+            "cumulative": -1669.04,
+            "maintenance": 50.97,
+            "net": 867.58,
+            "replacement_cost": 0,
+            "savings": 918.55,
+            "year": 6
+          },
+          {
+            "cumulative": -764.72,
+            "maintenance": 50.97,
+            "net": 904.32,
+            "replacement_cost": 0,
+            "savings": 955.29,
+            "year": 7
+          },
+          {
+            "cumulative": 177.81,
+            "maintenance": 50.97,
+            "net": 942.53,
+            "replacement_cost": 0,
+            "savings": 993.5,
+            "year": 8
+          },
+          {
+            "cumulative": 1160.09,
+            "maintenance": 50.97,
+            "net": 982.27,
+            "replacement_cost": 0,
+            "savings": 1033.24,
+            "year": 9
+          },
+          {
+            "cumulative": 2183.69,
+            "maintenance": 50.97,
+            "net": 1023.6,
+            "replacement_cost": 0,
+            "savings": 1074.57,
+            "year": 10
+          }
+        ]
+      },
+      "projection_20yr": {
+        "net_benefit": 14458.69,
+        "yearly": [
+          {
+            "cumulative": -5666.99,
+            "maintenance": 50.97,
+            "net": 704.01,
+            "replacement_cost": 0,
+            "savings": 754.98,
+            "year": 1
+          },
+          {
+            "cumulative": -4932.78,
+            "maintenance": 50.97,
+            "net": 734.21,
+            "replacement_cost": 0,
+            "savings": 785.18,
+            "year": 2
+          },
+          {
+            "cumulative": -4167.16,
+            "maintenance": 50.97,
+            "net": 765.62,
+            "replacement_cost": 0,
+            "savings": 816.59,
+            "year": 3
+          },
+          {
+            "cumulative": -3368.88,
+            "maintenance": 50.97,
+            "net": 798.28,
+            "replacement_cost": 0,
+            "savings": 849.25,
+            "year": 4
+          },
+          {
+            "cumulative": -2536.62,
+            "maintenance": 50.97,
+            "net": 832.25,
+            "replacement_cost": 0,
+            "savings": 883.22,
+            "year": 5
+          },
+          {
+            "cumulative": -1669.04,
+            "maintenance": 50.97,
+            "net": 867.58,
+            "replacement_cost": 0,
+            "savings": 918.55,
+            "year": 6
+          },
+          {
+            "cumulative": -764.72,
+            "maintenance": 50.97,
+            "net": 904.32,
+            "replacement_cost": 0,
+            "savings": 955.29,
+            "year": 7
+          },
+          {
+            "cumulative": 177.81,
+            "maintenance": 50.97,
+            "net": 942.53,
+            "replacement_cost": 0,
+            "savings": 993.5,
+            "year": 8
+          },
+          {
+            "cumulative": 1160.09,
+            "maintenance": 50.97,
+            "net": 982.27,
+            "replacement_cost": 0,
+            "savings": 1033.24,
+            "year": 9
+          },
+          {
+            "cumulative": 2183.69,
+            "maintenance": 50.97,
+            "net": 1023.6,
+            "replacement_cost": 0,
+            "savings": 1074.57,
+            "year": 10
+          },
+          {
+            "cumulative": 3250.28,
+            "maintenance": 50.97,
+            "net": 1066.59,
+            "replacement_cost": 0,
+            "savings": 1117.55,
+            "year": 11
+          },
+          {
+            "cumulative": 4361.57,
+            "maintenance": 50.97,
+            "net": 1111.29,
+            "replacement_cost": 0,
+            "savings": 1162.26,
+            "year": 12
+          },
+          {
+            "cumulative": 5519.35,
+            "maintenance": 50.97,
+            "net": 1157.78,
+            "replacement_cost": 0,
+            "savings": 1208.75,
+            "year": 13
+          },
+          {
+            "cumulative": 6725.48,
+            "maintenance": 50.97,
+            "net": 1206.13,
+            "replacement_cost": 0,
+            "savings": 1257.1,
+            "year": 14
+          },
+          {
+            "cumulative": 7349.09,
+            "maintenance": 50.97,
+            "net": 623.61,
+            "replacement_cost": 632.8,
+            "savings": 1307.38,
+            "year": 15
+          },
+          {
+            "cumulative": 8657.8,
+            "maintenance": 50.97,
+            "net": 1308.71,
+            "replacement_cost": 0,
+            "savings": 1359.68,
+            "year": 16
+          },
+          {
+            "cumulative": 10020.89,
+            "maintenance": 50.97,
+            "net": 1363.1,
+            "replacement_cost": 0,
+            "savings": 1414.06,
+            "year": 17
+          },
+          {
+            "cumulative": 11440.55,
+            "maintenance": 50.97,
+            "net": 1419.66,
+            "replacement_cost": 0,
+            "savings": 1470.63,
+            "year": 18
+          },
+          {
+            "cumulative": 12919.03,
+            "maintenance": 50.97,
+            "net": 1478.48,
+            "replacement_cost": 0,
+            "savings": 1529.45,
+            "year": 19
+          },
+          {
+            "cumulative": 14458.69,
+            "maintenance": 50.97,
+            "net": 1539.66,
+            "replacement_cost": 0,
+            "savings": 1590.63,
+            "year": 20
+          }
+        ]
+      },
+      "scenarios": {
+        "expected_prod_expected_price": {
+          "annual_savings_yr1": 754.98,
+          "electricity_price": "expected",
+          "net_10yr": 2183.69,
+          "net_20yr": 14458.69,
+          "payback_years": 8.4,
+          "production": "expected"
+        },
+        "expected_prod_high_price": {
+          "annual_savings_yr1": 770.08,
+          "electricity_price": "high",
+          "net_10yr": 3269.58,
+          "net_20yr": 20304.67,
+          "payback_years": 8.3,
+          "production": "expected"
+        },
+        "expected_prod_low_price": {
+          "annual_savings_yr1": 739.88,
+          "electricity_price": "low",
+          "net_10yr": 1220.8,
+          "net_20yr": 9953.99,
+          "payback_years": 8.6,
+          "production": "expected"
+        },
+        "high_prod_expected_price": {
+          "annual_savings_yr1": 815.38,
+          "electricity_price": "expected",
+          "net_10yr": 2908.84,
+          "net_20yr": 16257.24,
+          "payback_years": 7.8,
+          "production": "high"
+        },
+        "high_prod_high_price": {
+          "annual_savings_yr1": 831.69,
+          "electricity_price": "high",
+          "net_10yr": 4081.6,
+          "net_20yr": 22570.9,
+          "payback_years": 7.7,
+          "production": "high"
+        },
+        "high_prod_low_price": {
+          "annual_savings_yr1": 799.07,
+          "electricity_price": "low",
+          "net_10yr": 1868.92,
+          "net_20yr": 11392.16,
+          "payback_years": 8.0,
+          "production": "high"
+        },
+        "low_prod_expected_price": {
+          "annual_savings_yr1": 664.38,
+          "electricity_price": "expected",
+          "net_10yr": 1095.97,
+          "net_20yr": 11760.87,
+          "payback_years": 9.6,
+          "production": "low"
+        },
+        "low_prod_high_price": {
+          "annual_savings_yr1": 677.67,
+          "electricity_price": "high",
+          "net_10yr": 2051.55,
+          "net_20yr": 16905.33,
+          "payback_years": 9.4,
+          "production": "low"
+        },
+        "low_prod_low_price": {
+          "annual_savings_yr1": 651.09,
+          "electricity_price": "low",
+          "net_10yr": 248.63,
+          "net_20yr": 7796.73,
+          "payback_years": 9.8,
+          "production": "low"
+        }
+      },
+      "self_consumption_savings_annual": 520.13,
+      "upfront_cost": 6371
+    },
+    "id": "best_value",
+    "inverter_type": "Hybrid inverter",
+    "label": "Balanced",
+    "monthly_savings": 62.91,
+    "payback_years": 8.4,
+    "product_spec": {
+      "accessories": {
+        "cabling_protection_eur": 454,
+        "installation_eur": 1764,
+        "mounting_eur": 907
+      },
+      "battery": null,
+      "compatibility": {
+        "backup_available": true,
+        "battery_compatible": true,
+        "inverter_dc_ok": true
+      },
+      "hardware_subtotal_eur": 6371,
+      "inverter": {
+        "ac_power_kw": 6.0,
+        "backup_capable": false,
+        "brand": "SMA",
+        "dc_max_kw": 9.0,
+        "hybrid": false,
+        "id": "inv-balanced-6",
+        "model": "Sunny Boy 6.0 AV-41",
+        "price_eur": 1350,
+        "stock": "available",
+        "warranty_years": 12
+      },
+      "mounting": {
+        "id": "mount-pitched",
+        "name": "Pitched roof mounting set",
+        "price_eur": 907
+      },
+      "num_panels": 12,
+      "panel": {
+        "brand": "LONGi",
+        "id": "panel-balanced-420",
+        "model": "Hi-MO 6 LR5-54HTH 420W",
+        "power_wp": 420,
+        "quantity": 12,
+        "stock": "available",
+        "total_eur": 1896,
+        "unit_price_eur": 158,
+        "warranty_years": 25
+      },
+      "roof_check": {
+        "available_m2": 45.0,
+        "fits": true,
+        "message_key": "sizing.roof_ok",
+        "required_m2": 24.0,
+        "status": "ok"
+      },
+      "summary_line": "12× LONGi Hi-MO 6 LR5-54HTH 420W (420 Wp) · 1× SMA Sunny Boy 6.0 AV-41 (6.0 kW) · ≈ 5.04 kWp total",
+      "system_kwp_actual": 5.04,
+      "system_kwp_nominal": 5.0,
+      "tier": "balanced"
+    },
+    "recommended": true,
+    "reliability_score": 85,
+    "savings_10yr": 2183.69,
+    "savings_20yr": 14458.69,
+    "self_consumption_ratio": 35,
+    "self_consumption_savings": 520.13,
+    "subtitle": "Best long-term value — hybrid inverter and right-sized battery",
+    "system_kwp": 5.04,
+    "tier": "balanced",
+    "tradeoffs": [
+      "Not full backup resilience",
+      "Smaller battery than resilience package"
+    ],
+    "upfront_cost": 6371,
+    "upfront_cost_range": "€6,052 – €6,690",
+    "warranty_years": 15
+  },
+  "sizing_summary": {
+    "annual_consumption_kwh": 4200,
+    "annual_production_kwh": 4644,
+    "coverage_pct": 111,
+    "data_source": "PVGIS",
+    "formula_text": "4,200 kWh ÷ 922 kWh/kWp ≈ 4.6 kWp",
+    "raw_kwp_needed": 4.6,
+    "recommended_kwp": 5.0,
+    "specific_yield_kwh_kwp": 922
+  },
+  "solar_viable": true,
+  "specific_yield_kwh_kwp": 922,
+  "suitability": {
+    "factors": [
+      {
+        "detail": "Good roof type for solar generation",
+        "factor": "Roof orientation",
+        "impact": "positive"
+      },
+      {
+        "detail": "Good solar resource (922 kWh/kWp/year)",
+        "factor": "Solar irradiance",
+        "impact": "positive"
+      },
+      {
+        "detail": "Sufficient consumption to justify solar investment",
+        "factor": "Electricity consumption",
+        "impact": "positive"
+      },
+      {
+        "detail": "Budget covers estimated system cost",
+        "factor": "Budget alignment",
+        "impact": "positive"
+      }
+    ],
+    "rating": "Excellent",
+    "score": 97
+  },
+  "system_kwp": 5.04,
+  "system_recommendation": {
+    "annual_production_kwh": 4644,
+    "annual_savings_eur": 754.98,
+    "battery_kwh": 0,
+    "battery_label": null,
+    "estimated_cost_eur": 6371,
+    "headline_kwp": 5.04,
+    "inverter_label": "SMA Sunny Boy 6.0 AV-41",
+    "num_panels": 12,
+    "package_id": "best_value",
+    "package_label": "Balanced",
+    "panel_label": "LONGi Hi-MO 6 LR5-54HTH 420W",
+    "product_spec": {
+      "accessories": {
+        "cabling_protection_eur": 454,
+        "installation_eur": 1764,
+        "mounting_eur": 907
+      },
+      "battery": null,
+      "compatibility": {
+        "backup_available": true,
+        "battery_compatible": true,
+        "inverter_dc_ok": true
+      },
+      "hardware_subtotal_eur": 6371,
+      "inverter": {
+        "ac_power_kw": 6.0,
+        "backup_capable": false,
+        "brand": "SMA",
+        "dc_max_kw": 9.0,
+        "hybrid": false,
+        "id": "inv-balanced-6",
+        "model": "Sunny Boy 6.0 AV-41",
+        "price_eur": 1350,
+        "stock": "available",
+        "warranty_years": 12
+      },
+      "mounting": {
+        "id": "mount-pitched",
+        "name": "Pitched roof mounting set",
+        "price_eur": 907
+      },
+      "num_panels": 12,
+      "panel": {
+        "brand": "LONGi",
+        "id": "panel-balanced-420",
+        "model": "Hi-MO 6 LR5-54HTH 420W",
+        "power_wp": 420,
+        "quantity": 12,
+        "stock": "available",
+        "total_eur": 1896,
+        "unit_price_eur": 158,
+        "warranty_years": 25
+      },
+      "roof_check": {
+        "available_m2": 45.0,
+        "fits": true,
+        "message_key": "sizing.roof_ok",
+        "required_m2": 24.0,
+        "status": "ok"
+      },
+      "summary_line": "12× LONGi Hi-MO 6 LR5-54HTH 420W (420 Wp) · 1× SMA Sunny Boy 6.0 AV-41 (6.0 kW) · ≈ 5.04 kWp total",
+      "system_kwp_actual": 5.04,
+      "system_kwp_nominal": 5.0,
+      "tier": "balanced"
+    },
+    "summary_line": "12× LONGi Hi-MO 6 LR5-54HTH 420W (420 Wp) · 1× SMA Sunny Boy 6.0 AV-41 (6.0 kW) · ≈ 5.04 kWp total"
+  },
+  "technologies": [
+    {
+      "battery_reason": "Optional – increases self-consumption but adds cost",
+      "battery_recommended": false,
+      "description": "A grid-connected PV system converts sunlight into electricity, offsetting your grid consumption and earning feed-in tariff income on surplus generation.",
+      "goal": "lower_bill",
+      "icon": "☀️",
+      "primary": "Rooftop Photovoltaic (PV)",
+      "secondary": "Grid-tied solar panels with net metering"
+    }
+  ],
+  "three_packages": {
+    "packages": {
+      "best_value": {
+        "annual_savings": 754.98,
+        "backup_capable": false,
+        "badge": "⚖️ Best Value",
+        "battery_contribution_pct": 0,
+        "battery_kwh": 0,
+        "co2_reduction_tonnes": 1.79,
+        "export_income_annual": 234.85,
+        "financial_model": {
+          "annual_savings": 754.98,
+          "battery_replacement": {
+            "estimated_cost": 0,
+            "year": 12
+          },
+          "disclaimer": "This is an estimate, not a guaranteed return. Your final result depends on roof conditions, shading, electricity usage, installed equipment, grid approval, and final installer quote.",
+          "electricity_escalation_assumptions": {
+            "expected": "4%/year",
+            "high": "6%/year",
+            "low": "2%/year"
+          },
+          "feed_in_income_annual": 234.85,
+          "financing": {
+            "apr_pct": 4.9,
+            "monthly_payment": 67.26,
+            "term_years": 10,
+            "total_interest": 1701,
+            "total_paid": 8072
+          },
+          "inverter_replacement": {
+            "estimated_cost": 633,
+            "year": 15
+          },
+          "maintenance_annual": 50.97,
+          "monthly_savings": 62.91,
+          "production_scenarios": {
+            "expected": "100%",
+            "high": "108%",
+            "low": "88%"
+          },
+          "projection_10yr": {
+            "net_benefit": 2183.69,
+            "yearly": [
+              {
+                "cumulative": -5666.99,
+                "maintenance": 50.97,
+                "net": 704.01,
+                "replacement_cost": 0,
+                "savings": 754.98,
+                "year": 1
+              },
+              {
+                "cumulative": -4932.78,
+                "maintenance": 50.97,
+                "net": 734.21,
+                "replacement_cost": 0,
+                "savings": 785.18,
+                "year": 2
+              },
+              {
+                "cumulative": -4167.16,
+                "maintenance": 50.97,
+                "net": 765.62,
+                "replacement_cost": 0,
+                "savings": 816.59,
+                "year": 3
+              },
+              {
+                "cumulative": -3368.88,
+                "maintenance": 50.97,
+                "net": 798.28,
+                "replacement_cost": 0,
+                "savings": 849.25,
+                "year": 4
+              },
+              {
+                "cumulative": -2536.62,
+                "maintenance": 50.97,
+                "net": 832.25,
+                "replacement_cost": 0,
+                "savings": 883.22,
+                "year": 5
+              },
+              {
+                "cumulative": -1669.04,
+                "maintenance": 50.97,
+                "net": 867.58,
+                "replacement_cost": 0,
+                "savings": 918.55,
+                "year": 6
+              },
+              {
+                "cumulative": -764.72,
+                "maintenance": 50.97,
+                "net": 904.32,
+                "replacement_cost": 0,
+                "savings": 955.29,
+                "year": 7
+              },
+              {
+                "cumulative": 177.81,
+                "maintenance": 50.97,
+                "net": 942.53,
+                "replacement_cost": 0,
+                "savings": 993.5,
+                "year": 8
+              },
+              {
+                "cumulative": 1160.09,
+                "maintenance": 50.97,
+                "net": 982.27,
+                "replacement_cost": 0,
+                "savings": 1033.24,
+                "year": 9
+              },
+              {
+                "cumulative": 2183.69,
+                "maintenance": 50.97,
+                "net": 1023.6,
+                "replacement_cost": 0,
+                "savings": 1074.57,
+                "year": 10
+              }
+            ]
+          },
+          "projection_20yr": {
+            "net_benefit": 14458.69,
+            "yearly": [
+              {
+                "cumulative": -5666.99,
+                "maintenance": 50.97,
+                "net": 704.01,
+                "replacement_cost": 0,
+                "savings": 754.98,
+                "year": 1
+              },
+              {
+                "cumulative": -4932.78,
+                "maintenance": 50.97,
+                "net": 734.21,
+                "replacement_cost": 0,
+                "savings": 785.18,
+                "year": 2
+              },
+              {
+                "cumulative": -4167.16,
+                "maintenance": 50.97,
+                "net": 765.62,
+                "replacement_cost": 0,
+                "savings": 816.59,
+                "year": 3
+              },
+              {
+                "cumulative": -3368.88,
+                "maintenance": 50.97,
+                "net": 798.28,
+                "replacement_cost": 0,
+                "savings": 849.25,
+                "year": 4
+              },
+              {
+                "cumulative": -2536.62,
+                "maintenance": 50.97,
+                "net": 832.25,
+                "replacement_cost": 0,
+                "savings": 883.22,
+                "year": 5
+              },
+              {
+                "cumulative": -1669.04,
+                "maintenance": 50.97,
+                "net": 867.58,
+                "replacement_cost": 0,
+                "savings": 918.55,
+                "year": 6
+              },
+              {
+                "cumulative": -764.72,
+                "maintenance": 50.97,
+                "net": 904.32,
+                "replacement_cost": 0,
+                "savings": 955.29,
+                "year": 7
+              },
+              {
+                "cumulative": 177.81,
+                "maintenance": 50.97,
+                "net": 942.53,
+                "replacement_cost": 0,
+                "savings": 993.5,
+                "year": 8
+              },
+              {
+                "cumulative": 1160.09,
+                "maintenance": 50.97,
+                "net": 982.27,
+                "replacement_cost": 0,
+                "savings": 1033.24,
+                "year": 9
+              },
+              {
+                "cumulative": 2183.69,
+                "maintenance": 50.97,
+                "net": 1023.6,
+                "replacement_cost": 0,
+                "savings": 1074.57,
+                "year": 10
+              },
+              {
+                "cumulative": 3250.28,
+                "maintenance": 50.97,
+                "net": 1066.59,
+                "replacement_cost": 0,
+                "savings": 1117.55,
+                "year": 11
+              },
+              {
+                "cumulative": 4361.57,
+                "maintenance": 50.97,
+                "net": 1111.29,
+                "replacement_cost": 0,
+                "savings": 1162.26,
+                "year": 12
+              },
+              {
+                "cumulative": 5519.35,
+                "maintenance": 50.97,
+                "net": 1157.78,
+                "replacement_cost": 0,
+                "savings": 1208.75,
+                "year": 13
+              },
+              {
+                "cumulative": 6725.48,
+                "maintenance": 50.97,
+                "net": 1206.13,
+                "replacement_cost": 0,
+                "savings": 1257.1,
+                "year": 14
+              },
+              {
+                "cumulative": 7349.09,
+                "maintenance": 50.97,
+                "net": 623.61,
+                "replacement_cost": 632.8,
+                "savings": 1307.38,
+                "year": 15
+              },
+              {
+                "cumulative": 8657.8,
+                "maintenance": 50.97,
+                "net": 1308.71,
+                "replacement_cost": 0,
+                "savings": 1359.68,
+                "year": 16
+              },
+              {
+                "cumulative": 10020.89,
+                "maintenance": 50.97,
+                "net": 1363.1,
+                "replacement_cost": 0,
+                "savings": 1414.06,
+                "year": 17
+              },
+              {
+                "cumulative": 11440.55,
+                "maintenance": 50.97,
+                "net": 1419.66,
+                "replacement_cost": 0,
+                "savings": 1470.63,
+                "year": 18
+              },
+              {
+                "cumulative": 12919.03,
+                "maintenance": 50.97,
+                "net": 1478.48,
+                "replacement_cost": 0,
+                "savings": 1529.45,
+                "year": 19
+              },
+              {
+                "cumulative": 14458.69,
+                "maintenance": 50.97,
+                "net": 1539.66,
+                "replacement_cost": 0,
+                "savings": 1590.63,
+                "year": 20
+              }
+            ]
+          },
+          "scenarios": {
+            "expected_prod_expected_price": {
+              "annual_savings_yr1": 754.98,
+              "electricity_price": "expected",
+              "net_10yr": 2183.69,
+              "net_20yr": 14458.69,
+              "payback_years": 8.4,
+              "production": "expected"
+            },
+            "expected_prod_high_price": {
+              "annual_savings_yr1": 770.08,
+              "electricity_price": "high",
+              "net_10yr": 3269.58,
+              "net_20yr": 20304.67,
+              "payback_years": 8.3,
+              "production": "expected"
+            },
+            "expected_prod_low_price": {
+              "annual_savings_yr1": 739.88,
+              "electricity_price": "low",
+              "net_10yr": 1220.8,
+              "net_20yr": 9953.99,
+              "payback_years": 8.6,
+              "production": "expected"
+            },
+            "high_prod_expected_price": {
+              "annual_savings_yr1": 815.38,
+              "electricity_price": "expected",
+              "net_10yr": 2908.84,
+              "net_20yr": 16257.24,
+              "payback_years": 7.8,
+              "production": "high"
+            },
+            "high_prod_high_price": {
+              "annual_savings_yr1": 831.69,
+              "electricity_price": "high",
+              "net_10yr": 4081.6,
+              "net_20yr": 22570.9,
+              "payback_years": 7.7,
+              "production": "high"
+            },
+            "high_prod_low_price": {
+              "annual_savings_yr1": 799.07,
+              "electricity_price": "low",
+              "net_10yr": 1868.92,
+              "net_20yr": 11392.16,
+              "payback_years": 8.0,
+              "production": "high"
+            },
+            "low_prod_expected_price": {
+              "annual_savings_yr1": 664.38,
+              "electricity_price": "expected",
+              "net_10yr": 1095.97,
+              "net_20yr": 11760.87,
+              "payback_years": 9.6,
+              "production": "low"
+            },
+            "low_prod_high_price": {
+              "annual_savings_yr1": 677.67,
+              "electricity_price": "high",
+              "net_10yr": 2051.55,
+              "net_20yr": 16905.33,
+              "payback_years": 9.4,
+              "production": "low"
+            },
+            "low_prod_low_price": {
+              "annual_savings_yr1": 651.09,
+              "electricity_price": "low",
+              "net_10yr": 248.63,
+              "net_20yr": 7796.73,
+              "payback_years": 9.8,
+              "production": "low"
+            }
+          },
+          "self_consumption_savings_annual": 520.13,
+          "upfront_cost": 6371
+        },
+        "id": "best_value",
+        "inverter_type": "Hybrid inverter",
+        "label": "Balanced",
+        "monthly_savings": 62.91,
+        "payback_years": 8.4,
+        "product_spec": {
+          "accessories": {
+            "cabling_protection_eur": 454,
+            "installation_eur": 1764,
+            "mounting_eur": 907
+          },
+          "battery": null,
+          "compatibility": {
+            "backup_available": true,
+            "battery_compatible": true,
+            "inverter_dc_ok": true
+          },
+          "hardware_subtotal_eur": 6371,
+          "inverter": {
+            "ac_power_kw": 6.0,
+            "backup_capable": false,
+            "brand": "SMA",
+            "dc_max_kw": 9.0,
+            "hybrid": false,
+            "id": "inv-balanced-6",
+            "model": "Sunny Boy 6.0 AV-41",
+            "price_eur": 1350,
+            "stock": "available",
+            "warranty_years": 12
+          },
+          "mounting": {
+            "id": "mount-pitched",
+            "name": "Pitched roof mounting set",
+            "price_eur": 907
+          },
+          "num_panels": 12,
+          "panel": {
+            "brand": "LONGi",
+            "id": "panel-balanced-420",
+            "model": "Hi-MO 6 LR5-54HTH 420W",
+            "power_wp": 420,
+            "quantity": 12,
+            "stock": "available",
+            "total_eur": 1896,
+            "unit_price_eur": 158,
+            "warranty_years": 25
+          },
+          "roof_check": {
+            "available_m2": 45.0,
+            "fits": true,
+            "message_key": "sizing.roof_ok",
+            "required_m2": 24.0,
+            "status": "ok"
+          },
+          "summary_line": "12× LONGi Hi-MO 6 LR5-54HTH 420W (420 Wp) · 1× SMA Sunny Boy 6.0 AV-41 (6.0 kW) · ≈ 5.04 kWp total",
+          "system_kwp_actual": 5.04,
+          "system_kwp_nominal": 5.0,
+          "tier": "balanced"
+        },
+        "recommended": true,
+        "reliability_score": 85,
+        "savings_10yr": 2183.69,
+        "savings_20yr": 14458.69,
+        "self_consumption_ratio": 35,
+        "self_consumption_savings": 520.13,
+        "subtitle": "Best long-term value — hybrid inverter and right-sized battery",
+        "system_kwp": 5.04,
+        "tier": "balanced",
+        "tradeoffs": [
+          "Not full backup resilience",
+          "Smaller battery than resilience package"
+        ],
+        "upfront_cost": 6371,
+        "upfront_cost_range": "€6,052 – €6,690",
+        "warranty_years": 15
+      },
+      "cheapest": {
+        "annual_savings": 796.92,
+        "backup_capable": false,
+        "badge": "💰 Cheapest",
+        "battery_contribution_pct": 0,
+        "battery_kwh": 0,
+        "co2_reduction_tonnes": 1.89,
+        "export_income_annual": 247.89,
+        "financial_model": {
+          "annual_savings": 796.92,
+          "battery_replacement": {
+            "estimated_cost": 0,
+            "year": 12
+          },
+          "disclaimer": "This is an estimate, not a guaranteed return. Your final result depends on roof conditions, shading, electricity usage, installed equipment, grid approval, and final installer quote.",
+          "electricity_escalation_assumptions": {
+            "expected": "4%/year",
+            "high": "6%/year",
+            "low": "2%/year"
+          },
+          "feed_in_income_annual": 247.89,
+          "financing": {
+            "apr_pct": 4.9,
+            "monthly_payment": 65.57,
+            "term_years": 10,
+            "total_interest": 1658,
+            "total_paid": 7869
+          },
+          "inverter_replacement": {
+            "estimated_cost": 652,
+            "year": 15
+          },
+          "maintenance_annual": 49.69,
+          "monthly_savings": 66.41,
+          "production_scenarios": {
+            "expected": "100%",
+            "high": "108%",
+            "low": "88%"
+          },
+          "projection_10yr": {
+            "net_benefit": 2860.03,
+            "yearly": [
+              {
+                "cumulative": -5463.77,
+                "maintenance": 49.69,
+                "net": 747.23,
+                "replacement_cost": 0,
+                "savings": 796.92,
+                "year": 1
+              },
+              {
+                "cumulative": -4684.66,
+                "maintenance": 49.69,
+                "net": 779.11,
+                "replacement_cost": 0,
+                "savings": 828.8,
+                "year": 2
+              },
+              {
+                "cumulative": -3872.4,
+                "maintenance": 49.69,
+                "net": 812.26,
+                "replacement_cost": 0,
+                "savings": 861.95,
+                "year": 3
+              },
+              {
+                "cumulative": -3025.66,
+                "maintenance": 49.69,
+                "net": 846.74,
+                "replacement_cost": 0,
+                "savings": 896.43,
+                "year": 4
+              },
+              {
+                "cumulative": -2143.06,
+                "maintenance": 49.69,
+                "net": 882.6,
+                "replacement_cost": 0,
+                "savings": 932.28,
+                "year": 5
+              },
+              {
+                "cumulative": -1223.18,
+                "maintenance": 49.69,
+                "net": 919.89,
+                "replacement_cost": 0,
+                "savings": 969.58,
+                "year": 6
+              },
+              {
+                "cumulative": -264.51,
+                "maintenance": 49.69,
+                "net": 958.67,
+                "replacement_cost": 0,
+                "savings": 1008.36,
+                "year": 7
+              },
+              {
+                "cumulative": 734.5,
+                "maintenance": 49.69,
+                "net": 999.0,
+                "replacement_cost": 0,
+                "savings": 1048.69,
+                "year": 8
+              },
+              {
+                "cumulative": 1775.45,
+                "maintenance": 49.69,
+                "net": 1040.95,
+                "replacement_cost": 0,
+                "savings": 1090.64,
+                "year": 9
+              },
+              {
+                "cumulative": 2860.03,
+                "maintenance": 49.69,
+                "net": 1084.58,
+                "replacement_cost": 0,
+                "savings": 1134.27,
+                "year": 10
+              }
+            ]
+          },
+          "projection_20yr": {
+            "net_benefit": 15873.59,
+            "yearly": [
+              {
+                "cumulative": -5463.77,
+                "maintenance": 49.69,
+                "net": 747.23,
+                "replacement_cost": 0,
+                "savings": 796.92,
+                "year": 1
+              },
+              {
+                "cumulative": -4684.66,
+                "maintenance": 49.69,
+                "net": 779.11,
+                "replacement_cost": 0,
+                "savings": 828.8,
+                "year": 2
+              },
+              {
+                "cumulative": -3872.4,
+                "maintenance": 49.69,
+                "net": 812.26,
+                "replacement_cost": 0,
+                "savings": 861.95,
+                "year": 3
+              },
+              {
+                "cumulative": -3025.66,
+                "maintenance": 49.69,
+                "net": 846.74,
+                "replacement_cost": 0,
+                "savings": 896.43,
+                "year": 4
+              },
+              {
+                "cumulative": -2143.06,
+                "maintenance": 49.69,
+                "net": 882.6,
+                "replacement_cost": 0,
+                "savings": 932.28,
+                "year": 5
+              },
+              {
+                "cumulative": -1223.18,
+                "maintenance": 49.69,
+                "net": 919.89,
+                "replacement_cost": 0,
+                "savings": 969.58,
+                "year": 6
+              },
+              {
+                "cumulative": -264.51,
+                "maintenance": 49.69,
+                "net": 958.67,
+                "replacement_cost": 0,
+                "savings": 1008.36,
+                "year": 7
+              },
+              {
+                "cumulative": 734.5,
+                "maintenance": 49.69,
+                "net": 999.0,
+                "replacement_cost": 0,
+                "savings": 1048.69,
+                "year": 8
+              },
+              {
+                "cumulative": 1775.45,
+                "maintenance": 49.69,
+                "net": 1040.95,
+                "replacement_cost": 0,
+                "savings": 1090.64,
+                "year": 9
+              },
+              {
+                "cumulative": 2860.03,
+                "maintenance": 49.69,
+                "net": 1084.58,
+                "replacement_cost": 0,
+                "savings": 1134.27,
+                "year": 10
+              },
+              {
+                "cumulative": 3989.98,
+                "maintenance": 49.69,
+                "net": 1129.95,
+                "replacement_cost": 0,
+                "savings": 1179.64,
+                "year": 11
+              },
+              {
+                "cumulative": 5167.11,
+                "maintenance": 49.69,
+                "net": 1177.13,
+                "replacement_cost": 0,
+                "savings": 1226.82,
+                "year": 12
+              },
+              {
+                "cumulative": 6393.32,
+                "maintenance": 49.69,
+                "net": 1226.21,
+                "replacement_cost": 0,
+                "savings": 1275.89,
+                "year": 13
+              },
+              {
+                "cumulative": 7670.56,
+                "maintenance": 49.69,
+                "net": 1277.24,
+                "replacement_cost": 0,
+                "savings": 1326.93,
+                "year": 14
+              },
+              {
+                "cumulative": 8348.48,
+                "maintenance": 49.69,
+                "net": 677.92,
+                "replacement_cost": 652.4,
+                "savings": 1380.01,
+                "year": 15
+              },
+              {
+                "cumulative": 9734.0,
+                "maintenance": 49.69,
+                "net": 1385.52,
+                "replacement_cost": 0,
+                "savings": 1435.21,
+                "year": 16
+              },
+              {
+                "cumulative": 11176.93,
+                "maintenance": 49.69,
+                "net": 1442.93,
+                "replacement_cost": 0,
+                "savings": 1492.62,
+                "year": 17
+              },
+              {
+                "cumulative": 12679.56,
+                "maintenance": 49.69,
+                "net": 1502.63,
+                "replacement_cost": 0,
+                "savings": 1552.32,
+                "year": 18
+              },
+              {
+                "cumulative": 14244.28,
+                "maintenance": 49.69,
+                "net": 1564.73,
+                "replacement_cost": 0,
+                "savings": 1614.41,
+                "year": 19
+              },
+              {
+                "cumulative": 15873.59,
+                "maintenance": 49.69,
+                "net": 1629.3,
+                "replacement_cost": 0,
+                "savings": 1678.99,
+                "year": 20
+              }
+            ]
+          },
+          "scenarios": {
+            "expected_prod_expected_price": {
+              "annual_savings_yr1": 796.92,
+              "electricity_price": "expected",
+              "net_10yr": 2860.03,
+              "net_20yr": 15873.59,
+              "payback_years": 7.8,
+              "production": "expected"
+            },
+            "expected_prod_high_price": {
+              "annual_savings_yr1": 812.86,
+              "electricity_price": "high",
+              "net_10yr": 4006.24,
+              "net_20yr": 22044.32,
+              "payback_years": 7.6,
+              "production": "expected"
+            },
+            "expected_prod_low_price": {
+              "annual_savings_yr1": 780.98,
+              "electricity_price": "low",
+              "net_10yr": 1843.65,
+              "net_20yr": 11118.64,
+              "payback_years": 8.0,
+              "production": "expected"
+            },
+            "high_prod_expected_price": {
+              "annual_savings_yr1": 860.67,
+              "electricity_price": "expected",
+              "net_10yr": 3625.46,
+              "net_20yr": 17772.05,
+              "payback_years": 7.2,
+              "production": "high"
+            },
+            "high_prod_high_price": {
+              "annual_savings_yr1": 877.89,
+              "electricity_price": "high",
+              "net_10yr": 4863.37,
+              "net_20yr": 24436.43,
+              "payback_years": 7.1,
+              "production": "high"
+            },
+            "high_prod_low_price": {
+              "annual_savings_yr1": 843.46,
+              "electricity_price": "low",
+              "net_10yr": 2527.77,
+              "net_20yr": 12636.7,
+              "payback_years": 7.4,
+              "production": "high"
+            },
+            "low_prod_expected_price": {
+              "annual_savings_yr1": 701.29,
+              "electricity_price": "expected",
+              "net_10yr": 1711.88,
+              "net_20yr": 13025.9,
+              "payback_years": 8.9,
+              "production": "low"
+            },
+            "low_prod_high_price": {
+              "annual_savings_yr1": 715.32,
+              "electricity_price": "high",
+              "net_10yr": 2720.55,
+              "net_20yr": 18456.14,
+              "payback_years": 8.7,
+              "production": "low"
+            },
+            "low_prod_low_price": {
+              "annual_savings_yr1": 687.26,
+              "electricity_price": "low",
+              "net_10yr": 817.47,
+              "net_20yr": 8841.54,
+              "payback_years": 9.0,
+              "production": "low"
+            }
+          },
+          "self_consumption_savings_annual": 549.02,
+          "upfront_cost": 6211
+        },
+        "id": "cheapest",
+        "inverter_type": "String inverter",
+        "label": "Budget",
+        "monthly_savings": 66.41,
+        "payback_years": 7.8,
+        "product_spec": {
+          "accessories": {
+            "cabling_protection_eur": 479,
+            "installation_eur": 1862,
+            "mounting_eur": 958
+          },
+          "battery": null,
+          "compatibility": {
+            "backup_available": true,
+            "battery_compatible": true,
+            "inverter_dc_ok": true
+          },
+          "hardware_subtotal_eur": 6211,
+          "inverter": {
+            "ac_power_kw": 5.0,
+            "backup_capable": false,
+            "brand": "Sungrow",
+            "dc_max_kw": 7.5,
+            "hybrid": false,
+            "id": "inv-budget-5",
+            "model": "SG5.0RS",
+            "price_eur": 980,
+            "stock": "available",
+            "warranty_years": 10
+          },
+          "mounting": {
+            "id": "mount-pitched",
+            "name": "Pitched roof mounting set",
+            "price_eur": 958
+          },
+          "num_panels": 14,
+          "panel": {
+            "brand": "Canadian Solar",
+            "id": "panel-budget-380",
+            "model": "HiKu6 CS6R-380MS",
+            "power_wp": 380,
+            "quantity": 14,
+            "stock": "available",
+            "total_eur": 1932,
+            "unit_price_eur": 138,
+            "warranty_years": 25
+          },
+          "roof_check": {
+            "available_m2": 45.0,
+            "fits": true,
+            "message_key": "sizing.roof_ok",
+            "required_m2": 28.0,
+            "status": "ok"
+          },
+          "summary_line": "14× Canadian Solar HiKu6 CS6R-380MS (380 Wp) · 1× Sungrow SG5.0RS (5.0 kW) · ≈ 5.32 kWp total",
+          "system_kwp_actual": 5.32,
+          "system_kwp_nominal": 5.0,
+          "tier": "budget"
+        },
+        "recommended": false,
+        "reliability_score": 70,
+        "savings_10yr": 2860.03,
+        "savings_20yr": 15873.59,
+        "self_consumption_ratio": 35,
+        "self_consumption_savings": 549.02,
+        "subtitle": "Lowest upfront — string inverter, catalog budget tier components",
+        "system_kwp": 5.32,
+        "tier": "budget",
+        "tradeoffs": [
+          "No backup power during outages",
+          "Lower self-consumption without battery",
+          "Shorter component warranty"
+        ],
+        "upfront_cost": 6211,
+        "upfront_cost_range": "€5,900 – €6,522",
+        "warranty_years": 10
+      },
+      "most_reliable": {
+        "annual_savings": 1201.2,
+        "backup_capable": true,
+        "badge": "🛡️ Most Reliable",
+        "battery_contribution_pct": 38,
+        "battery_kwh": 9.6,
+        "co2_reduction_tonnes": 1.81,
+        "export_income_annual": 97.27,
+        "financial_model": {
+          "annual_savings": 1201.2,
+          "battery_replacement": {
+            "estimated_cost": 3432,
+            "year": 12
+          },
+          "disclaimer": "This is an estimate, not a guaranteed return. Your final result depends on roof conditions, shading, electricity usage, installed equipment, grid approval, and final installer quote.",
+          "electricity_escalation_assumptions": {
+            "expected": "4%/year",
+            "high": "6%/year",
+            "low": "2%/year"
+          },
+          "feed_in_income_annual": 97.27,
+          "financing": {
+            "apr_pct": 4.9,
+            "monthly_payment": 139.59,
+            "term_years": 10,
+            "total_interest": 3529,
+            "total_paid": 16751
+          },
+          "inverter_replacement": {
+            "estimated_cost": 637,
+            "year": 15
+          },
+          "maintenance_annual": 105.78,
+          "monthly_savings": 100.1,
+          "production_scenarios": {
+            "expected": "100%",
+            "high": "108%",
+            "low": "88%"
+          },
+          "projection_10yr": {
+            "net_benefit": 141.98,
+            "yearly": [
+              {
+                "cumulative": -12126.58,
+                "maintenance": 105.78,
+                "net": 1095.42,
+                "replacement_cost": 0,
+                "savings": 1201.2,
+                "year": 1
+              },
+              {
+                "cumulative": -10983.1,
+                "maintenance": 105.78,
+                "net": 1143.47,
+                "replacement_cost": 0,
+                "savings": 1249.25,
+                "year": 2
+              },
+              {
+                "cumulative": -9789.66,
+                "maintenance": 105.78,
+                "net": 1193.44,
+                "replacement_cost": 0,
+                "savings": 1299.22,
+                "year": 3
+              },
+              {
+                "cumulative": -8544.25,
+                "maintenance": 105.78,
+                "net": 1245.41,
+                "replacement_cost": 0,
+                "savings": 1351.19,
+                "year": 4
+              },
+              {
+                "cumulative": -7244.79,
+                "maintenance": 105.78,
+                "net": 1299.46,
+                "replacement_cost": 0,
+                "savings": 1405.23,
+                "year": 5
+              },
+              {
+                "cumulative": -5889.13,
+                "maintenance": 105.78,
+                "net": 1355.67,
+                "replacement_cost": 0,
+                "savings": 1461.44,
+                "year": 6
+              },
+              {
+                "cumulative": -4475.0,
+                "maintenance": 105.78,
+                "net": 1414.13,
+                "replacement_cost": 0,
+                "savings": 1519.9,
+                "year": 7
+              },
+              {
+                "cumulative": -3000.08,
+                "maintenance": 105.78,
+                "net": 1474.92,
+                "replacement_cost": 0,
+                "savings": 1580.7,
+                "year": 8
+              },
+              {
+                "cumulative": -1461.93,
+                "maintenance": 105.78,
+                "net": 1538.15,
+                "replacement_cost": 0,
+                "savings": 1643.93,
+                "year": 9
+              },
+              {
+                "cumulative": 141.98,
+                "maintenance": 105.78,
+                "net": 1603.91,
+                "replacement_cost": 0,
+                "savings": 1709.68,
+                "year": 10
+              }
+            ]
+          },
+          "projection_20yr": {
+            "net_benefit": 16362.91,
+            "yearly": [
+              {
+                "cumulative": -12126.58,
+                "maintenance": 105.78,
+                "net": 1095.42,
+                "replacement_cost": 0,
+                "savings": 1201.2,
+                "year": 1
+              },
+              {
+                "cumulative": -10983.1,
+                "maintenance": 105.78,
+                "net": 1143.47,
+                "replacement_cost": 0,
+                "savings": 1249.25,
+                "year": 2
+              },
+              {
+                "cumulative": -9789.66,
+                "maintenance": 105.78,
+                "net": 1193.44,
+                "replacement_cost": 0,
+                "savings": 1299.22,
+                "year": 3
+              },
+              {
+                "cumulative": -8544.25,
+                "maintenance": 105.78,
+                "net": 1245.41,
+                "replacement_cost": 0,
+                "savings": 1351.19,
+                "year": 4
+              },
+              {
+                "cumulative": -7244.79,
+                "maintenance": 105.78,
+                "net": 1299.46,
+                "replacement_cost": 0,
+                "savings": 1405.23,
+                "year": 5
+              },
+              {
+                "cumulative": -5889.13,
+                "maintenance": 105.78,
+                "net": 1355.67,
+                "replacement_cost": 0,
+                "savings": 1461.44,
+                "year": 6
+              },
+              {
+                "cumulative": -4475.0,
+                "maintenance": 105.78,
+                "net": 1414.13,
+                "replacement_cost": 0,
+                "savings": 1519.9,
+                "year": 7
+              },
+              {
+                "cumulative": -3000.08,
+                "maintenance": 105.78,
+                "net": 1474.92,
+                "replacement_cost": 0,
+                "savings": 1580.7,
+                "year": 8
+              },
+              {
+                "cumulative": -1461.93,
+                "maintenance": 105.78,
+                "net": 1538.15,
+                "replacement_cost": 0,
+                "savings": 1643.93,
+                "year": 9
+              },
+              {
+                "cumulative": 141.98,
+                "maintenance": 105.78,
+                "net": 1603.91,
+                "replacement_cost": 0,
+                "savings": 1709.68,
+                "year": 10
+              },
+              {
+                "cumulative": 1814.27,
+                "maintenance": 105.78,
+                "net": 1672.29,
+                "replacement_cost": 0,
+                "savings": 1778.07,
+                "year": 11
+              },
+              {
+                "cumulative": 125.69,
+                "maintenance": 105.78,
+                "net": -1688.58,
+                "replacement_cost": 3432.0,
+                "savings": 1849.19,
+                "year": 12
+              },
+              {
+                "cumulative": 1943.07,
+                "maintenance": 105.78,
+                "net": 1817.38,
+                "replacement_cost": 0,
+                "savings": 1923.16,
+                "year": 13
+              },
+              {
+                "cumulative": 3837.38,
+                "maintenance": 105.78,
+                "net": 1894.31,
+                "replacement_cost": 0,
+                "savings": 2000.09,
+                "year": 14
+              },
+              {
+                "cumulative": 5174.69,
+                "maintenance": 105.78,
+                "net": 1337.31,
+                "replacement_cost": 637.0,
+                "savings": 2080.09,
+                "year": 15
+              },
+              {
+                "cumulative": 7232.21,
+                "maintenance": 105.78,
+                "net": 2057.52,
+                "replacement_cost": 0,
+                "savings": 2163.29,
+                "year": 16
+              },
+              {
+                "cumulative": 9376.26,
+                "maintenance": 105.78,
+                "net": 2144.05,
+                "replacement_cost": 0,
+                "savings": 2249.83,
+                "year": 17
+              },
+              {
+                "cumulative": 11610.3,
+                "maintenance": 105.78,
+                "net": 2234.04,
+                "replacement_cost": 0,
+                "savings": 2339.82,
+                "year": 18
+              },
+              {
+                "cumulative": 13937.94,
+                "maintenance": 105.78,
+                "net": 2327.63,
+                "replacement_cost": 0,
+                "savings": 2433.41,
+                "year": 19
+              },
+              {
+                "cumulative": 16362.91,
+                "maintenance": 105.78,
+                "net": 2424.97,
+                "replacement_cost": 0,
+                "savings": 2530.75,
+                "year": 20
+              }
+            ]
+          },
+          "scenarios": {
+            "expected_prod_expected_price": {
+              "annual_savings_yr1": 1201.2,
+              "electricity_price": "expected",
+              "net_10yr": 141.98,
+              "net_20yr": 16362.91,
+              "payback_years": 11.0,
+              "production": "expected"
+            },
+            "expected_prod_high_price": {
+              "annual_savings_yr1": 1225.22,
+              "electricity_price": "high",
+              "net_10yr": 1869.67,
+              "net_20yr": 25664.07,
+              "payback_years": 10.8,
+              "production": "expected"
+            },
+            "expected_prod_low_price": {
+              "annual_savings_yr1": 1177.18,
+              "electricity_price": "low",
+              "net_10yr": -1390.01,
+              "net_20yr": 9195.76,
+              "payback_years": 11.2,
+              "production": "expected"
+            },
+            "high_prod_expected_price": {
+              "annual_savings_yr1": 1297.3,
+              "electricity_price": "expected",
+              "net_10yr": 1295.71,
+              "net_20yr": 19224.46,
+              "payback_years": 10.2,
+              "production": "high"
+            },
+            "high_prod_high_price": {
+              "annual_savings_yr1": 1323.24,
+              "electricity_price": "high",
+              "net_10yr": 3161.62,
+              "net_20yr": 29269.72,
+              "payback_years": 10.0,
+              "production": "high"
+            },
+            "high_prod_low_price": {
+              "annual_savings_yr1": 1271.35,
+              "electricity_price": "low",
+              "net_10yr": -358.83,
+              "net_20yr": 11483.94,
+              "payback_years": 10.4,
+              "production": "high"
+            },
+            "low_prod_expected_price": {
+              "annual_savings_yr1": 1057.06,
+              "electricity_price": "expected",
+              "net_10yr": -1588.63,
+              "net_20yr": 12070.58,
+              "payback_years": 12.5,
+              "production": "low"
+            },
+            "low_prod_high_price": {
+              "annual_savings_yr1": 1078.2,
+              "electricity_price": "high",
+              "net_10yr": -68.26,
+              "net_20yr": 20255.6,
+              "payback_years": 12.3,
+              "production": "low"
+            },
+            "low_prod_low_price": {
+              "annual_savings_yr1": 1035.91,
+              "electricity_price": "low",
+              "net_10yr": -2936.78,
+              "net_20yr": 5763.49,
+              "payback_years": 12.8,
+              "production": "low"
+            }
+          },
+          "self_consumption_savings_annual": 1103.94,
+          "upfront_cost": 13222
+        },
+        "id": "most_reliable",
+        "inverter_type": "Hybrid inverter with backup EPS",
+        "label": "Premium",
+        "monthly_savings": 100.1,
+        "payback_years": 11.0,
+        "product_spec": {
+          "accessories": {
+            "cabling_protection_eur": 459,
+            "installation_eur": 1785,
+            "mounting_eur": 918
+          },
+          "battery": {
+            "backup_capable": true,
+            "brand": "E3/DC",
+            "capacity_kwh": 9.6,
+            "id": "batt-balanced-9",
+            "model": "epCube 9.6",
+            "price_eur": 5200,
+            "stock": "available",
+            "usable_kwh": 9.1,
+            "warranty_years": 10
+          },
+          "compatibility": {
+            "backup_available": true,
+            "battery_compatible": true,
+            "inverter_dc_ok": true
+          },
+          "hardware_subtotal_eur": 13222,
+          "inverter": {
+            "ac_power_kw": 10.0,
+            "backup_capable": true,
+            "brand": "SMA",
+            "dc_max_kw": 15.0,
+            "hybrid": true,
+            "id": "inv-premium-10",
+            "model": "Sunny Tripower X 10.0",
+            "price_eur": 2400,
+            "stock": "available",
+            "warranty_years": 15
+          },
+          "mounting": {
+            "id": "mount-pitched",
+            "name": "Pitched roof mounting set",
+            "price_eur": 918
+          },
+          "num_panels": 12,
+          "panel": {
+            "brand": "Meyer Burger",
+            "id": "panel-premium-425",
+            "model": "White 425W",
+            "power_wp": 425,
+            "quantity": 12,
+            "stock": "limited",
+            "total_eur": 2460,
+            "unit_price_eur": 205,
+            "warranty_years": 30
+          },
+          "roof_check": {
+            "available_m2": 45.0,
+            "fits": true,
+            "message_key": "sizing.roof_ok",
+            "required_m2": 24.0,
+            "status": "ok"
+          },
+          "summary_line": "12× Meyer Burger White 425W (425 Wp) · 1× SMA Sunny Tripower X 10.0 (10.0 kW) · 1× E3/DC epCube 9.6 (9.6 kWh) · ≈ 5.1 kWp total",
+          "system_kwp_actual": 5.1,
+          "system_kwp_nominal": 5.0,
+          "tier": "premium"
+        },
+        "recommended": false,
+        "reliability_score": 95,
+        "savings_10yr": 141.98,
+        "savings_20yr": 16362.91,
+        "self_consumption_ratio": 73,
+        "self_consumption_savings": 1103.94,
+        "subtitle": "Premium components — larger battery, backup-capable hybrid inverter",
+        "system_kwp": 5.1,
+        "tier": "premium",
+        "tradeoffs": [
+          "Highest upfront cost",
+          "Longer payback period"
+        ],
+        "upfront_cost": 13222,
+        "upfront_cost_range": "€12,561 – €13,883",
+        "warranty_years": 20
+      }
+    },
+    "tradeoffs": {
+      "best_value_gives_up": [
+        "Partial backup only – not full resilience",
+        "€6,851 saved vs full backup package"
+      ],
+      "cheapest_gives_up": [
+        "€7,011 less resilience vs Best Resilience package",
+        "No backup power during outages",
+        "0% lower self-consumption without right-sized battery",
+        "Shorter warranty (10 vs 20 years)"
+      ],
+      "most_reliable_gives_up": [
+        "€7,011 higher upfront cost",
+        "3.2 years longer payback vs PV-only"
+      ]
+    }
+  },
+  "usage_breakdown": [
+    {
+      "annual_cost_eur": 470.4,
+      "annual_kwh": 1470,
+      "area": "heating_hot_water",
+      "icon": "🔥",
+      "label": "Heating & hot water",
+      "pct": 35,
+      "tips": [
+        "Lower thermostat by 1°C – saves ~6%",
+        "Insulate pipes and use timer on water heater",
+        "Shorter showers save hot water energy"
+      ]
+    },
+    {
+      "annual_cost_eur": 241.92,
+      "annual_kwh": 756,
+      "area": "kitchen",
+      "icon": "🍳",
+      "label": "Kitchen (cooking, fridge, dishwasher)",
+      "pct": 18,
+      "tips": [
+        "Use lid on pots – cooks faster, uses less energy",
+        "Defrost fridge regularly",
+        "Run dishwasher only when full"
+      ]
+    },
+    {
+      "annual_cost_eur": 161.28,
+      "annual_kwh": 504,
+      "area": "electronics",
+      "icon": "📺",
+      "label": "Electronics & standby",
+      "pct": 12,
+      "tips": [
+        "Unplug devices on standby – can save €50–100/year",
+        "Use power strips with switches"
+      ]
+    },
+    {
+      "annual_cost_eur": 107.52,
+      "annual_kwh": 336,
+      "area": "lighting",
+      "icon": "💡",
+      "label": "Lighting",
+      "pct": 8,
+      "tips": [
+        "Switch to LED bulbs – 80% less energy",
+        "Turn off lights in unused rooms"
+      ]
+    },
+    {
+      "annual_cost_eur": 107.52,
+      "annual_kwh": 336,
+      "area": "laundry",
+      "icon": "👕",
+      "label": "Washing & drying",
+      "pct": 8,
+      "tips": [
+        "Wash at 30°C instead of 60°C",
+        "Air-dry instead of tumble dryer when possible"
+      ]
+    },
+    {
+      "annual_cost_eur": 67.2,
+      "annual_kwh": 210,
+      "area": "cooling",
+      "icon": "❄️",
+      "label": "Cooling & ventilation",
+      "pct": 5,
+      "tips": [
+        "Close blinds during hot days",
+        "Use fans instead of AC where possible"
+      ]
+    },
+    {
+      "annual_cost_eur": 53.76,
+      "annual_kwh": 168,
+      "area": "other",
+      "icon": "📦",
+      "label": "Other",
+      "pct": 4,
+      "tips": [
+        "Review all appliances for energy rating"
+      ]
+    },
+    {
+      "annual_cost_eur": 26.88,
+      "annual_kwh": 84,
+      "area": "ev_mobility",
+      "icon": "⚡",
+      "label": "EV charging & mobility",
+      "pct": 2,
+      "tips": [
+        "Charge during off-peak hours",
+        "Consider solar-compatible charger if you move to a house"
+      ]
+    }
+  ],
+  "why_explanation": "We recommend a 5.04 kWp system because your estimated consumption is about 4,200 kWh/year, your roof profile (pitched south) appears suitable for roughly 4,644 kWh/year of production, and this size balances self-consumption with export for your goals (lower bill). We have not assumed a battery unless your goal requires it.",
+  "why_recommend": [
+    "**Lower electricity bill** → Rooftop PV sized around annual usage and daytime consumption",
+    "A battery is NOT automatically recommended for bill savings – compare the three packages below.",
+    "A 5.04 kWp system targets your annual usage and daytime consumption pattern.",
+    "Estimated payback of 8.4 years – within typical German range.",
+    "Annual CO₂ reduction of 1.79 tonnes."
+  ]
+}

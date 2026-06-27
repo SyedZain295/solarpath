@@ -40,8 +40,15 @@ from auth_customer import (
 from auth_supplier import login_supplier, get_current_supplier_id, supplier_authorized
 from stripe_checkout import create_checkout_session, stripe_enabled, stripe_plan_enabled, verify_webhook, STRIPE_WEBHOOK_SECRET, STRIPE_SECRET_KEY
 import supplier_store
-from beta_access import beta_gate_before_request, verify_beta_password, beta_gate_enabled
+from beta_access import (
+    beta_gate_before_request,
+    verify_beta_password,
+    beta_gate_enabled,
+    default_beta_invite,
+    invite_href,
+)
 from analytics import track_event, beta_metrics_summary
+from demo_data import load_demo_recommendation
 from logging_config import setup_logging
 
 REGION_FOCUS = os.environ.get("REGION_FOCUS", "Bayern")
@@ -280,8 +287,13 @@ def inject_i18n():
     def lang_url(code: str) -> str:
         args = request.args.to_dict(flat=True)
         args["lang"] = code
+        if "invite" not in args and "token" not in args:
+            inv = default_beta_invite()
+            if inv:
+                args["invite"] = inv
         if not request.path:
-            return f"/?lang={code}"
+            from urllib.parse import urlencode
+            return f"/?{urlencode(args)}" if args else "/"
         if args:
             from urllib.parse import urlencode
             return f"{request.path}?{urlencode(args)}"
@@ -291,6 +303,9 @@ def inject_i18n():
         "t": t,
         "lang": getattr(g, "lang", "en"),
         "lang_url": lang_url,
+        "invite_href": invite_href,
+        "beta_invite_default": default_beta_invite(),
+        "beta_gate_active": beta_gate_enabled(),
         "js_translations": TRANSLATIONS.get(getattr(g, "lang", "en"), {}),
         "support_email": SUPPORT_EMAIL,
     }
@@ -503,14 +518,19 @@ def calculator():
     ref = request.args.get("ref", "").strip()
     invite = (request.args.get("invite") or request.args.get("token") or "").strip()
     if not invite:
-        tokens = [t.strip() for t in os.environ.get("BETA_INVITE_TOKENS", "").split(",") if t.strip()]
-        invite = tokens[0] if tokens else ""
+        invite = default_beta_invite()
     return render_template("calculator.html", intake_ref=ref, beta_invite=invite)
 
 
 @app.route("/results")
 def results():
     return render_template("results.html")
+
+
+@app.route("/demo")
+def demo():
+    """Public demo — fixed München sample recommendation (no calculator required)."""
+    return render_template("demo.html", demo_data=load_demo_recommendation())
 
 
 @app.route("/i/<slug>")
@@ -704,6 +724,8 @@ def health():
         "database": db,
         "stripe": stripe_enabled(),
         "beta_gate": beta_gate_enabled(),
+        "demo_mode": os.environ.get("BETA_DEMO_MODE", "0").strip().lower() in ("1", "true", "yes", "on"),
+        "beta_gate_env": os.environ.get("BETA_GATE_ENABLED", "1"),
         "suppliers_db": supplier_store.count(),
     })
 
