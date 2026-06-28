@@ -2,12 +2,15 @@
 
 from __future__ import annotations
 
+from ev_profile import ev_snapshot
+from heat_pump_profile import hp_snapshot
+
 SERIOUS_TIMEFRAMES = {"asap", "3_months", "6_months", "12_months"}
 
 
 def calculator_inputs_snapshot(inp) -> dict:
     """Persist calculator answers on the recommendation for quote-time validation."""
-    return {
+    snap = {
         "location_name": getattr(inp, "location_name", ""),
         "postcode": getattr(inp, "postcode", ""),
         "owner_status": getattr(inp, "owner_status", "owner"),
@@ -28,6 +31,9 @@ def calculator_inputs_snapshot(inp) -> dict:
         "financing_interest": getattr(inp, "financing_interest", "no"),
         "goals": getattr(inp, "goals", []) or [],
     }
+    snap.update(ev_snapshot(inp))
+    snap.update(hp_snapshot(inp))
+    return snap
 
 
 def build_lead_inp(rec: dict, contact: dict):

@@ -2306,6 +2306,32 @@
   .results-page .fin-compare-grid {
     grid-template-columns: 1fr;
   }
+
+  .results-page .action-bar {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    padding: 1.15rem;
+  }
+
+  .results-page .action-bar .btn {
+    width: 100%;
+    margin: 0;
+  }
+
+  .results-page .action-bar .pdf-privacy-opt {
+    order: 10;
+    font-size: 0.85rem;
+    line-height: 1.4;
+  }
+
+  .results-page .package-metrics {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .roof-limit-next-steps ul {
+    padding-left: 1.1rem;
+  }
 }
 
 /* Supplier verification framework */

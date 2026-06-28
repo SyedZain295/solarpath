@@ -58,11 +58,30 @@ def _inp_flag(inp, key: str) -> bool:
     return bool(getattr(inp, key, False))
 
 
+from ev_profile import estimate_ev_annual_kwh
+from heat_pump_profile import estimate_hp_annual_kwh, heat_goals_active
+
+
 def build_household_energy_profile(inp, annual_kwh: float) -> dict:
     active = []
     added_kwh = 0
     self_consumption_boost = 0.0
+    ev_precise = float(getattr(inp, "ev_annual_km", 0) or 0) > 0 and "ev_charging" in (getattr(inp, "goals", None) or [])
+    ev_precise_kwh = estimate_ev_annual_kwh(inp) if ev_precise else 0
+    hp_precise = heat_goals_active(getattr(inp, "goals", None)) and (
+        float(getattr(inp, "hp_annual_heat_kwh", 0) or 0) > 0
+        or float(getattr(inp, "hp_heated_area_m2", 0) or 0) > 0
+        or bool(getattr(inp, "hp_status", ""))
+    )
+    hp_precise_kwh = estimate_hp_annual_kwh(inp) if hp_precise else 0
+
     for load in HOUSEHOLD_LOADS:
+        if load["key"] in ("has_ev", "planned_ev") and ev_precise:
+            continue
+        if load["key"] == "has_heat_pump" and hp_precise:
+            continue
+        if load["key"] == "has_electric_water_heater" and getattr(inp, "hp_type", "") == "water_heater":
+            continue
         if _inp_flag(inp, load["key"]):
             active.append({
                 "key": load["key"],
@@ -73,12 +92,39 @@ def build_household_energy_profile(inp, annual_kwh: float) -> dict:
             added_kwh += load.get("load_kwh_add", 0)
             self_consumption_boost += load.get("self_consumption_boost", 0)
 
+    if ev_precise and ev_precise_kwh > 0:
+        active.append({
+            "key": "ev_charging",
+            "label": "EV charging (profiled)",
+            "icon": "⚡",
+            "estimated_annual_kwh": ev_precise_kwh,
+        })
+        added_kwh += ev_precise_kwh
+
+    if hp_precise and hp_precise_kwh > 0:
+        active.append({
+            "key": "heat_pump_profiled",
+            "label": "Heat pump load (profiled)",
+            "icon": "🌡️",
+            "estimated_annual_kwh": hp_precise_kwh,
+        })
+        if getattr(inp, "hp_status", "") in ("planning", "replacing_fossil"):
+            added_kwh += round(hp_precise_kwh * 0.85)
+
     adjusted_kwh = annual_kwh + added_kwh
     battery_hint = "Standard sizing"
-    if any(_inp_flag(inp, k) for k in ("has_ev", "planned_ev", "has_heat_pump")):
+    if any(_inp_flag(inp, k) for k in ("has_ev", "planned_ev", "has_heat_pump")) or ev_precise:
         battery_hint = "Consider larger battery or smart load shifting for EV/heat pump"
     if _inp_flag(inp, "high_daytime_use"):
         battery_hint = "High daytime use – battery may be smaller; PV self-consumption likely higher"
+    if getattr(inp, "ev_charging_priority", "") == "cheapest":
+        battery_hint = "Cheapest charging priority — battery optional; focus on self-consumption and tariffs"
+    if getattr(inp, "ev_charging_priority", "") == "fastest":
+        battery_hint = "Fast charging priority — sized wallbox first; battery optional"
+    if getattr(inp, "hp_priority", "") == "solar_led":
+        battery_hint = "Solar-led heating — smart controls and optional battery improve evening comfort"
+    if getattr(inp, "hp_priority", "") == "backup":
+        battery_hint = "Backup heating priority — larger battery and hybrid inverter recommended"
 
     return {
         "base_annual_kwh": round(annual_kwh),
@@ -171,7 +217,8 @@ def calculate_readiness_score(inp, solar_viable: bool, adjusted_yield: float, sy
         "score": score,
         "level": level,
         "label": label,
-        "summary": f"{label} for rooftop solar based on your inputs. Review the factors below before requesting quotes.",
+        "summary": f"{label} for rooftop solar based on your inputs — indicative site readiness, not an installation guarantee.",
+        "score_label": "Site readiness index",
         "factors": reasons,
         "self_consumption_pct": round(sc_pct),
     }

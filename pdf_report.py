@@ -12,7 +12,7 @@ from reportlab.lib import colors
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
 from reportlab.lib.units import cm
-from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer, Table, TableStyle
+from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer, Table, TableStyle, PageBreak, KeepTogether
 
 TEAL = colors.HexColor("#0f766e")
 TEAL_DARK = colors.HexColor("#134e4a")
@@ -217,11 +217,32 @@ def _header_block(st, lang: str) -> list:
     return [bar, Spacer(1, 0.45 * cm)]
 
 
+def _binding_notice_block(st, lang: str) -> list:
+    text = _t(lang, "pdf.not_binding", "NOT A BINDING QUOTE — illustrative pre-assessment only. Final price, yield, and equipment require a site survey and installer offer.")
+    box = Table([[Paragraph(f"<b>{text}</b>", st["body"])]], colWidths=[16 * cm])
+    box.setStyle(
+        TableStyle(
+            [
+                ("BACKGROUND", (0, 0), (-1, -1), colors.HexColor("#fef3c7")),
+                ("BOX", (0, 0), (-1, -1), 1, colors.HexColor("#d97706")),
+                ("LEFTPADDING", (0, 0), (-1, -1), 10),
+                ("RIGHTPADDING", (0, 0), (-1, -1), 10),
+                ("TOPPADDING", (0, 0), (-1, -1), 8),
+                ("BOTTOMPADDING", (0, 0), (-1, -1), 8),
+            ]
+        )
+    )
+    return [box, Spacer(1, 0.35 * cm)]
+
+
 def _meta_block(rec: dict, customer: dict, st, lang: str) -> list:
     loc = _safe(rec.get("location", {}).get("name"))
+    pvgis = rec.get("pvgis") or {}
+    data_src = "PVGIS" if pvgis else _t(lang, "pdf.regional_estimate", "Regional estimate")
     rows = [
         [Paragraph(f"<b>{_t(lang, 'pdf.location')}</b>", st["muted"]), Paragraph(loc or "—", st["body"])],
         [Paragraph(f"<b>{_t(lang, 'pdf.date')}</b>", st["muted"]), Paragraph(datetime.now().strftime("%d %B %Y"), st["body"])],
+        [Paragraph(f"<b>{_t(lang, 'pdf.data_source')}</b>", st["muted"]), Paragraph(data_src, st["body"])],
     ]
     if customer.get("name"):
         rows.append(
@@ -274,7 +295,7 @@ def _readiness_block(readiness: dict, st, lang: str) -> list:
     score_cell = Table(
         [
             [Paragraph(str(score), score_style)],
-            [Paragraph("/100", st["muted"])],
+            [Paragraph(_t(lang, "pdf.index_suffix", "index"), st["muted"])],
         ],
         colWidths=[2.4 * cm],
     )
@@ -395,7 +416,7 @@ def _packages_table(pkgs: dict, st, lang: str) -> list:
             ]
         )
     )
-    return _section_title(_t(lang, "pdf.packages"), st) + [table, Spacer(1, 0.35 * cm)]
+    return _section_title(_t(lang, "pdf.packages"), st) + [KeepTogether([table]), Spacer(1, 0.35 * cm)]
 
 
 def _scenarios_table(scenarios: list, disclaimer: str, st, lang: str) -> list:
@@ -559,6 +580,43 @@ def _disclaimer_block(st, lang: str) -> list:
     return [Spacer(1, 0.2 * cm), box]
 
 
+def _profile_assessments_block(rec: dict, st) -> list:
+    items = []
+    ev = rec.get("ev_assessment") or {}
+    hp = rec.get("hp_assessment") or {}
+    if ev.get("ownership"):
+        items.append(Paragraph("<b>EV charging profile</b>", st["section"]))
+        items.append(
+            Paragraph(
+                _rich(
+                    f"{ev.get('ownership_label', '—')} · {ev.get('annual_charging_kwh', 0):,} kWh/yr charging · "
+                    f"Priority: {ev.get('charging_priority_label', '—')}"
+                ),
+                st["body"],
+            )
+        )
+        items.append(Spacer(1, 0.15 * cm))
+    if hp.get("status"):
+        items.append(Paragraph("<b>Heating / heat pump profile</b>", st["section"]))
+        items.append(
+            Paragraph(
+                _rich(
+                    f"{hp.get('status_label', '—')} · {hp.get('type_label', '—')} · "
+                    f"~{hp.get('annual_heat_kwh', 0):,} kWh/yr heat electricity · "
+                    f"Priority: {hp.get('priority_label', '—')}"
+                ),
+                st["body"],
+            )
+        )
+        items.append(Spacer(1, 0.2 * cm))
+    sizing = rec.get("sizing_summary") or {}
+    if sizing.get("capped_by_roof") and sizing.get("demand_note"):
+        items.append(Paragraph("<b>Roof limit note</b>", st["section"]))
+        items.append(Paragraph(_rich(sizing["demand_note"]), st["body"]))
+        items.append(Spacer(1, 0.2 * cm))
+    return items
+
+
 def generate_decision_report_pdf(
     rec: dict,
     customer: dict | None = None,
@@ -594,6 +652,7 @@ def generate_decision_report_pdf(
 
     elements = []
     elements.extend(_header_block(st, lang))
+    elements.extend(_binding_notice_block(st, lang))
     elements.extend(_meta_block(rec, customer, st, lang))
     elements.extend(_readiness_block(rec.get("readiness", {}), st, lang))
     elements.extend(_why_block(rec, st, lang))
@@ -603,6 +662,7 @@ def generate_decision_report_pdf(
     disclaimer = rec.get("price_scenarios", {}).get("disclaimer", "")
     elements.extend(_scenarios_table(scenarios, disclaimer, st, lang))
     elements.extend(_financial_block(rec, pkg, st, lang))
+    elements.extend(_profile_assessments_block(rec, st))
 
     site_gaps = dr.get("site_gaps") or rec.get("confidence", {}).get("missing_data", [])
     elements.extend(_checklist_block(_t(lang, "pdf.site_gaps"), site_gaps, st))

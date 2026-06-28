@@ -44,6 +44,13 @@ from product_catalog import (
     SHADING_YIELD_FACTORS,
 )
 from lead_qualification import calculator_inputs_snapshot
+from ev_profile import (
+    estimate_ev_annual_kwh,
+    recommend_ev_battery_kwh,
+    ev_wallbox_needed,
+    build_ev_assessment,
+)
+from heat_pump_profile import build_hp_assessment, estimate_hp_annual_kwh, heat_goals_active
 
 # Bundesnetzagentur feed-in tariffs (Feb–Jul 2026, Germany)
 GERMAN_TARIFFS = {
@@ -178,6 +185,22 @@ class CalculatorInput:
     connect_meter: bool = False
     battery_interest: str = "unsure"
     financing_interest: str = "no"
+    ev_ownership: str = ""
+    ev_vehicle_model: str = ""
+    ev_annual_km: float = 0
+    ev_consumption_kwh_100km: float = 18.0
+    ev_home_charging: str = ""
+    ev_park_home_daytime: str = ""
+    ev_has_wallbox: str = ""
+    ev_charging_priority: str = ""
+    ev_dynamic_tariff_interest: str = ""
+    hp_status: str = ""
+    hp_type: str = ""
+    hp_heated_area_m2: float = 0
+    hp_annual_heat_kwh: float = 0
+    hp_daytime_heating: str = ""
+    hp_priority: str = ""
+    hp_replacing: str = ""
 
 
 @dataclass
@@ -191,11 +214,22 @@ class ComponentItem:
 
 def estimate_annual_consumption_kwh(inp: CalculatorInput) -> float:
     if inp.monthly_kwh > 0:
-        return inp.monthly_kwh * 12
-    if inp.monthly_bill_eur > 0:
+        base = inp.monthly_kwh * 12
+    elif inp.monthly_bill_eur > 0:
         price_eur = inp.electricity_price_ct / 100
-        return (inp.monthly_bill_eur / price_eur) * 12
-    return 4000  # German household average
+        base = (inp.monthly_bill_eur / price_eur) * 12
+    else:
+        base = 4000  # German household average
+    goals = inp.goals or []
+    if "ev_charging" in goals:
+        ev_kwh = estimate_ev_annual_kwh(inp)
+        if ev_kwh > 0 and not getattr(inp, "has_ev", False) and not getattr(inp, "planned_ev", False):
+            base += ev_kwh
+    if heat_goals_active(goals):
+        hp_kwh = estimate_hp_annual_kwh(inp)
+        if hp_kwh > 0 and getattr(inp, "hp_status", "") in ("planning", "replacing_fossil"):
+            base += hp_kwh * 0.85
+    return base
 
 
 def recommend_system_size_kwp(
@@ -218,8 +252,14 @@ def round_to_standard_kwp(raw_kwp: float) -> float:
     return _round(raw_kwp)
 
 
-def recommend_battery_kwh(system_kwp: float, goals: list, annual_kwh: float) -> float:
+def recommend_battery_kwh(system_kwp: float, goals: list, annual_kwh: float, inp: CalculatorInput | None = None) -> float:
     tech = _primary_goal_tech(goals)
+    ev_override = recommend_ev_battery_kwh(inp, system_kwp, annual_kwh, goals) if inp else None
+    if ev_override is not None:
+        if ev_override > 0:
+            return ev_override
+        if "backup" not in goals:
+            return 0.0
     if not tech["battery_recommended"]:
         if "backup" not in goals and "ev_charging" not in goals:
             return 0
@@ -343,22 +383,34 @@ def _resolve_package_battery(
     """Respect user battery_interest (yes/no/unsure) and package tier."""
     interest = getattr(inp, "battery_interest", "unsure")
     required = battery_required_for_goal(goals)
+    ev_override = recommend_ev_battery_kwh(inp, system_kwp, annual_kwh, goals)
 
-    if interest == "no" and not required and "ev_charging" not in goals:
-        return 0.0
-
+    # Budget tier stays PV-first — battery belongs in Balanced / Premium unless backup is mandatory.
     if package_id == "cheapest":
-        if required or "ev_charging" in goals:
+        if "backup" in goals:
             return round(min(10, max(5, annual_kwh / 365 * 0.25)), 1)
         if interest == "yes":
             return round(min(5, max(3, system_kwp * 0.6)), 1)
         return 0.0
-    if package_id == "best_value":
-        if interest == "no" and not required:
-            return 0.0
-        return economically_size_battery(system_kwp, annual_kwh, goals)
+
     if interest == "no" and not required:
+        if ev_override is not None and ev_override == 0:
+            return 0.0
+        if ev_override is None and "ev_charging" not in goals:
+            return 0.0
+        if ev_override is None and "ev_charging" in goals and interest == "no":
+            return 0.0
+
+    if package_id == "best_value":
+        if interest == "no" and not required and ev_override in (None, 0):
+            return 0.0
+        if ev_override is not None and ev_override > 0:
+            return ev_override
+        return economically_size_battery(system_kwp, annual_kwh, goals)
+    if interest == "no" and not required and ev_override in (None, 0):
         return 0.0
+    if ev_override is not None and ev_override > 0:
+        return max(ev_override, resilience_battery_kwh(system_kwp, annual_kwh, goals) * 0.85)
     return resilience_battery_kwh(system_kwp, annual_kwh, goals)
 
 
@@ -516,7 +568,7 @@ def build_component_list(system_kwp: float, battery_kwh: float, goals: list) -> 
             )
         )
 
-    if "ev_charging" in goals:
+    if "ev_charging" in goals and ev_wallbox_needed(inp):
         components.append(
             ComponentItem(
                 name="Smart EV Charger (11–22 kW)",
@@ -524,6 +576,16 @@ def build_component_list(system_kwp: float, battery_kwh: float, goals: list) -> 
                 unit="unit",
                 estimated_cost_eur=1200,
                 notes="Solar-optimised charging with app control",
+            )
+        )
+    elif "ev_charging" in goals and not ev_wallbox_needed(inp):
+        components.append(
+            ComponentItem(
+                name="PV surplus routing / smart wallbox upgrade",
+                quantity=1,
+                unit="unit",
+                estimated_cost_eur=450,
+                notes="Integrate existing wallbox with solar surplus and tariff scheduling",
             )
         )
 
@@ -689,6 +751,10 @@ def build_three_packages(inp, system_kwp, annual_production, adjusted_yield, goa
     if battery_required_for_goal(goals):
         packages["most_reliable"]["recommended"] = True
         packages["best_value"]["recommended"] = False
+    else:
+        packages["best_value"]["recommended"] = True
+        packages["cheapest"]["recommended"] = False
+        packages["most_reliable"]["recommended"] = False
 
     tradeoffs = get_tradeoffs(packages["cheapest"], packages["best_value"], packages["most_reliable"])
     return {"packages": packages, "tradeoffs": tradeoffs}
@@ -812,6 +878,7 @@ def generate_recommendation(inp: CalculatorInput, pvgis_data: Optional[dict] = N
     energy_roadmap = build_energy_roadmap(inp, system_kwp, goals)
     sizing_summary = build_sizing_summary(
         annual_kwh, adjusted_yield, nominal_kwp, annual_production, bool(pvgis_data), raw_kwp=raw_kwp,
+        roof_area_m2=inp.roof_area_m2,
     )
 
     result = {
@@ -877,6 +944,10 @@ def generate_recommendation(inp: CalculatorInput, pvgis_data: Optional[dict] = N
         "calculator_inputs": calculator_inputs_snapshot(inp),
         "disclaimer": DISCLAIMER,
     }
+    if "ev_charging" in goals:
+        result["ev_assessment"] = build_ev_assessment(inp, inp.electricity_price_ct)
+    if heat_goals_active(goals):
+        result["hp_assessment"] = build_hp_assessment(inp, inp.electricity_price_ct)
     result["quote_ready_profile"] = build_quote_ready_profile(inp, result)
     result["decision_report"] = build_decision_report(inp, result)
     return result

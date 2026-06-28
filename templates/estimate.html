@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}{{ t('estimate.title', 'Quick estimate') }}{% endblock %}
+{% block body_class %}app-page{% endblock %}
+
+{% block content %}
+<div class="page-bg-wrap">
+  <div class="page-bg" aria-hidden="true"></div>
+  <div class="page-content container" style="max-width:640px;padding:2rem 1rem 3rem">
+    <h1>{{ t('estimate.title', 'Quick estimate (about 60 seconds)') }}</h1>
+    <p class="step-desc">{{ t('estimate.sub', 'A rough preview before the full questionnaire. For installer-ready quotes, complete the full check.') }}</p>
+    <form id="quickEstimateForm" class="glass-panel" style="padding:1.5rem">
+      <div class="form-group">
+        <label for="qe_postcode">{{ t('calc.postcode') }}</label>
+        <input type="text" id="qe_postcode" maxlength="5" pattern="[0-9]{5}" required placeholder="80331">
+      </div>
+      <div class="form-group">
+        <label for="qe_kwh">{{ t('calc.monthly_kwh') }}</label>
+        <input type="number" id="qe_kwh" min="50" step="10" required placeholder="350">
+      </div>
+      <div class="form-group">
+        <label for="qe_roof">{{ t('calc.roof_area') }}</label>
+        <input type="number" id="qe_roof" min="0" step="1" placeholder="40">
+      </div>
+      <div class="form-group">
+        <label>{{ t('estimate.goal', 'Main goal') }}</label>
+        <select id="qe_goal">
+          <option value="lower_bill">{{ t('home.goal.lower_bill') }}</option>
+          <option value="ev_charging">{{ t('home.goal.ev_charging') }}</option>
+          <option value="backup">{{ t('home.goal.backup') }}</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">{{ t('estimate.continue', 'Continue to full check') }}</button>
+      <p class="form-hint" style="margin-top:1rem">{{ t('estimate.hint', 'We pre-fill the calculator — you can refine EV, heat pump, and budget details there.') }}</p>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.getElementById('quickEstimateForm')?.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const plz = document.getElementById('qe_postcode').value.trim();
+  const kwh = document.getElementById('qe_kwh').value;
+  const roof = document.getElementById('qe_roof').value;
+  const goal = document.getElementById('qe_goal').value;
+  const params = new URLSearchParams();
+  if (plz) params.set('postcode', plz);
+  if (kwh) params.set('kwh', kwh);
+  if (roof) params.set('roof', roof);
+  if (goal) params.set('goal', goal);
+  params.set('quick', '1');
+  const invite = window.BETA_INVITE_DEFAULT || '';
+  if (invite) params.set('invite', invite);
+  window.location.href = '/calculator?' + params.toString();
+});
+</script>
+{% endblock %}

@@ -423,6 +423,7 @@ main { flex: 1; width: 100%; }
 
 .calc-step { display: none; }
 .calc-step.active { display: block; }
+.calc-step.hidden { display: none !important; }
 
 .calc-step h2 { font-size: 1.5rem; margin-bottom: .25rem; }
 .step-desc { color: var(--color-text-muted); margin-bottom: 1.5rem; font-size: .9rem; }

@@ -101,6 +101,61 @@ def _panel_for_tier(tier: str, roof_type: str = "pitched_south") -> dict:
     return panels[0]
 
 
+def _panel_candidates_for_budget_package(roof_type: str) -> list:
+    """Economy panels only — Budget package picks lowest installed cost, not a fixed SKU."""
+    panels = load_catalog()["panels"]
+    if roof_type == "balcony" or "balcony" in roof_type:
+        return [next((p for p in panels if p["tier"] == "balcony"), panels[0])]
+    return [p for p in panels if p.get("tier") in ("budget", "balanced")]
+
+
+def _hardware_cost_estimate(
+    num_panels: int,
+    panel: dict,
+    actual_kwp: float,
+    inverter: dict,
+    battery: Optional[dict],
+    mounting: dict,
+) -> int:
+    panel_cost = num_panels * panel["price_eur"]
+    inv_cost = inverter["price_eur"]
+    batt_cost = battery["price_eur"] if battery else 0
+    mount_cost = round(actual_kwp * mounting.get("price_per_kwp", 180))
+    install_cost = round(actual_kwp * 350)
+    cables_cost = round(actual_kwp * 90)
+    return panel_cost + inv_cost + batt_cost + mount_cost + install_cost + cables_cost
+
+
+def _pick_lowest_cost_panel_configuration(
+    system_kwp: float,
+    battery_kwh: float,
+    backup_needed: bool,
+    roof_type: str,
+) -> tuple:
+    """Return panel, counts, inverter, battery, tier with minimum hardware subtotal."""
+    mounting = _mounting_for_roof(roof_type)
+    best = None
+    best_cost = float("inf")
+    for candidate in _panel_candidates_for_budget_package(roof_type):
+        num_panels = panel_count_for_kwp(system_kwp, candidate["power_wp"])
+        actual_kwp = actual_system_kwp(num_panels, candidate["power_wp"])
+        tier = candidate["tier"]
+        inverter = _inverter_for_system(tier, actual_kwp, backup_needed, battery_kwh)
+        battery = _battery_for_system(tier, battery_kwh, inverter)
+        cost = _hardware_cost_estimate(num_panels, candidate, actual_kwp, inverter, battery, mounting)
+        if cost < best_cost:
+            best_cost = cost
+            best = (candidate, num_panels, actual_kwp, inverter, battery, tier)
+    if best is None:
+        panel = _panel_for_tier("budget", roof_type)
+        num_panels = panel_count_for_kwp(system_kwp, panel["power_wp"])
+        actual_kwp = actual_system_kwp(num_panels, panel["power_wp"])
+        inverter = _inverter_for_system("budget", actual_kwp, backup_needed, battery_kwh)
+        battery = _battery_for_system("budget", battery_kwh, inverter)
+        return panel, num_panels, actual_kwp, inverter, battery, "budget"
+    return best
+
+
 def _mounting_for_roof(roof_type: str) -> dict:
     mounting = load_catalog().get("mounting") or []
     if roof_type == "flat":
@@ -204,21 +259,27 @@ def build_package_spec(
 ) -> dict:
     tier = TIER_BY_PACKAGE.get(package_id, "balanced")
     backup_needed = "backup" in (goals or [])
-    panel = _panel_for_tier(tier, roof_type)
-    num_panels = panel_count_for_kwp(system_kwp, panel["power_wp"])
-    actual_kwp = actual_system_kwp(num_panels, panel["power_wp"])
-    inverter = _inverter_for_system(tier, actual_kwp, backup_needed, battery_kwh)
-    battery = _battery_for_system(tier, battery_kwh, inverter)
-    roof_check = check_roof_fit(num_panels, roof_area_m2)
     mounting = _mounting_for_roof(roof_type)
 
+    if package_id == "cheapest":
+        panel, num_panels, actual_kwp, inverter, battery, tier = _pick_lowest_cost_panel_configuration(
+            system_kwp, battery_kwh, backup_needed, roof_type,
+        )
+    else:
+        panel = _panel_for_tier(tier, roof_type)
+        num_panels = panel_count_for_kwp(system_kwp, panel["power_wp"])
+        actual_kwp = actual_system_kwp(num_panels, panel["power_wp"])
+        inverter = _inverter_for_system(tier, actual_kwp, backup_needed, battery_kwh)
+        battery = _battery_for_system(tier, battery_kwh, inverter)
+
+    roof_check = check_roof_fit(num_panels, roof_area_m2)
+    hardware_subtotal = _hardware_cost_estimate(num_panels, panel, actual_kwp, inverter, battery, mounting)
     panel_cost = num_panels * panel["price_eur"]
     inv_cost = inverter["price_eur"]
     batt_cost = battery["price_eur"] if battery else 0
     mount_cost = round(actual_kwp * mounting.get("price_per_kwp", 180))
     install_cost = round(actual_kwp * 350)
     cables_cost = round(actual_kwp * 90)
-    hardware_subtotal = panel_cost + inv_cost + batt_cost + mount_cost + cables_cost + install_cost
 
     compatibility = {
         "inverter_dc_ok": inverter.get("dc_max_kw", 0) >= actual_kwp * 0.95,
@@ -347,18 +408,42 @@ def build_sizing_summary(
     annual_production: float,
     pvgis_used: bool,
     raw_kwp: float | None = None,
+    roof_area_m2: float = 0,
 ) -> dict:
     raw = raw_kwp if raw_kwp is not None else (annual_kwh / adjusted_yield if adjusted_yield > 0 else 0)
     coverage = (annual_production / annual_kwh * 100) if annual_kwh > 0 else 0
+    roof_max = max_kwp_from_roof_area(roof_area_m2)
+    capped_by_roof = roof_max is not None and system_kwp < raw - 0.15
+    coverage_rounded = round(coverage)
+    demand_note = None
+    roof_limit_next_steps = None
+    if capped_by_roof and roof_max:
+        demand_note = (
+            f"Your roof area limits the system to approximately {system_kwp} kWp "
+            f"(~{roof_max} kWp max on the area you entered). "
+            f"This will cover about {coverage_rounded}% of your annual demand, not all of it."
+        )
+        roof_limit_next_steps = [
+            "Check another roof section or extension",
+            "Consider garage or carport mounting",
+            "Consider balcony or plug-in solar where permitted",
+            "Shift flexible loads to daytime to improve self-use",
+            "Plan a later expansion when roof space or budget allows",
+        ]
     return {
         "annual_consumption_kwh": round(annual_kwh),
         "specific_yield_kwh_kwp": round(adjusted_yield),
         "raw_kwp_needed": round(raw, 1),
         "recommended_kwp": system_kwp,
         "annual_production_kwh": annual_production,
-        "coverage_pct": round(coverage),
+        "coverage_pct": coverage_rounded,
         "formula_text": f"{round(annual_kwh):,} kWh ÷ {round(adjusted_yield):,} kWh/kWp ≈ {raw:.1f} kWp",
         "data_source": "PVGIS" if pvgis_used else "estimate",
+        "roof_area_m2": round(roof_area_m2, 1) if roof_area_m2 else 0,
+        "roof_max_kwp": round(roof_max, 1) if roof_max is not None else None,
+        "capped_by_roof": capped_by_roof,
+        "demand_note": demand_note,
+        "roof_limit_next_steps": roof_limit_next_steps,
     }
 
 

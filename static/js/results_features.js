@@ -1,5 +1,77 @@
 // Extended results sections – readiness, scenarios, trust, roadmap
 
+function renderEvAssessment(ev) {
+  if (!ev || !ev.ownership) return '';
+  const notes = (ev.notes || []).map((n) => `<li>${n}</li>`).join('');
+  const future = (ev.future_features || []).map((f) => `<li>${f}</li>`).join('');
+  return `
+    <section class="result-section">
+      <div class="results-panel ev-profile-panel">
+        <span class="results-panel-kicker">${tr('results.ev_profile_title', 'EV charging profile')}</span>
+        <h2 class="results-panel-title">${tr('results.ev_profile_sub', 'Based on your driving and charging answers')}</h2>
+        <dl class="ev-profile-grid">
+          <div><dt>${tr('calc.ev.ownership', 'EV status')}</dt><dd>${ev.ownership_label || '—'}</dd></div>
+          <div><dt>${tr('calc.ev.vehicle_model', 'Vehicle')}</dt><dd>${ev.vehicle_model || '—'}</dd></div>
+          <div><dt>${tr('calc.ev.annual_km', 'Annual km')}</dt><dd>${ev.annual_km ? ev.annual_km.toLocaleString() + ' km' : '—'}</dd></div>
+          <div><dt>${tr('calc.ev.consumption', 'Consumption')}</dt><dd>${ev.consumption_kwh_100km || '—'} kWh/100 km</dd></div>
+          <div><dt>${tr('results.ev_annual_charge', 'Est. charging')}</dt><dd>${(ev.annual_charging_kwh || 0).toLocaleString()} kWh/yr</dd></div>
+          <div><dt>${tr('calc.ev.priority', 'Priority')}</dt><dd>${ev.charging_priority_label || '—'}</dd></div>
+          <div><dt>${tr('results.ev_grid_cost', 'Grid charging cost')}</dt><dd>~€${(ev.estimated_grid_charging_cost_annual_eur || 0).toLocaleString()}/yr</dd></div>
+          <div><dt>${tr('results.ev_pv_cost', 'With PV (est.)')}</dt><dd>~€${(ev.estimated_charging_cost_with_pv_annual_eur || 0).toLocaleString()}/yr</dd></div>
+        </dl>
+        ${notes ? `<ul class="ev-profile-notes">${notes}</ul>` : ''}
+        ${future ? `<div class="info-box"><strong>${tr('results.ev_future', 'Planned enhancements')}</strong><ul>${future}</ul></div>` : ''}
+      </div>
+    </section>`;
+}
+
+function packageComponentTier(pkg) {
+  const tiers = {
+    cheapest: tr('results.tier.budget', 'Budget components (string inverter)'),
+    best_value: tr('results.tier.balanced', 'Balanced components (hybrid inverter)'),
+    most_reliable: tr('results.tier.premium', 'Premium / backup-capable components'),
+  };
+  return tiers[pkg.id] || pkg.subtitle || '—';
+}
+
+function renderHpAssessment(hp) {
+  if (!hp || !hp.status) return '';
+  const notes = (hp.notes || []).map((n) => `<li>${n}</li>`).join('');
+  return `
+    <section class="result-section">
+      <div class="results-panel ev-profile-panel hp-profile-panel">
+        <span class="results-panel-kicker">${tr('results.hp_profile_title', 'Heating & heat pump profile')}</span>
+        <h2 class="results-panel-title">${tr('results.hp_profile_sub', 'Based on your heating goals and answers')}</h2>
+        <dl class="ev-profile-grid">
+          <div><dt>${tr('results.hp_goals', 'Goals')}</dt><dd>${hp.goals_label || '—'}</dd></div>
+          <div><dt>${tr('calc.hp.status', 'Heat pump status')}</dt><dd>${hp.status_label || '—'}</dd></div>
+          <div><dt>${tr('calc.hp.type', 'System type')}</dt><dd>${hp.type_label || '—'}</dd></div>
+          <div><dt>${tr('calc.hp.heated_area', 'Heated area')}</dt><dd>${hp.heated_area_m2 ? hp.heated_area_m2.toLocaleString() + ' m²' : '—'}</dd></div>
+          <div><dt>${tr('results.hp_annual_heat', 'Est. heat electricity')}</dt><dd>${(hp.annual_heat_kwh || 0).toLocaleString()} kWh/yr</dd></div>
+          <div><dt>${tr('calc.hp.priority', 'Priority')}</dt><dd>${hp.priority_label || '—'}</dd></div>
+          <div><dt>${tr('results.hp_grid_cost', 'Grid heating cost')}</dt><dd>~€${(hp.estimated_grid_heating_cost_annual_eur || 0).toLocaleString()}/yr</dd></div>
+          <div><dt>${tr('results.hp_pv_cost', 'With PV (est.)')}</dt><dd>~€${(hp.estimated_heating_cost_with_pv_annual_eur || 0).toLocaleString()}/yr</dd></div>
+        </dl>
+        ${notes ? `<ul class="ev-profile-notes">${notes}</ul>` : ''}
+      </div>
+    </section>`;
+}
+
+function renderTrustGlossary() {
+  return `
+    <section class="result-section compact-section">
+      <div class="trust-glossary info-box">
+        <h2 class="trust-glossary-title">${tr('results.trust_glossary_title', 'How to read our labels')}</h2>
+        <dl class="trust-glossary-grid">
+          <div><dt>${tr('results.trust.verified', 'Registered supplier')}</dt><dd>${tr('results.trust.verified_def', 'Business on file with identity and insurance documentation when enrolled — not a guarantee of workmanship.')}</dd></div>
+          <div><dt>${tr('results.trust.quality', 'Quality score')}</dt><dd>${tr('results.trust.quality_def', 'Internal fit score from certifications, reviews, and quote completeness — relative ranking, not a government rating.')}</dd></div>
+          <div><dt>${tr('results.trust.reliability', 'Package tier')}</dt><dd>${tr('results.trust.reliability_def', 'Budget / Balanced / Premium describes component level in our catalog model — not field-tested reliability.')}</dd></div>
+          <div><dt>${tr('results.trust.readiness', 'Site readiness index')}</dt><dd>${tr('results.trust.readiness_def', 'Indicative score from your inputs — a site survey is still required before installation.')}</dd></div>
+        </dl>
+      </div>
+    </section>`;
+}
+
 function renderReadiness(r) {
   if (!r || !r.label) return '';
   const palette = scoreColorPalette(r.score);
@@ -26,7 +98,7 @@ function renderReadiness(r) {
           <div class="readiness-header-text">
             <h2 class="readiness-title">${r.label}</h2>
             <p class="readiness-summary">${r.summary}</p>
-            <p class="readiness-sc">~${Math.min(100, r.self_consumption_pct || 35)}% ${tr('results.estimated_self_consumption', 'estimated self-consumption')}</p>
+            <p class="readiness-sc">${tr('results.readiness_index', 'Site readiness index')} · ~${Math.min(100, r.self_consumption_pct || 35)}% ${tr('results.estimated_self_consumption', 'estimated self-consumption')}</p>
           </div>
         </div>
         <div class="readiness-factors-wrap">
@@ -294,7 +366,7 @@ function renderMatchedSuppliers(suppliers) {
         <div class="match-reason-chips">${reasonChips}</div>
         <div class="match-supplier-meta">
           ${verified
-            ? `<span class="match-meta-pill match-meta-pill--verified">✓ ${tr('results.supplier_verified', 'Verified')}</span>`
+            ? `<span class="match-meta-pill match-meta-pill--verified">✓ ${tr('results.supplier_verified', 'Registered partner')}</span>`
             : `<span class="match-meta-pill match-meta-pill--directory">${tr('results.supplier_directory', 'Directory listing')}</span>`}
           ${ver > 0 ? `<span class="match-meta-pill match-meta-pill--checks">${ver} ${tr('results.checks_passed', 'checks passed')}</span>` : ''}
           ${s.plan && s.plan !== 'basic' ? `<span class="match-meta-pill match-meta-pill--plan">${s.plan} ${tr('results.plan_label', 'plan')}</span>` : ''}
@@ -314,13 +386,13 @@ function renderMatchedSuppliers(suppliers) {
 
 function renderVerificationFramework() {
   const items = [
-    { icon: '🪪', title: 'Identity verified', desc: 'Company registration on file', status: 'Checked' },
-    { icon: '🛡️', title: 'Insurance verified', desc: 'Liability cover confirmed', status: 'Checked' },
-    { icon: '📜', title: 'Certifications', desc: 'VDE / electrical credentials', status: 'Checked' },
-    { icon: '🏗️', title: 'Installations reviewed', desc: 'Recent project portfolio', status: 'Checked' },
-    { icon: '⏱️', title: 'Response time', desc: 'Median first reply tracked', status: 'Tracked' },
-    { icon: '✅', title: 'Quote completeness', desc: 'Checklist compliance score', status: 'Scored' },
-    { icon: '⭐', title: 'Customer ratings', desc: 'Post-installation reviews', status: 'Tracked' },
+    { icon: '🪪', title: tr('results.verify.identity', 'Business identity'), desc: tr('results.verify.identity_desc', 'Company registration and contact details'), status: tr('results.verify.on_enrollment', 'On enrollment') },
+    { icon: '🛡️', title: tr('results.verify.insurance', 'Insurance'), desc: tr('results.verify.insurance_desc', 'Liability cover documentation'), status: tr('results.verify.on_enrollment', 'On enrollment') },
+    { icon: '📜', title: tr('results.verify.certs', 'Certifications'), desc: tr('results.verify.certs_desc', 'Electrical credentials where applicable'), status: tr('results.verify.on_enrollment', 'On enrollment') },
+    { icon: '🏗️', title: tr('results.verify.portfolio', 'Project portfolio'), desc: tr('results.verify.portfolio_desc', 'Recent installation examples'), status: tr('results.verify.planned', 'Planned') },
+    { icon: '⏱️', title: tr('results.verify.response', 'Response time'), desc: tr('results.verify.response_desc', 'Median first reply when tracked'), status: tr('results.verify.planned', 'Planned') },
+    { icon: '✅', title: tr('results.verify.quote', 'Quote completeness'), desc: tr('results.verify.quote_desc', 'Checklist compliance score'), status: tr('results.verify.planned', 'Planned') },
+    { icon: '⭐', title: tr('results.verify.ratings', 'Customer ratings'), desc: tr('results.verify.ratings_desc', 'Post-installation feedback'), status: tr('results.verify.planned', 'Planned') },
   ];
   const grid = items.map(i => `
     <article class="verify-framework-item">
@@ -341,8 +413,8 @@ function renderVerificationFramework() {
           <div class="verify-framework-header-main">
             <div class="verify-framework-shield" aria-hidden="true">🛡️</div>
             <div>
-              <h2 class="verify-framework-title">${tr('results.verify_suppliers', 'How we verify suppliers')}</h2>
-              <p class="verify-framework-intro">${tr('results.verify_suppliers_intro', 'No vague badges - every supplier is scored on seven checks before they receive leads.')}</p>
+              <h2 class="verify-framework-title">${tr('results.verify_suppliers', 'Supplier quality framework')}</h2>
+              <p class="verify-framework-intro">${tr('results.verify_suppliers_intro', 'When suppliers enroll, we document these checks. Not every item is verified for every listing yet.')}</p>
             </div>
           </div>
           <div class="verify-framework-meta">

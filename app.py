@@ -49,6 +49,9 @@ from beta_access import (
 )
 from analytics import track_event, beta_metrics_summary
 from demo_data import load_demo_recommendation
+from ev_profile import apply_ev_fields_to_input, estimate_ev_annual_kwh
+from heat_pump_profile import apply_hp_fields_to_input, heat_goals_active
+from heat_pump_profile import apply_hp_fields_to_input, heat_goals_active
 from logging_config import setup_logging
 
 REGION_FOCUS = os.environ.get("REGION_FOCUS", "Bayern")
@@ -522,6 +525,12 @@ def calculator():
     return render_template("calculator.html", intake_ref=ref, beta_invite=invite)
 
 
+@app.route("/estimate")
+def quick_estimate():
+    """60-second entry — pre-fills the full calculator."""
+    return render_template("estimate.html")
+
+
 @app.route("/results")
 def results():
     return render_template("results.html")
@@ -798,6 +807,10 @@ def api_calculate():
         battery_interest=data.get("battery_interest", "unsure"),
         financing_interest=data.get("financing_interest", "no"),
     )
+    if "ev_charging" in (inp.goals or []):
+        apply_ev_fields_to_input(inp, data)
+    if heat_goals_active(inp.goals):
+        apply_hp_fields_to_input(inp, data)
 
     recommendation = generate_recommendation(inp, pvgis)
     gsa = get_gsa_yield_estimate(float(lat), float(lon))

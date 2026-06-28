@@ -14,8 +14,82 @@ document.addEventListener('DOMContentLoaded', () => {
   const submitBtnDefaultText = submitBtn?.textContent || '';
 
   let currentStep = 1;
-  const totalSteps = steps.length || 7;
   let isSubmitting = false;
+
+  function hasEvGoal() {
+    return [...form.querySelectorAll('input[name="goals"]:checked')].some((c) => c.value === 'ev_charging');
+  }
+
+  function hasHeatGoal() {
+    return [...form.querySelectorAll('input[name="goals"]:checked')].some((c) =>
+      c.value === 'space_heating' || c.value === 'hot_water'
+    );
+  }
+
+  function stepVisible(stepNum) {
+    const el = form.querySelector(`.calc-step[data-step="${stepNum}"]`);
+    if (!el) return false;
+    const cond = el.dataset.conditional;
+    if (cond === 'ev_charging') return hasEvGoal();
+    if (cond === 'heat') return hasHeatGoal();
+    return true;
+  }
+
+  function visibleStepNumbers() {
+    return [...steps]
+      .map((s) => parseInt(s.dataset.step, 10))
+      .filter((n) => stepVisible(n))
+      .sort((a, b) => a - b);
+  }
+
+  function syncEvProgressLabel() {
+    document.querySelector('.progress-ev-step')?.classList.toggle('hidden', !hasEvGoal());
+    document.querySelector('.progress-heat-step')?.classList.toggle('hidden', !hasHeatGoal());
+  }
+
+  function syncEvLoadCheckboxes() {
+    const own = fieldVal('ev_ownership');
+    const hasEv = field('has_ev');
+    const plannedEv = field('planned_ev');
+    if (!hasEv || !plannedEv) return;
+    if (own === 'own') {
+      hasEv.checked = true;
+      plannedEv.checked = false;
+    } else if (own === 'planning') {
+      hasEv.checked = false;
+      plannedEv.checked = true;
+    }
+  }
+
+  function syncHpLoadCheckbox() {
+    const status = fieldVal('hp_status');
+    const hasHp = field('has_heat_pump');
+    const wrap = document.querySelector('.hp-load-sync-wrap');
+    if (!hasHp) return;
+    if (status === 'have') {
+      hasHp.checked = true;
+    } else if (status === 'planning' || status === 'replacing_fossil') {
+      hasHp.checked = false;
+    }
+    if (wrap) wrap.classList.toggle('hidden', hasHeatGoal());
+  }
+
+  form.querySelectorAll('input[name="goals"]').forEach((cb) => {
+    cb.addEventListener('change', () => {
+      syncEvProgressLabel();
+    syncHpLoadCheckbox();
+      if (!hasEvGoal() && currentStep === 2) {
+        currentStep = 1;
+      }
+      if (!hasHeatGoal() && currentStep === 3) {
+        currentStep = hasEvGoal() ? 2 : 1;
+      }
+      syncHpLoadCheckbox();
+      updateUI();
+    });
+  });
+  field('ev_ownership')?.addEventListener('change', syncEvLoadCheckboxes);
+  field('hp_status')?.addEventListener('change', syncHpLoadCheckbox);
 
   const defaultInvite = window.BETA_INVITE_DEFAULT || '';
   if (defaultInvite) {
@@ -43,22 +117,100 @@ document.addEventListener('DOMContentLoaded', () => {
     return Boolean(field(id)?.checked);
   }
 
+  const quickParams = new URLSearchParams(window.location.search);
+  if (quickParams.get('quick') === '1') {
+    const plz = quickParams.get('postcode');
+    const kwh = quickParams.get('kwh');
+    const roof = quickParams.get('roof');
+    const goal = quickParams.get('goal');
+    if (plz && field('postcode')) field('postcode').value = plz;
+    if (kwh && field('monthly_kwh')) field('monthly_kwh').value = kwh;
+    if (roof && field('roof_area')) field('roof_area').value = roof;
+    if (goal) {
+      const goalCb = form.querySelector(`input[name="goals"][value="${goal}"]`);
+      if (goalCb) goalCb.checked = true;
+    }
+  }
+
   function updateUI() {
-    steps.forEach((s) => s.classList.toggle('active', parseInt(s.dataset.step, 10) === currentStep));
-    if (progressFill) progressFill.style.width = `${(currentStep / totalSteps) * 100}%`;
-    progressSteps.forEach((s, i) => s.classList.toggle('active', i < currentStep));
-    if (prevBtn) prevBtn.disabled = currentStep === 1;
-    nextBtn?.classList.toggle('hidden', currentStep === totalSteps);
-    submitBtn?.classList.toggle('hidden', currentStep !== totalSteps);
+    const vis = visibleStepNumbers();
+    const pos = Math.max(0, vis.indexOf(currentStep));
+    const totalSteps = vis.length || 1;
+
+    steps.forEach((s) => {
+      const n = parseInt(s.dataset.step, 10);
+      s.classList.toggle('active', n === currentStep);
+      s.classList.toggle('hidden', !stepVisible(n));
+    });
+
+    if (progressFill) progressFill.style.width = `${((pos + 1) / totalSteps) * 100}%`;
+
+    let progressIdx = 0;
+    progressSteps.forEach((span) => {
+      if (span.classList.contains('progress-ev-step') && !hasEvGoal()) {
+        span.classList.add('hidden');
+        return;
+      }
+      if (span.classList.contains('progress-heat-step') && !hasHeatGoal()) {
+        span.classList.add('hidden');
+        return;
+      }
+      span.classList.remove('hidden');
+      span.classList.toggle('active', progressIdx <= pos);
+      progressIdx += 1;
+    });
+
+    syncEvProgressLabel();
+    syncHpLoadCheckbox();
+    if (prevBtn) prevBtn.disabled = pos <= 0;
+    const last = vis[vis.length - 1];
+    nextBtn?.classList.toggle('hidden', currentStep === last);
+    submitBtn?.classList.toggle('hidden', currentStep !== last);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   function validateStep(step = currentStep) {
+    if (!stepVisible(step)) return true;
     if (step === 1 && !form.querySelectorAll('input[name="goals"]:checked').length) {
       alert(tr('calc.js.select_goal', 'Please select at least one goal.'));
       return false;
     }
-    if (step === 3) {
+    if (step === 2 && hasEvGoal()) {
+      if (!fieldVal('ev_ownership')) {
+        alert(tr('calc.js.ev_ownership', 'Please say if you own an EV or are planning one.'));
+        return false;
+      }
+      if (!fieldVal('ev_annual_km') || parseFloat(fieldVal('ev_annual_km')) <= 0) {
+        alert(tr('calc.js.ev_km', 'Please enter your annual driving distance.'));
+        return false;
+      }
+      if (!fieldVal('ev_home_charging') || !fieldVal('ev_park_home_daytime') || !fieldVal('ev_has_wallbox') || !fieldVal('ev_charging_priority')) {
+        alert(tr('calc.js.ev_details', 'Please complete all EV charging questions.'));
+        return false;
+      }
+      syncEvLoadCheckboxes();
+    }
+    if (step === 3 && hasHeatGoal()) {
+      if (!fieldVal('hp_status') || !fieldVal('hp_type')) {
+        alert(tr('calc.js.hp_status', 'Please complete heat pump status and type.'));
+        return false;
+      }
+      const goals = [...form.querySelectorAll('input[name="goals"]:checked')].map((c) => c.value);
+      if (goals.includes('space_heating')) {
+        const area = parseFloat(fieldVal('hp_heated_area_m2')) || 0;
+        const kwh = parseFloat(fieldVal('hp_annual_heat_kwh')) || 0;
+        if (area <= 0 && kwh <= 0) {
+          alert(tr('calc.js.hp_area', 'Enter heated floor area or annual heat electricity use.'));
+          return false;
+        }
+      }
+      if (!fieldVal('hp_daytime_heating') || !fieldVal('hp_priority')) {
+        alert(tr('calc.js.hp_details', 'Please complete heating priority questions.'));
+        return false;
+      }
+      syncHpLoadCheckbox();
+    }
+    if (step === 5) {
       const plz = fieldVal('postcode');
       const loc = fieldVal('location');
       const lat = fieldVal('latitude');
@@ -68,7 +220,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return false;
       }
     }
-    if (step === 4) {
+    if (step === 6) {
       const bill = fieldVal('monthly_bill');
       const kwh = fieldVal('monthly_kwh');
       if (!bill && !kwh) {
@@ -81,29 +233,43 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function validateAllSteps() {
     const saved = currentStep;
-    for (let step = 1; step <= totalSteps; step += 1) {
+    for (const step of visibleStepNumbers()) {
       if (!validateStep(step)) {
         currentStep = step;
         updateUI();
         return false;
       }
     }
-    currentStep = totalSteps;
+    currentStep = visibleStepNumbers().slice(-1)[0] || saved;
     updateUI();
     return true;
   }
 
+  function stepAfter(step) {
+    const vis = visibleStepNumbers();
+    const idx = vis.indexOf(step);
+    return idx >= 0 && idx < vis.length - 1 ? vis[idx + 1] : step;
+  }
+
+  function stepBefore(step) {
+    const vis = visibleStepNumbers();
+    const idx = vis.indexOf(step);
+    return idx > 0 ? vis[idx - 1] : step;
+  }
+
   nextBtn?.addEventListener('click', () => {
     if (!validateStep()) return;
-    if (currentStep < totalSteps) {
-      currentStep += 1;
+    const vis = visibleStepNumbers();
+    if (vis.indexOf(currentStep) < vis.length - 1) {
+      currentStep = stepAfter(currentStep);
       updateUI();
     }
   });
 
   prevBtn?.addEventListener('click', () => {
-    if (currentStep > 1) {
-      currentStep -= 1;
+    const vis = visibleStepNumbers();
+    if (vis.indexOf(currentStep) > 0) {
+      currentStep = stepBefore(currentStep);
       updateUI();
     }
   });
@@ -182,6 +348,22 @@ document.addEventListener('DOMContentLoaded', () => {
       connect_meter: fieldChecked('connect_meter'),
       battery_interest: field('battery_interest')?.value || 'unsure',
       financing_interest: field('financing_interest')?.value || 'no',
+      ev_ownership: fieldVal('ev_ownership'),
+      ev_vehicle_model: fieldVal('ev_vehicle_model'),
+      ev_annual_km: parseFloat(fieldVal('ev_annual_km')) || 0,
+      ev_consumption_kwh_100km: parseFloat(fieldVal('ev_consumption_kwh_100km')) || 18,
+      ev_home_charging: fieldVal('ev_home_charging'),
+      ev_park_home_daytime: fieldVal('ev_park_home_daytime'),
+      ev_has_wallbox: fieldVal('ev_has_wallbox'),
+      ev_charging_priority: fieldVal('ev_charging_priority'),
+      ev_dynamic_tariff_interest: field('ev_dynamic_tariff_interest')?.value || 'no',
+      hp_status: fieldVal('hp_status'),
+      hp_type: fieldVal('hp_type'),
+      hp_heated_area_m2: parseFloat(fieldVal('hp_heated_area_m2')) || 0,
+      hp_annual_heat_kwh: parseFloat(fieldVal('hp_annual_heat_kwh')) || 0,
+      hp_replacing: fieldVal('hp_replacing'),
+      hp_daytime_heating: fieldVal('hp_daytime_heating'),
+      hp_priority: fieldVal('hp_priority'),
     };
   }
 
@@ -270,6 +452,7 @@ document.addEventListener('DOMContentLoaded', () => {
     runCalculation();
   });
 
+  syncEvProgressLabel();
   updateUI();
 });
 

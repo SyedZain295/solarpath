@@ -65,9 +65,13 @@ function renderResults(d) {
       ${renderBrandedIntakeBanner(d.source_installer, d.source_installer_slug)}
     </div>
 
+    ${renderTrustGlossary()}
+
     ${renderSystemRecommendation(d.system_recommendation, d.sizing_summary)}
     ${renderReadiness(d.readiness)}
     ${renderGoalDecisions(d.goal_decisions || [])}
+    ${renderEvAssessment(d.ev_assessment)}
+    ${renderHpAssessment(d.hp_assessment)}
     ${renderWhyExplanation(d.why_explanation, d.why_recommend)}
     ${d.solar_viable === false ? renderApartmentPath(d.apartment_path) : ''}
     ${renderBudgetFirst(d.budget_first)}
@@ -103,8 +107,12 @@ function renderResults(d) {
     ${renderDecisionReportBanner(d.decision_report)}
 
     <div class="action-bar">
-      <button class="btn btn-primary btn-lg" id="requestQuotesBtn">${tr('results.request_quotes', 'Request Quotes from Verified Suppliers')}</button>
+      <button class="btn btn-primary btn-lg" id="requestQuotesBtn">${tr('results.request_quotes', 'Request installer quotes')}</button>
       <a href="/compare-quotes" class="btn btn-outline">${tr('results.go_to_compare', 'Compare installer quotes')}</a>
+      <label class="checkbox-inline pdf-privacy-opt">
+        <input type="checkbox" id="pdfIncludeContact">
+        ${tr('results.pdf_include_contact', 'Include my name/email in PDF when sharing with installers')}
+      </label>
       <button class="btn btn-outline" id="downloadPdfBtn">${tr('results.download_pdf', 'Download PDF Report')}</button>
       <button class="btn btn-outline" id="emailReportBtn">${tr('results.send_installer', 'Send to Installer')}</button>
       <a href="/energy-advisor" class="btn btn-outline">${tr('results.energy_tips', 'Energy Savings Tips')}</a>
@@ -200,7 +208,19 @@ function renderSystemRecommendation(rec, sizing) {
           <span class="sizing-stat-label">${tr('results.sizing_coverage', 'Coverage').replace('{pct}', sizing.coverage_pct)}</span>
           <strong>~${sizing.coverage_pct}%</strong>
         </div>
+        ${sizing.roof_max_kwp ? `
+        <div class="sizing-stat sizing-stat--roof">
+          <span class="sizing-stat-label">${tr('results.sizing_roof_cap', 'Roof limit')}</span>
+          <strong>~${sizing.roof_max_kwp} kWp max</strong>
+        </div>` : ''}
       </div>
+      ${sizing.demand_note ? `<p class="sizing-roof-note warn">${sizing.demand_note}</p>` : ''}
+      ${sizing.capped_by_roof ? `<p class="sizing-roof-note">${tr('results.sizing_roof_capped', 'Recommended size was reduced to fit available roof area — total demand may exceed what the roof can host.')}</p>` : ''}
+      ${(sizing.roof_limit_next_steps || []).length ? `
+        <div class="roof-limit-next-steps info-box">
+          <strong>${tr('results.roof_limit_title', 'When roof area is the limiting factor')}</strong>
+          <ul>${sizing.roof_limit_next_steps.map((s) => `<li>${s}</li>`).join('')}</ul>
+        </div>` : ''}
       <p class="sizing-source">${sizing.data_source === 'PVGIS' ? tr('results.sizing_source_pvgis', '') : tr('results.sizing_source_est', '')}</p>
     </div>
   ` : '';
@@ -308,7 +328,7 @@ function renderPackageCard(pkg, givesUp) {
         <div><span>${tr('results.backup', 'Backup')}</span><strong>${pkg.backup_capable ? tr('results.yes', 'Yes') : tr('results.no', 'No')}</strong></div>
         <div><span>${tr('results.warranty', 'Warranty')}</span><strong>${pkg.warranty_years} yrs</strong></div>
         <div><span>${tr('results.co2_saved', 'CO2 saved')}</span><strong>${pkg.co2_reduction_tonnes} t/yr</strong></div>
-        <div><span>${tr('results.reliability', 'Reliability')}</span><strong>${pkg.reliability_score}/100</strong></div>
+        <div><span>${tr('results.component_tier', 'Component tier')}</span><strong>${packageComponentTier(pkg)}</strong></div>
       </div>
       ${tradeoffList ? `<div class="package-tradeoffs"><strong>${tr('results.you_give_up', 'You give up')}:</strong><ul>${tradeoffList}</ul></div>` : ''}
       <button class="btn btn-outline btn-sm btn-block select-pkg-btn">${tr('results.select_package', 'Select this package')}</button>
@@ -410,6 +430,7 @@ function renderConfidence(conf) {
   const factors = conf.factors || [];
   const missing = conf.missing_data || [];
   const palette = confidenceScorePalette(score);
+  const scoreLabel = conf.score_label || tr('results.completeness_index', 'Information completeness index');
 
   const factorRows = factors.map(f => `
     <div class="conf-factor conf-factor-ok">
@@ -429,8 +450,8 @@ function renderConfidence(conf) {
           <div class="confidence-panel-header-main">
             <div class="confidence-panel-icon" aria-hidden="true">🎯</div>
             <div>
-              <h2 class="confidence-panel-title">${tr('results.installation_check', 'Installation reality check')}</h2>
-              <p class="confidence-panel-sub">${tr('results.installation_check_sub', 'How reliable is this estimate from the data you shared?')}</p>
+              <h2 class="confidence-panel-title">${tr('results.installation_check', 'Digital suitability check')}</h2>
+              <p class="confidence-panel-sub">${tr('results.installation_check_sub', 'How complete is the information behind this estimate?')}</p>
             </div>
           </div>
         </header>
@@ -439,11 +460,11 @@ function renderConfidence(conf) {
             <div class="confidence-ring" style="--score:${score};--ring-color:${palette.color};--ring-track:${palette.track}" aria-hidden="true">
               <div class="confidence-ring-inner">
                 <span class="confidence-ring-value" style="color:${palette.color}">${score}</span>
-                <span class="confidence-ring-of">/100</span>
+                <span class="confidence-ring-of">${tr('results.index_suffix', 'index')}</span>
               </div>
             </div>
-            <span class="confidence-level-tag" style="color:${palette.color}">${conf.label || 'Medium'}</span>
-            <span class="confidence-accuracy">${conf.estimated_accuracy || '±15%'} estimated accuracy</span>
+            <span class="confidence-level-tag" style="color:${palette.color}">${scoreLabel} · ${conf.label || 'Medium'}</span>
+            <span class="confidence-accuracy">${conf.estimated_accuracy || '±15%'} ${tr('results.estimate_variance', 'estimate variance')}</span>
           </div>
           <div class="confidence-details">
             <p class="confidence-summary">${conf.summary || ''}</p>
@@ -458,6 +479,10 @@ function renderConfidence(conf) {
         </div>
         <div class="confidence-disclaimer">
           <span class="confidence-disclaimer-icon" aria-hidden="true">i</span>
+          <p>${conf.survey_disclaimer || tr('results.survey_disclaimer', 'Final feasibility must be confirmed on site by an installer.')}</p>
+        </div>
+        <div class="confidence-disclaimer confidence-disclaimer-secondary">
+          <span class="confidence-disclaimer-icon" aria-hidden="true">☀</span>
           <p>${conf.pvgis_limitation || ''}</p>
         </div>
       </div>
@@ -888,7 +913,17 @@ async function loadMatchedSuppliers(data) {
 function openQuoteModal() { document.getElementById('quoteModal').classList.remove('hidden'); }
 
 function setupPDFDownload(data) {
-  const run = async () => downloadPDF(data);
+  const run = async () => {
+    const includeContact = document.getElementById('pdfIncludeContact')?.checked;
+    const customer = {};
+    if (includeContact) {
+      const name = prompt(tr('results.pdf_name_prompt', 'Your name (optional):')) || '';
+      const email = prompt(tr('results.pdf_email_prompt', 'Your email (optional):')) || '';
+      if (name) customer.name = name.trim();
+      if (email) customer.email = email.trim();
+    }
+    await downloadPDF(data, customer);
+  };
   document.getElementById('downloadPdfBtn')?.addEventListener('click', run);
   document.getElementById('downloadPdfBtnTop')?.addEventListener('click', run);
   document.getElementById('emailReportBtn')?.addEventListener('click', async () => {
@@ -922,11 +957,11 @@ function setupPDFDownload(data) {
   });
 }
 
-async function downloadPDF(data) {
+async function downloadPDF(data, customer = {}) {
   data.selected_package_id = selectedPackageId;
   const resp = await fetch('/api/report/pdf', {
     method: 'POST', headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ recommendation: data, customer: {}, selected_package: data.three_packages?.packages?.[selectedPackageId] }),
+    body: JSON.stringify({ recommendation: data, customer, selected_package: data.three_packages?.packages?.[selectedPackageId] }),
   });
   if (!resp.ok) { alert('PDF error'); return; }
   fetch('/api/beta/events', {

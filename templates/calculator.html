@@ -15,6 +15,8 @@
     <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
     <div class="progress-steps" id="progressSteps">
       <span class="active">{{ t('calc.step.goals') }}</span>
+      <span class="progress-ev-step hidden">{{ t('calc.step.ev') }}</span>
+      <span class="progress-heat-step hidden">{{ t('calc.step.heat') }}</span>
       <span>{{ t('calc.step.home') }}</span>
       <span>{{ t('calc.step.location') }}</span>
       <span>{{ t('calc.step.usage') }}</span>
@@ -39,8 +41,149 @@
         </div>
       </div>
 
-      <!-- Step 2: Housing -->
-      <div class="calc-step" data-step="2">
+      <!-- Step 2: EV details (only when EV charging goal selected) -->
+      <div class="calc-step" data-step="2" data-conditional="ev_charging">
+        <h2>{{ t('calc.ev.title') }}</h2>
+        <p class="step-desc">{{ t('calc.ev.sub') }}</p>
+        <div class="form-group">
+          <label for="ev_ownership">{{ t('calc.ev.ownership') }} *</label>
+          <select id="ev_ownership" name="ev_ownership" required>
+            <option value="">{{ t('calc.ev.choose') }}</option>
+            <option value="own">{{ t('calc.ev.ownership.own') }}</option>
+            <option value="planning">{{ t('calc.ev.ownership.planning') }}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="ev_vehicle_model">{{ t('calc.ev.vehicle_model') }}</label>
+          <input type="text" id="ev_vehicle_model" name="ev_vehicle_model" placeholder="{{ t('calc.ev.vehicle_model_ph') }}">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="ev_annual_km">{{ t('calc.ev.annual_km') }} *</label>
+            <input type="number" id="ev_annual_km" name="ev_annual_km" min="0" step="500" placeholder="15000">
+          </div>
+          <div class="form-group">
+            <label for="ev_consumption_kwh_100km">{{ t('calc.ev.consumption') }}</label>
+            <input type="number" id="ev_consumption_kwh_100km" name="ev_consumption_kwh_100km" min="10" max="40" step="0.1" value="18">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="ev_home_charging">{{ t('calc.ev.home_charging') }} *</label>
+          <select id="ev_home_charging" name="ev_home_charging" required>
+            <option value="">{{ t('calc.ev.choose') }}</option>
+            <option value="yes">{{ t('common.yes') }}</option>
+            <option value="limited">{{ t('calc.ev.home_charging.limited') }}</option>
+            <option value="no">{{ t('common.no') }}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="ev_park_home_daytime">{{ t('calc.ev.park_daytime') }} *</label>
+          <select id="ev_park_home_daytime" name="ev_park_home_daytime" required>
+            <option value="">{{ t('calc.ev.choose') }}</option>
+            <option value="yes">{{ t('common.yes') }}</option>
+            <option value="sometimes">{{ t('common.maybe') }}</option>
+            <option value="no">{{ t('common.no') }}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="ev_has_wallbox">{{ t('calc.ev.wallbox') }} *</label>
+          <select id="ev_has_wallbox" name="ev_has_wallbox" required>
+            <option value="">{{ t('calc.ev.choose') }}</option>
+            <option value="yes">{{ t('calc.ev.wallbox.yes') }}</option>
+            <option value="no">{{ t('calc.ev.wallbox.no') }}</option>
+            <option value="planning">{{ t('calc.ev.wallbox.planning') }}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="ev_charging_priority">{{ t('calc.ev.priority') }} *</label>
+          <select id="ev_charging_priority" name="ev_charging_priority" required>
+            <option value="">{{ t('calc.ev.choose') }}</option>
+            <option value="cheapest">{{ t('calc.ev.priority.cheapest') }}</option>
+            <option value="fastest">{{ t('calc.ev.priority.fastest') }}</option>
+            <option value="solar">{{ t('calc.ev.priority.solar') }}</option>
+            <option value="backup">{{ t('calc.ev.priority.backup') }}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="ev_dynamic_tariff_interest">{{ t('calc.ev.dynamic_tariff') }}</label>
+          <select id="ev_dynamic_tariff_interest" name="ev_dynamic_tariff_interest">
+            <option value="no">{{ t('common.no') }}</option>
+            <option value="maybe">{{ t('common.maybe') }}</option>
+            <option value="yes">{{ t('common.yes') }}</option>
+          </select>
+        </div>
+        <div class="info-box">{{ t('calc.ev.later_note') }}</div>
+      </div>
+
+      <!-- Step 3: Heat pump / heating (when space heating or hot water goal selected) -->
+      <div class="calc-step" data-step="3" data-conditional="heat">
+        <h2>{{ t('calc.hp.title') }}</h2>
+        <p class="step-desc">{{ t('calc.hp.sub') }}</p>
+        <div class="form-group">
+          <label for="hp_status">{{ t('calc.hp.status') }} *</label>
+          <select id="hp_status" name="hp_status" required>
+            <option value="">{{ t('calc.ev.choose') }}</option>
+            <option value="have">{{ t('calc.hp.status.have') }}</option>
+            <option value="planning">{{ t('calc.hp.status.planning') }}</option>
+            <option value="replacing_fossil">{{ t('calc.hp.status.replacing') }}</option>
+            <option value="hot_water_only">{{ t('calc.hp.status.hot_water_only') }}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="hp_type">{{ t('calc.hp.type') }} *</label>
+          <select id="hp_type" name="hp_type" required>
+            <option value="">{{ t('calc.ev.choose') }}</option>
+            <option value="air_source">{{ t('calc.hp.type.air') }}</option>
+            <option value="ground_source">{{ t('calc.hp.type.ground') }}</option>
+            <option value="water_heater">{{ t('calc.hp.type.water') }}</option>
+            <option value="unsure">{{ t('calc.hp.type.unsure') }}</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="hp_heated_area_m2">{{ t('calc.hp.heated_area') }}</label>
+            <input type="number" id="hp_heated_area_m2" name="hp_heated_area_m2" min="0" step="5" placeholder="120">
+          </div>
+          <div class="form-group">
+            <label for="hp_annual_heat_kwh">{{ t('calc.hp.annual_kwh') }}</label>
+            <input type="number" id="hp_annual_heat_kwh" name="hp_annual_heat_kwh" min="0" step="100" placeholder="4500">
+          </div>
+        </div>
+        <p class="field-hint">{{ t('calc.hp.area_or_kwh_hint') }}</p>
+        <div class="form-group">
+          <label for="hp_replacing">{{ t('calc.hp.replacing') }}</label>
+          <select id="hp_replacing" name="hp_replacing">
+            <option value="">{{ t('calc.ev.choose') }}</option>
+            <option value="gas">{{ t('calc.hp.replacing.gas') }}</option>
+            <option value="oil">{{ t('calc.hp.replacing.oil') }}</option>
+            <option value="electric">{{ t('calc.hp.replacing.electric') }}</option>
+            <option value="none">{{ t('calc.hp.replacing.none') }}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="hp_daytime_heating">{{ t('calc.hp.daytime') }} *</label>
+          <select id="hp_daytime_heating" name="hp_daytime_heating" required>
+            <option value="">{{ t('calc.ev.choose') }}</option>
+            <option value="yes">{{ t('calc.hp.daytime.yes') }}</option>
+            <option value="no">{{ t('calc.hp.daytime.no') }}</option>
+            <option value="managed">{{ t('calc.hp.daytime.managed') }}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="hp_priority">{{ t('calc.hp.priority') }} *</label>
+          <select id="hp_priority" name="hp_priority" required>
+            <option value="">{{ t('calc.ev.choose') }}</option>
+            <option value="lowest_cost">{{ t('calc.hp.priority.cost') }}</option>
+            <option value="solar_led">{{ t('calc.hp.priority.solar') }}</option>
+            <option value="comfort">{{ t('calc.hp.priority.comfort') }}</option>
+            <option value="backup">{{ t('calc.hp.priority.backup') }}</option>
+          </select>
+        </div>
+        <div class="info-box">{{ t('calc.hp.later_note') }}</div>
+      </div>
+
+      <!-- Step 4: Housing -->
+      <div class="calc-step" data-step="4">
         <h2>{{ t('calc.s2_title') }}</h2>
         <p class="step-desc">{{ t('calc.s2_sub') }}</p>
         <div class="form-group">
@@ -68,8 +211,8 @@
         </div>
       </div>
 
-      <!-- Step 3: Location -->
-      <div class="calc-step" data-step="3">
+      <!-- Step 5: Location -->
+      <div class="calc-step" data-step="5">
         <h2>{{ t('calc.s3_title') }}</h2>
         <p class="step-desc">{{ t('calc.s3_sub') }}</p>
         <div class="form-group">
@@ -86,8 +229,8 @@
         </div>
       </div>
 
-      <!-- Step 4: Usage -->
-      <div class="calc-step" data-step="4">
+      <!-- Step 6: Usage -->
+      <div class="calc-step" data-step="6">
         <h2>{{ t('calc.s4_title') }}</h2>
         <p class="step-desc">{{ t('calc.s4_sub') }}</p>
         <div class="form-row">
@@ -111,8 +254,8 @@
         </label>
       </div>
 
-      <!-- Step 5: Property -->
-      <div class="calc-step" data-step="5">
+      <!-- Step 7: Property -->
+      <div class="calc-step" data-step="7">
         <h2>{{ t('calc.s5_title') }}</h2>
         <div class="form-group">
           <label for="roof_type">{{ t('calc.roof_type') }}</label>
@@ -141,14 +284,14 @@
         <label class="checkbox-inline"><input type="checkbox" id="has_roof_photos" name="has_roof_photos"> {{ t('calc.roof_photos') }}</label>
       </div>
 
-      <!-- Step 6: Profile -->
-      <div class="calc-step" data-step="6">
+      <!-- Step 8: Profile -->
+      <div class="calc-step" data-step="8">
         <h2>{{ t('calc.s6_title') }}</h2>
         <p class="step-desc">{{ t('calc.s6_sub') }}</p>
-        <div class="register-checks calc-loads">
-          <label><input type="checkbox" name="has_heat_pump" id="has_heat_pump"> {{ t('calc.loads.heat_pump') }}</label>
-          <label><input type="checkbox" name="has_ev" id="has_ev"> {{ t('calc.loads.ev') }}</label>
-          <label><input type="checkbox" name="planned_ev" id="planned_ev"> {{ t('calc.loads.planned_ev') }}</label>
+        <div class="register-checks calc-loads" id="calcLoadsPanel">
+          <label class="hp-load-sync-wrap"><input type="checkbox" name="has_heat_pump" id="has_heat_pump"> {{ t('calc.loads.heat_pump') }}</label>
+          <label><input type="checkbox" name="has_ev" id="has_ev" class="ev-load-sync"> {{ t('calc.loads.ev') }}</label>
+          <label><input type="checkbox" name="planned_ev" id="planned_ev" class="ev-load-sync"> {{ t('calc.loads.planned_ev') }}</label>
           <label><input type="checkbox" name="has_electric_water_heater" id="has_electric_water_heater"> {{ t('calc.loads.water_heater') }}</label>
           <label><input type="checkbox" name="has_pool" id="has_pool"> {{ t('calc.loads.pool') }}</label>
           <label><input type="checkbox" name="has_home_office" id="has_home_office"> {{ t('calc.loads.home_office') }}</label>
@@ -176,8 +319,8 @@
         </div>
       </div>
 
-      <!-- Step 7: Budget -->
-      <div class="calc-step" data-step="7">
+      <!-- Step 9: Budget -->
+      <div class="calc-step" data-step="9">
         <h2>{{ t('calc.s7_title') }}</h2>
         <label class="checkbox-inline" style="margin-bottom:1rem">
           <input type="checkbox" id="budget_first_mode" name="budget_first_mode">
@@ -221,5 +364,5 @@
 {% block scripts %}
 <script>window.BETA_INVITE_DEFAULT = {{ beta_invite|tojson }};</script>
 <script src="{{ url_for('static', filename='js/intake_ref.js') }}?v=1"></script>
-<script src="{{ url_for('static', filename='js/calculator.js') }}?v=23"></script>
+<script src="{{ url_for('static', filename='js/calculator.js') }}?v=25"></script>
 {% endblock %}
