@@ -71,7 +71,66 @@ function initEvDealerDashboard() {
 
   loadDealerInventory();
   loadDealerLeads();
+  loadDealerBilling();
+  handleFeaturedReturn();
   document.getElementById('dealerVehicleForm')?.addEventListener('submit', saveDealerVehicle);
+}
+
+function handleFeaturedReturn() {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('featured') === 'success') {
+    alert(tr('evm.featured_success', 'Featured listing activated — thank you!'));
+    window.history.replaceState({}, '', '/ev/dealer/dashboard');
+    loadDealerInventory();
+    loadDealerBilling();
+  }
+}
+
+async function loadDealerBilling() {
+  const el = document.getElementById('dealerBillingPanel');
+  if (!el) return;
+  const resp = await fetch('/api/ev-dealer/billing');
+  if (!resp.ok) return;
+  const data = await resp.json();
+  const events = data.events || [];
+  const history = events.length
+    ? events.slice().reverse().map((e) => `<li>${e.created_at?.slice(0, 10) || ''} · ${e.type} · €${e.amount_eur || 0} · ${e.status}</li>`).join('')
+    : `<li>${tr('evm.no_billing', 'No billing events yet.')}</li>`;
+  el.innerHTML = `
+    <p><strong>${tr('evm.featured_price', 'Featured listing')}</strong>: €${data.featured_price_eur || 49} / ${data.featured_duration_days || 30} ${tr('evm.days', 'days')}</p>
+    <p>${tr('evm.total_spent', 'Total spent')}: €${data.total_spent_eur || 0}</p>
+    <ul class="evm-billing-history">${history}</ul>`;
+}
+
+async function promoteFeatured(vehicleId) {
+  const useStripe = document.getElementById('dealerBillingPanel')?.dataset.stripe === '1';
+  if (useStripe) {
+    const resp = await fetch('/api/ev-dealer/billing/featured-checkout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ vehicle_id: vehicleId }),
+    });
+    const data = await resp.json();
+    if (!resp.ok) {
+      alert(data.error || 'Checkout failed');
+      return;
+    }
+    if (data.checkout_url) window.location.href = data.checkout_url;
+    return;
+  }
+  const resp = await fetch('/api/ev-dealer/billing/featured-demo', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ vehicle_id: vehicleId }),
+  });
+  const data = await resp.json();
+  if (!resp.ok) {
+    alert(data.error || 'Failed');
+    return;
+  }
+  loadDealerInventory();
+  loadDealerBilling();
+  alert(tr('evm.featured_demo_ok', 'Featured listing activated (demo invoice).'));
 }
 
 async function loadDealerInventory() {
@@ -92,13 +151,19 @@ async function loadDealerInventory() {
     <div class="evm-inventory-row">
       <div>
         <strong>${v.make} ${v.model}</strong> · ${formatEur(v.price_eur)}
+        ${v.featured ? `<span class="evm-featured-badge">${tr('evm.featured', 'Featured')}</span>` : ''}
         <span class="evm-inv-status">${v.vehicle_status || v.status}</span>
       </div>
       <div class="evm-inventory-actions">
+        ${!v.featured && (v.vehicle_status === 'published' || v.status === 'published') ? `<button type="button" class="btn btn-primary btn-sm" data-feature="${v.id}">${tr('evm.promote_featured', 'Feature listing')}</button>` : ''}
         <button type="button" class="btn btn-outline btn-sm" data-edit="${v.id}">${tr('common.edit', 'Edit')}</button>
         <button type="button" class="btn btn-outline btn-sm" data-del="${v.id}">${tr('common.delete', 'Delete')}</button>
       </div>
     </div>`).join('');
+
+  el.querySelectorAll('[data-feature]').forEach((btn) => {
+    btn.addEventListener('click', () => promoteFeatured(btn.dataset.feature));
+  });
 
   el.querySelectorAll('[data-edit]').forEach((btn) => {
     btn.addEventListener('click', () => {
@@ -140,7 +205,8 @@ function populateVehicleForm(v) {
   document.getElementById('veh_warr_years').value = v.battery_warranty_years_remaining || '';
   document.getElementById('veh_warr_km').value = v.battery_warranty_km_remaining || '';
   document.getElementById('veh_photos').value = (v.photo_urls || []).join('\n');
-  document.getElementById('veh_featured').checked = !!v.featured;
+  const featEl = document.getElementById('veh_featured');
+  if (featEl) featEl.checked = !!v.featured;
   document.getElementById('veh_status').value = v.vehicle_status || v.status || 'draft';
 }
 
@@ -167,7 +233,7 @@ function vehicleFormPayload() {
     battery_warranty_years_remaining: document.getElementById('veh_warr_years').value,
     battery_warranty_km_remaining: document.getElementById('veh_warr_km').value,
     photo_urls: document.getElementById('veh_photos').value,
-    featured: document.getElementById('veh_featured').checked,
+    featured: document.getElementById('veh_featured')?.checked || false,
     status: document.getElementById('veh_status').value,
   };
 }

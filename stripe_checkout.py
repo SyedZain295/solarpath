@@ -14,6 +14,7 @@ STRIPE_PRICE_IDS = {
     "verified": os.environ.get("STRIPE_PRICE_VERIFIED", ""),
     "premium": os.environ.get("STRIPE_PRICE_PREMIUM", ""),
 }
+STRIPE_PRICE_EV_FEATURED = os.environ.get("STRIPE_PRICE_EV_FEATURED", "")
 
 
 def stripe_enabled() -> bool:
@@ -56,6 +57,65 @@ def create_checkout_session(
             cancel_url=cancel_url,
             metadata={"plan_id": plan_id, "checkout_id": checkout_id},
         )
+    except stripe.StripeError as exc:
+        raise RuntimeError(str(exc)) from exc
+    return {"id": session.id, "url": session.url}
+
+
+def ev_featured_stripe_enabled() -> bool:
+    if os.environ.get("STRIPE_LIVE_ENABLED", "0") != "1":
+        return False
+    if not STRIPE_SECRET_KEY:
+        return False
+    return bool(STRIPE_PRICE_EV_FEATURED) or bool(os.environ.get("EV_FEATURED_PRICE_EUR"))
+
+
+def create_ev_featured_checkout_session(
+    *,
+    dealer_id: str,
+    vehicle_id: str,
+    email: str,
+    amount_eur: int,
+    success_url: str,
+    cancel_url: str,
+) -> Optional[dict]:
+    if not ev_featured_stripe_enabled():
+        return None
+    import stripe
+
+    stripe.api_key = STRIPE_SECRET_KEY
+    metadata = {
+        "type": "ev_featured",
+        "dealer_id": dealer_id,
+        "vehicle_id": vehicle_id,
+        "amount_eur": str(amount_eur),
+    }
+    try:
+        if STRIPE_PRICE_EV_FEATURED:
+            session = stripe.checkout.Session.create(
+                mode="payment",
+                customer_email=email,
+                line_items=[{"price": STRIPE_PRICE_EV_FEATURED, "quantity": 1}],
+                success_url=success_url,
+                cancel_url=cancel_url,
+                metadata=metadata,
+            )
+        else:
+            session = stripe.checkout.Session.create(
+                mode="payment",
+                customer_email=email,
+                line_items=[{
+                    "price_data": {
+                        "currency": "eur",
+                        "unit_amount": int(amount_eur) * 100,
+                        "product_data": {"name": "Solar Path — Featured EV listing (30 days)"},
+                    },
+                    "quantity": 1,
+                }],
+                success_url=success_url,
+                cancel_url=cancel_url,
+                metadata=metadata,
+            )
     except stripe.StripeError as exc:
         raise RuntimeError(str(exc)) from exc
     return {"id": session.id, "url": session.url}

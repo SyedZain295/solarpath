@@ -185,7 +185,7 @@ def analyze_roof_set(set_id: str, hints: dict | None = None) -> dict:
         notes.append("A meter-cabinet photo helps installers plan inverter placement.")
     if hints.get("roof_area_m2"):
         notes.append(f"Usable roof area stated: ~{hints['roof_area_m2']} m² — verify against photos on site.")
-    return {
+    result = {
         "ok": True,
         "stub": False,
         "set_id": set_id,
@@ -196,6 +196,13 @@ def analyze_roof_set(set_id: str, hints: dict | None = None) -> dict:
         "notes": notes,
         "confidence": confidence,
     }
+    lat = hints.get("latitude") if hints.get("latitude") is not None else hints.get("lat")
+    lon = hints.get("longitude") if hints.get("longitude") is not None else hints.get("lon")
+    if lat is not None and lon is not None:
+        from google_solar_client import merge_solar_insights
+
+        return merge_solar_insights(result, float(lat), float(lon))
+    return result
 
 
 def can_view_photo(

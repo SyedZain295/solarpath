@@ -203,6 +203,11 @@ def create_vehicle(dealer_id: str, data: dict) -> dict:
     payload = _normalize_vehicle_payload(data)
     if not payload["make"] or not payload["model"]:
         raise ValueError("Make and model required")
+    from ev_dealer_billing import featured_billing_enabled, may_set_featured_directly
+
+    want_featured = bool(data.get("featured"))
+    if want_featured and featured_billing_enabled() and not may_set_featured_directly(dealer_id):
+        raise PermissionError("Featured listing requires payment — use billing checkout")
     base_slug = _slugify(f"{payload['make']}-{payload['model']}-{payload['year']}")
     vid = f"evv-{uuid.uuid4().hex[:10]}"
     with db_session() as db:
@@ -212,7 +217,7 @@ def create_vehicle(dealer_id: str, data: dict) -> dict:
             dealer_id=dealer_id,
             slug=slug,
             status=(data.get("status") or "draft").strip(),
-            featured=bool(data.get("featured")),
+            featured=want_featured if may_set_featured_directly(dealer_id) else False,
             payload=payload,
         )
         db.add(row)
@@ -232,7 +237,13 @@ def update_vehicle(dealer_id: str, vehicle_id: str, data: dict) -> dict | None:
         if "status" in data:
             row.status = (data.get("status") or row.status).strip()
         if "featured" in data:
-            row.featured = bool(data.get("featured"))
+            want_featured = bool(data.get("featured"))
+            from ev_dealer_billing import featured_billing_enabled, may_set_featured_directly
+
+            if want_featured and not row.featured and featured_billing_enabled():
+                raise PermissionError("Featured listing requires payment — use billing checkout")
+            if may_set_featured_directly(dealer_id):
+                row.featured = want_featured
         row.updated_at = _now()
         dealer = db.get(EvDealer, dealer_id)
         result = row.to_public_dict(dealer)

@@ -27,6 +27,7 @@
     <div class="dashboard-tabs evm-dash-tabs">
       <button type="button" class="tab-btn active" data-tab="inventory">{{ t('evm.tab.inventory') }}</button>
       <button type="button" class="tab-btn" data-tab="leads">{{ t('evm.tab.leads') }}</button>
+      <button type="button" class="tab-btn" data-tab="billing">{{ t('evm.tab.billing', 'Billing') }}</button>
       <button type="button" class="tab-btn" data-tab="add">{{ t('evm.tab.add_vehicle') }}</button>
     </div>
 
@@ -39,6 +40,12 @@
       <h2>{{ t('evm.tab.leads') }}</h2>
       <p class="form-hint">{{ t('evm.leads_sub') }}</p>
       <div id="dealerLeadsList" class="evm-dealer-leads"></div>
+    </div>
+
+    <div class="tab-panel glass-panel" id="tab-billing">
+      <h2>{{ t('evm.tab.billing', 'Billing') }}</h2>
+      <p class="form-hint">{{ t('evm.billing_sub', 'Featured listings boost visibility in search results.') }}</p>
+      <div id="dealerBillingPanel" class="evm-billing-panel" data-stripe="{{ '1' if featured_billing_enabled else '0' }}"></div>
     </div>
 
     <div class="tab-panel glass-panel" id="tab-add">
@@ -96,8 +103,12 @@
           <label class="form-hint" for="veh_photo_files">{{ t('evm.photo_upload', 'Or upload photos') }}</label>
           <input type="file" id="veh_photo_files" accept="image/*" multiple>
         </div>
-        <div class="evm-check-grid">
+        <div class="evm-check-grid" id="vehFeaturedBlock">
+          {% if featured_billing_enabled %}
+          <p class="form-hint">{{ t('evm.featured_paid_note', 'Featured placement is billed per listing — promote from inventory after publishing.') }}</p>
+          {% else %}
           <label class="checkbox-inline"><input type="checkbox" id="veh_featured"> {{ t('evm.featured_listing') }}</label>
+          {% endif %}
         </div>
         <div class="form-row">
           <div class="form-group">
@@ -118,6 +129,6 @@
 {% endblock %}
 
 {% block scripts %}
-<script src="{{ url_for('static', filename='js/ev_dealer_portal.js') }}?v=1"></script>
+<script src="{{ url_for('static', filename='js/ev_dealer_portal.js') }}?v=2"></script>
 <script>document.addEventListener('DOMContentLoaded', () => initEvDealerDashboard());</script>
 {% endblock %}

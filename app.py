@@ -28,7 +28,10 @@ from product_catalog import load_catalog, save_catalog, catalog_for_ui, check_co
 from quote_parse_stub import parse_quote_text, parse_quotes_from_text
 from quote_comparison import compare_quotes as build_quote_comparison
 from gsa_client import get_gsa_yield_estimate, validate_yield
-from api_stubs import stub_bill_upload, stub_roof_analysis, stub_financing_offers, stub_incentives
+from bill_ocr import parse_bill_upload
+from roof_analysis import analyze_roof_request
+from financing_offers import financing_offers as lookup_financing_offers
+from incentives_lookup import incentives_lookup
 from price_list_import import parse_csv_text, merge_products
 from database import (
     init_db, db_session, db_health,
@@ -81,6 +84,13 @@ from ev_dealer_store import (
     update_lead_status,
     create_buyer_lead_by_slug,
     dealer_by_email,
+)
+from ev_dealer_billing import (
+    create_featured_checkout,
+    demo_featured_invoice,
+    get_billing_summary,
+    handle_stripe_featured_session,
+    featured_billing_enabled,
 )
 from auth_ev_dealer import (
     login_ev_dealer,
@@ -793,7 +803,11 @@ def ev_dealer_dashboard():
     dealer = get_current_ev_dealer()
     if not dealer:
         return redirect(url_for("ev_dealer_login_page", next="/ev/dealer/dashboard"))
-    return render_template("ev_dealer_dashboard.html", dealer=dealer.to_dict())
+    return render_template(
+        "ev_dealer_dashboard.html",
+        dealer=dealer.to_dict(),
+        featured_billing_enabled=featured_billing_enabled(),
+    )
 
 
 @app.route("/api/ev-vehicles", methods=["GET"])
@@ -1034,6 +1048,58 @@ def api_ev_dealer_media(dealer_id, filename):
     if not path:
         return jsonify({"error": "Not found"}), 404
     return send_file(path)
+
+
+@app.route("/api/ev-dealer/billing", methods=["GET"])
+def api_ev_dealer_billing():
+    dealer = get_current_ev_dealer()
+    if not dealer:
+        return jsonify({"error": "Not logged in"}), 401
+    return jsonify(get_billing_summary(dealer.id))
+
+
+@app.route("/api/ev-dealer/billing/featured-checkout", methods=["POST"])
+def api_ev_dealer_featured_checkout():
+    dealer = get_current_ev_dealer()
+    if not dealer:
+        return jsonify({"error": "Not logged in"}), 401
+    if dealer.status != "approved":
+        return jsonify({"error": "Dealer account pending approval"}), 403
+    data = request.get_json() or {}
+    vehicle_id = (data.get("vehicle_id") or "").strip()
+    if not vehicle_id:
+        return jsonify({"error": "vehicle_id required"}), 400
+    base = request.url_root.rstrip("/")
+    success = f"{base}/ev/dealer/dashboard?featured=success&vehicle_id={vehicle_id}&session_id={{CHECKOUT_SESSION_ID}}"
+    cancel = f"{base}/ev/dealer/dashboard?featured=cancelled"
+    result = create_featured_checkout(
+        dealer.id,
+        vehicle_id,
+        success_url=success,
+        cancel_url=cancel,
+        dealer_email=dealer.email,
+    )
+    if not result.get("ok"):
+        return jsonify(result), 400
+    return jsonify(result)
+
+
+@app.route("/api/ev-dealer/billing/featured-demo", methods=["POST"])
+def api_ev_dealer_featured_demo():
+    dealer = get_current_ev_dealer()
+    if not dealer:
+        return jsonify({"error": "Not logged in"}), 401
+    if dealer.status != "approved":
+        return jsonify({"error": "Dealer account pending approval"}), 403
+    data = request.get_json() or {}
+    vehicle_id = (data.get("vehicle_id") or "").strip()
+    if not vehicle_id:
+        return jsonify({"error": "vehicle_id required"}), 400
+    result = demo_featured_invoice(dealer.id, vehicle_id)
+    if not result.get("ok"):
+        return jsonify(result), 400
+    clear_vehicle_cache()
+    return jsonify(result)
 
 
 @app.route("/api/ev-buyer-lead", methods=["POST"])
@@ -1299,11 +1365,13 @@ def api_calculate():
         if summary:
             recommendation["roof_photo_set_id"] = roof_set_id
             recommendation["roof_photos"] = summary
-            recommendation["roof_analysis"] = analyze_roof_set(
-                roof_set_id,
-                hints={
+            recommendation["roof_analysis"] = analyze_roof_request(
+                {
+                    "set_id": roof_set_id,
                     "shading": data.get("shading") or inp.shading,
                     "roof_area_m2": inp.roof_area_m2,
+                    "latitude": float(lat),
+                    "longitude": float(lon),
                 },
             )
 
@@ -1693,6 +1761,8 @@ def stripe_webhook():
 
     if event["type"] == "checkout.session.completed":
         sess = event["data"]["object"]
+        if handle_stripe_featured_session(sess):
+            return jsonify({"received": True})
         checkout_id = (sess.get("metadata") or {}).get("checkout_id")
         if checkout_id:
             with db_session() as db:
@@ -2058,28 +2128,39 @@ def api_supplier_price_list_upload(supplier_id):
     return jsonify({"ok": True, "imported": len(imported), "total_products": len(merged), "errors": errors, "supplier": saved})
 
 
-# ── API stubs (Phase 4) ─────────────────────────────────────────────────────
+# ── Integrations (bill OCR, roof AI, financing, incentives) ─────────────────
 
+@app.route("/api/bill-upload", methods=["POST"])
 @app.route("/api/stubs/bill-upload", methods=["POST"])
-def api_stub_bill_upload():
-    return jsonify(stub_bill_upload(request.get_json() or {}))
+def api_bill_upload():
+    upload = request.files.get("file") or request.files.get("bill")
+    if upload and upload.filename:
+        raw = upload.read()
+        result = parse_bill_upload({}, file_bytes=raw, filename=upload.filename)
+    else:
+        result = parse_bill_upload(request.get_json(silent=True) or {})
+    status = 200 if result.get("ok") else 400
+    return jsonify(result), status
 
 
+@app.route("/api/roof-analysis", methods=["POST"])
 @app.route("/api/stubs/roof-analysis", methods=["POST"])
-def api_stub_roof_analysis():
-    return jsonify(stub_roof_analysis(request.get_json() or {}))
+def api_roof_analysis():
+    return jsonify(analyze_roof_request(request.get_json() or {}))
 
 
+@app.route("/api/financing-offers", methods=["GET"])
 @app.route("/api/stubs/financing-offers", methods=["GET"])
-def api_stub_financing():
+def api_financing_offers():
     amount = float(request.args.get("amount") or 0)
     term = int(request.args.get("term_years") or 10)
-    return jsonify(stub_financing_offers(amount, term))
+    return jsonify(lookup_financing_offers(amount, term))
 
 
+@app.route("/api/incentives", methods=["GET"])
 @app.route("/api/stubs/incentives", methods=["GET"])
-def api_stub_incentives():
-    return jsonify(stub_incentives(request.args.get("postcode", "")))
+def api_incentives():
+    return jsonify(incentives_lookup(request.args.get("postcode", "")))
 
 
 @app.route("/api/stubs/gsa-validate", methods=["GET"])
