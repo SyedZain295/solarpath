@@ -132,6 +132,14 @@
         </div>
       </fieldset>
 
+      <fieldset class="quote-fieldset">
+        <legend>{{ t('results.quote_section_roof_photos') }}</legend>
+        <p class="section-sub">{{ t('results.roof_photos_sub') }}</p>
+        <input type="file" id="quote_roof_photos" accept="image/*" multiple>
+        <div id="quoteRoofPhotoPreview" class="roof-photo-preview hidden"></div>
+        <p id="quoteRoofPhotoStatus" class="form-hint"></p>
+      </fieldset>
+
       <fieldset class="quote-fieldset quote-consent">
         <legend>{{ t('results.quote_section_consent') }}</legend>
         <label class="checkbox-inline consent-check">
@@ -157,6 +165,7 @@
 {% endblock %}
 
 {% block scripts %}
+<script src="{{ url_for('static', filename='js/roof_photos.js') }}?v=1"></script>
 <script src="{{ url_for('static', filename='js/results_features.js') }}?v=30"></script>
 <script src="{{ url_for('static', filename='js/results_assumptions.js') }}?v=1"></script>
 <script src="{{ url_for('static', filename='js/results.js') }}?v=31"></script>

@@ -1,0 +1,59 @@
+{
+  "wallboxes": [
+    {
+      "id": "wb-fronius-wattpilot",
+      "make": "Fronius",
+      "model": "Wattpilot Home 11 J 2.0",
+      "ac_kw": 11,
+      "installed_price_eur": 1290,
+      "solar_ready": true,
+      "load_management": true,
+      "dynamic_tariff": true,
+      "notes": "Strong solar surplus routing and dynamic tariff support."
+    },
+    {
+      "id": "wb-abl-emh1",
+      "make": "ABL",
+      "model": "eMH1 11 kW",
+      "ac_kw": 11,
+      "installed_price_eur": 980,
+      "solar_ready": true,
+      "load_management": true,
+      "dynamic_tariff": false,
+      "notes": "Reliable mid-range wallbox for most home EVs."
+    },
+    {
+      "id": "wb-kostal-plenticharge",
+      "make": "Kostal",
+      "model": "Plenticharge 11",
+      "ac_kw": 11,
+      "installed_price_eur": 1150,
+      "solar_ready": true,
+      "load_management": true,
+      "dynamic_tariff": true,
+      "notes": "Pairs well with Kostal inverters and PV systems."
+    },
+    {
+      "id": "wb-abb-terra",
+      "make": "ABB",
+      "model": "Terra AC 22 kW",
+      "ac_kw": 22,
+      "installed_price_eur": 1680,
+      "solar_ready": true,
+      "load_management": true,
+      "dynamic_tariff": false,
+      "notes": "For vehicles with 22 kW AC charging and three-phase supply."
+    },
+    {
+      "id": "wb-smart-upgrade",
+      "make": "Solar Path",
+      "model": "Smart wallbox upgrade (existing unit)",
+      "ac_kw": 11,
+      "installed_price_eur": 450,
+      "solar_ready": true,
+      "load_management": true,
+      "dynamic_tariff": true,
+      "notes": "PV surplus routing and tariff scheduling for an existing wallbox."
+    }
+  ]
+}

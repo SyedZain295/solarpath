@@ -20,7 +20,7 @@
           <button type="button" class="btn btn-outline btn-sm" id="loadSampleBtn">{{ t('compare.sample_btn') }}</button>
           <label class="btn btn-outline btn-sm compare-file-btn">
             {{ t('compare.upload_file') }}
-            <input type="file" id="quoteFile" accept=".pdf,.png,.jpg,.jpeg" hidden>
+            <input type="file" id="quoteFile" accept=".pdf" hidden>
           </label>
         </div>
         <p id="parseMsg" class="form-hint"></p>
@@ -39,5 +39,5 @@
 {% endblock %}
 
 {% block scripts %}
-<script src="{{ url_for('static', filename='js/compare_quotes.js') }}?v=31"></script>
+<script src="{{ url_for('static', filename='js/compare_quotes.js') }}?v=32"></script>
 {% endblock %}

@@ -1,7 +1,10 @@
-// Side-by-side PV quote comparison with scoring
+// Side-by-side PV quote comparison — server scoring + warning signs
+
+const MAX_QUOTES = 3;
 
 const CHECK_FIELDS = [
   { key: 'includes_installation', labelKey: 'compare.js.chk_installation', weight: 2 },
+  { key: 'includes_mounting', labelKey: 'compare.js.chk_mounting', weight: 1 },
   { key: 'includes_scaffolding', labelKey: 'compare.js.chk_scaffolding', weight: 1 },
   { key: 'includes_grid_registration', labelKey: 'compare.js.chk_grid', weight: 2 },
   { key: 'includes_mastr', labelKey: 'compare.js.chk_mastr', weight: 2 },
@@ -22,7 +25,18 @@ Speicher: 10,2 kWh BYD Battery-Box
 Jahresertrag ca. 8.900 kWh
 Garantie: 25 Jahre Module, 12 Jahre Wechselrichter
 Enthalten: Montage, Gerüst, Netzanmeldung, MaStR, Monitoring
-Gültig 30 Tage`;
+Gültig 30 Tage
+---
+BayerSolar GmbH
+Angebot Nr. 9921
+8,4 kWp PV-Anlage
+Gesamtpreis: 15.200,00 EUR
+Module: 20× JA Solar 420 Wp
+Wechselrichter SMA Sunny Tripower 6.0 kW
+Jahresertrag 8.500 kWh
+Garantie: 12 Jahre Module
+Montage inklusive
+Gültig 7 Tage`;
 
 let quoteCount = 0;
 
@@ -30,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
   addQuoteForm();
   addQuoteForm();
   document.getElementById('addQuoteBtn')?.addEventListener('click', () => {
-    if (quoteCount < 4) addQuoteForm();
+    if (quoteCount < MAX_QUOTES) addQuoteForm();
   });
   document.getElementById('compareBtn')?.addEventListener('click', runComparison);
   document.getElementById('parseQuoteBtn')?.addEventListener('click', parsePastedQuote);
@@ -39,27 +53,66 @@ document.addEventListener('DOMContentLoaded', () => {
     if (ta) ta.value = SAMPLE_QUOTE;
     parsePastedQuote();
   });
-  document.getElementById('quoteFile')?.addEventListener('change', async (e) => {
-    document.getElementById('parseMsg').textContent = tr('compare.js.upload_stub', 'Paste quote text for now.');
-    e.target.value = '';
-  });
+  document.getElementById('quoteFile')?.addEventListener('change', handleFileUpload);
 });
+
+async function handleFileUpload(e) {
+  const file = e.target.files?.[0];
+  const msg = document.getElementById('parseMsg');
+  e.target.value = '';
+  if (!file) return;
+  const fd = new FormData();
+  fd.append('file', file);
+  msg.textContent = tr('compare.js.parsing', 'Parsing…');
+  const resp = await fetch('/api/quotes/parse-upload', { method: 'POST', body: fd });
+  const data = await resp.json();
+  if (!resp.ok) {
+    msg.textContent = data.error || tr('compare.js.parse_fail', 'Parse failed');
+    return;
+  }
+  applyParsedQuotes(data.quotes || []);
+  msg.textContent = tr('compare.js.parsed_pdf', 'Extracted {n} quote(s) from PDF — verify before comparing.').replace('{n}', data.count || 0);
+}
 
 async function parsePastedQuote() {
   const text = document.getElementById('quotePaste')?.value.trim();
   const msg = document.getElementById('parseMsg');
   if (!text) return;
+  msg.textContent = tr('compare.js.parsing', 'Parsing…');
   const resp = await fetch('/api/quotes/parse-text', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ text }),
+    body: JSON.stringify({ text, multi: true }),
   });
   const data = await resp.json();
-  if (!resp.ok) { msg.textContent = data.error || 'Parse failed'; return; }
-  if (quoteCount >= 4) addQuoteForm();
-  const form = document.querySelector('.compare-quote-form:last-child');
-  if (!form) return;
-  const set = (n, v) => { const el = form.querySelector(`[name="${n}"]`); if (el && v != null && v !== '') el.value = v; };
+  if (!resp.ok) {
+    msg.textContent = data.error || tr('compare.js.parse_fail', 'Parse failed');
+    return;
+  }
+  const quotes = data.quotes || [data];
+  applyParsedQuotes(quotes);
+  const conf = quotes.map(q => q.confidence).join(', ');
+  msg.textContent = tr('compare.js.parsed_multi', 'Parsed {n} quote(s) ({conf}) — verify before comparing.')
+    .replace('{n}', quotes.length)
+    .replace('{conf}', conf);
+}
+
+function applyParsedQuotes(quotes) {
+  ensureQuoteForms(quotes.length);
+  const forms = [...document.querySelectorAll('.compare-quote-form')];
+  quotes.slice(0, MAX_QUOTES).forEach((q, i) => fillFormFromParsed(forms[i], q));
+}
+
+function ensureQuoteForms(n) {
+  while (quoteCount < n && quoteCount < MAX_QUOTES) addQuoteForm();
+}
+
+function fillFormFromParsed(form, data) {
+  if (!form || !data) return;
+  const set = (name, v) => {
+    const el = form.querySelector(`[name="${name}"]`);
+    if (el && v != null && v !== '') el.value = v;
+  };
   set('installer', data.installer);
   set('total_eur', data.total_eur);
   set('kwp', data.kwp);
@@ -75,13 +128,13 @@ async function parsePastedQuote() {
   set('notes', data.notes);
   CHECK_FIELDS.forEach(f => {
     const el = form.querySelector(`[name="${f.key}"]`);
-    if (el) el.checked = !!data[f.key];
+    if (el) el.checked = !!(data[f.key] || (data.checks && data.checks[f.key]));
   });
-  msg.textContent = tr('compare.js.parsed', 'Parsed ({conf} confidence) — verify before comparing.').replace('{conf}', data.confidence);
+  updateCostPerKwp(form);
 }
 
 function addQuoteForm() {
-  if (quoteCount >= 4) return;
+  if (quoteCount >= MAX_QUOTES) return;
   quoteCount++;
   const id = quoteCount;
   const wrap = document.createElement('div');
@@ -118,10 +171,11 @@ function addQuoteForm() {
     <div class="form-group"><label>${tr('compare.js.notes', 'Notes')}</label><textarea name="notes" rows="2"></textarea></div>
   `;
   document.getElementById('quoteForms')?.appendChild(wrap);
-
   wrap.querySelectorAll('[name="total_eur"], [name="kwp"]').forEach(el => {
     el.addEventListener('input', () => updateCostPerKwp(wrap));
   });
+  const addBtn = document.getElementById('addQuoteBtn');
+  if (addBtn) addBtn.disabled = quoteCount >= MAX_QUOTES;
 }
 
 function updateCostPerKwp(form) {
@@ -136,62 +190,58 @@ function collectQuotes() {
     const g = (n) => form.querySelector(`[name="${n}"]`);
     const total = parseFloat(g('total_eur')?.value) || 0;
     const kwp = parseFloat(g('kwp')?.value) || 0;
-    const checks = {};
-    CHECK_FIELDS.forEach(f => { checks[f.key] = g(f.key)?.checked || false; });
-    const completeness = CHECK_FIELDS.reduce((s, f) => s + (checks[f.key] ? f.weight : 0), 0);
-    const maxCompleteness = CHECK_FIELDS.reduce((s, f) => s + f.weight, 0);
-    const production = parseFloat(g('production_kwh')?.value) || null;
-    const costPerKwh = production && total ? Math.round(total / (production * 20)) : null;
-    return {
+    const row = {
       installer: g('installer')?.value.trim() || '—',
       total_eur: total,
-      kwp,
-      cost_per_kwp: kwp > 0 ? Math.round(total / kwp) : null,
-      production_kwh: production,
-      cost_per_kwh_lifetime: costPerKwh,
+      kwp: kwp || null,
+      production_kwh: parseFloat(g('production_kwh')?.value) || null,
       panel_count: parseInt(g('panel_count')?.value, 10) || null,
       panel_wp: parseFloat(g('panel_wp')?.value) || null,
-      panels: g('panels')?.value.trim() || '—',
-      inverter: g('inverter')?.value.trim() || '—',
+      panels: g('panels')?.value.trim() || '',
+      inverter: g('inverter')?.value.trim() || '',
       inverter_kw: parseFloat(g('inverter_kw')?.value) || null,
       battery_kwh: parseFloat(g('battery_kwh')?.value) || 0,
       warranty_years: parseInt(g('warranty_years')?.value, 10) || null,
       validity_days: parseInt(g('validity_days')?.value, 10) || null,
-      checks,
-      completeness_pct: Math.round(completeness / maxCompleteness * 100),
-      missing: CHECK_FIELDS.filter(f => !checks[f.key]).map(f => tr(f.labelKey, f.key)),
       notes: g('notes')?.value.trim() || '',
     };
-  }).filter(q => q.total_eur > 0 || q.installer !== '—');
+    CHECK_FIELDS.forEach(f => { row[f.key] = g(f.key)?.checked || false; });
+    return row;
+  }).filter(q => q.total_eur > 0 || (q.installer && q.installer !== '—'));
 }
 
-function scoreQuotes(quotes) {
-  const cpk = quotes.map(q => q.cost_per_kwp).filter(Boolean);
-  const minCpk = cpk.length ? Math.min(...cpk) : null;
-  return quotes.map(q => {
-    let score = 50;
-    if (q.cost_per_kwp && minCpk) score += Math.max(0, 30 - Math.round((q.cost_per_kwp - minCpk) / minCpk * 100));
-    score += Math.round(q.completeness_pct * 0.2);
-    if (q.production_kwh && q.kwp) score += 5;
-    if (q.warranty_years >= 20) score += 5;
-    return { ...q, value_score: Math.min(100, Math.round(score)) };
-  });
-}
-
-function runComparison() {
-  const quotes = scoreQuotes(collectQuotes());
+async function runComparison() {
   const out = document.getElementById('compareResults');
+  const quotes = collectQuotes();
   if (!quotes.length) {
     out.innerHTML = `<p class="form-error">${tr('compare.js.need_price', 'Enter at least one quote.')}</p>`;
     out.classList.remove('hidden');
     return;
   }
+  out.innerHTML = `<p class="form-hint">${tr('compare.js.comparing', 'Comparing…')}</p>`;
+  out.classList.remove('hidden');
+  const resp = await fetch('/api/quotes/compare', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ quotes }),
+  });
+  const data = await resp.json();
+  if (!resp.ok) {
+    out.innerHTML = `<p class="form-error">${esc(data.error || tr('compare.js.compare_fail', 'Comparison failed'))}</p>`;
+    return;
+  }
+  renderComparison(data);
+}
 
-  const bestCpk = quotes.reduce((a, b) => (a.cost_per_kwp && (!b.cost_per_kwp || a.cost_per_kwp < b.cost_per_kwp)) ? a : b, quotes[0]);
-  const bestScore = quotes.reduce((a, b) => (a.value_score > b.value_score) ? a : b, quotes[0]);
+function renderComparison(data) {
+  const out = document.getElementById('compareResults');
+  const quotes = data.quotes || [];
+  const summary = data.summary || {};
+  const bestIdx = summary.best_value_index ?? 0;
+  const lowCpkIdx = summary.lowest_cpk_index ?? 0;
 
   const cards = quotes.map((q, i) => `
-    <article class="quote-summary-card ${q === bestScore ? 'best-value' : ''}">
+    <article class="quote-summary-card ${i === bestIdx ? 'best-value' : ''}">
       <h4>${tr('compare.js.quote_n', 'Quote')} ${i + 1}: ${esc(q.installer)}</h4>
       <div class="quote-summary-stats">
         <span><strong>${formatCurrency(q.total_eur)}</strong> ${tr('compare.js.total_cost', 'total')}</span>
@@ -199,53 +249,89 @@ function runComparison() {
         <span>${tr('compare.js.value_score', 'Value')}: <strong>${q.value_score}/100</strong></span>
         <span>${tr('compare.js.complete', 'Complete')}: ${q.completeness_pct}%</span>
       </div>
-      ${q === bestCpk && q.cost_per_kwp ? `<span class="quote-badge">${tr('compare.js.lowest_cpk', 'Lowest €/kWp')}</span>` : ''}
-      ${q.missing.length ? `<p class="form-hint warn">${tr('compare.js.missing', 'Missing')}: ${q.missing.join(', ')}</p>` : ''}
+      ${i === lowCpkIdx && q.cost_per_kwp ? `<span class="quote-badge">${tr('compare.js.lowest_cpk', 'Lowest €/kWp')}</span>` : ''}
+      ${i === bestIdx ? `<span class="quote-badge quote-badge-value">${tr('compare.js.best_value', 'Best overall value')}</span>` : ''}
+      ${renderWarnings(q.warnings)}
+      ${q.missing?.length ? `<p class="form-hint warn">${tr('compare.js.missing', 'Missing')}: ${esc(q.missing.join(', '))}</p>` : ''}
     </article>
   `).join('');
 
-  const highlight = (rowKey, val, q) => {
-    if (rowKey === 'cost_per_kwp' && q.cost_per_kwp === bestCpk.cost_per_kwp) return `class="cell-best"`;
-    if (rowKey === 'value_score' && q.value_score === bestScore.value_score) return `class="cell-best"`;
-    return '';
-  };
+  const summaryLine = quotes.length >= 2
+    ? `<p class="compare-summary-line">${tr('compare.js.summary_line', 'Best value: {best} · Lowest €/kWp: {low} ({cpk})')
+      .replace('{best}', esc(summary.best_value_installer || '—'))
+      .replace('{low}', esc(summary.lowest_cpk_installer || '—'))
+      .replace('{cpk}', summary.lowest_cpk ? formatCurrency(summary.lowest_cpk) + '/kWp' : '—')}</p>`
+    : '';
 
-  const rows = [
-    ['installer', tr('compare.js.installer', 'Installer'), ...quotes.map(q => q.installer)],
-    ['total', tr('compare.js.total_cost', 'Total'), ...quotes.map(q => formatCurrency(q.total_eur))],
-    ['cost_per_kwp', tr('compare.js.cost_per_kwp', '€/kWp'), ...quotes.map(q => q.cost_per_kwp ? formatCurrency(q.cost_per_kwp) : '—')],
-    ['value_score', tr('compare.js.value_score', 'Value score'), ...quotes.map(q => `${q.value_score}/100`)],
-    ['kwp', tr('compare.js.system_kwp', 'kWp'), ...quotes.map(q => q.kwp || '—')],
-    ['panel_count', tr('compare.js.panel_count', 'Panels'), ...quotes.map(q => q.panel_count ? `${q.panel_count}× ${q.panel_wp || '?'} Wp` : '—')],
-    ['panels', tr('compare.js.panels', 'Panel model'), ...quotes.map(q => q.panels)],
-    ['inverter', tr('compare.js.inverter', 'Inverter'), ...quotes.map(q => q.inverter_kw ? `${q.inverter} (${q.inverter_kw} kW)` : q.inverter)],
-    ['battery', tr('compare.js.battery', 'Battery'), ...quotes.map(q => q.battery_kwh ? `${q.battery_kwh} kWh` : tr('compare.js.none', 'None'))],
-    ['production', tr('compare.js.production_yr', 'Production/yr'), ...quotes.map(q => q.production_kwh ? `${q.production_kwh.toLocaleString()} kWh` : '—')],
-    ['warranty', tr('compare.js.warranty', 'Warranty'), ...quotes.map(q => q.warranty_years ? `${q.warranty_years} ${tr('compare.js.years_abbr', 'yr')}` : '—')],
-    ['validity', tr('compare.js.validity', 'Valid days'), ...quotes.map(q => q.validity_days || '—')],
-    ...CHECK_FIELDS.map(f => [f.key, tr(f.labelKey, f.key), ...quotes.map(q => q.checks[f.key] ? '✓' : '✗')]),
-    ['missing', tr('compare.js.likely_missing', 'Missing'), ...quotes.map(q => q.missing.length ? q.missing.join(', ') : '—')],
-    ['notes', tr('compare.js.notes', 'Notes'), ...quotes.map(q => q.notes || '—')],
-  ];
+  const rows = (data.rows || []).map(row => {
+    const label = rowLabel(row.key, row.label);
+    const cells = row.values.map((val, i) => {
+      const q = quotes[i];
+      let display = val;
+      if (row.bool === true) display = val ? '✓' : '✗';
+      else if (row.key === 'total_eur' && val) display = formatCurrency(val);
+      else if (row.key === 'cost_per_kwp' && val) display = formatCurrency(val);
+      else if (row.key === 'value_score' && val != null) display = `${val}/100`;
+      else if (row.key === 'completeness_pct' && val != null) display = `${val}%`;
+      else if (row.key === 'battery_kwh') display = val ? `${val} kWh` : tr('compare.js.none', 'None');
+      else if (val == null || val === '') display = '—';
+      const best = isBestCell(row, val, quotes, i);
+      return `<td${best ? ' class="cell-best"' : ''}>${esc(String(display))}</td>`;
+    });
+    return `<tr><th>${esc(label)}</th>${cells.join('')}</tr>`;
+  }).join('');
 
   out.innerHTML = `
     <h2 class="section-title">${tr('compare.js.title', 'Comparison')}</h2>
+    ${summaryLine}
     <div class="quote-summary-grid">${cards}</div>
     <div class="compare-table-wrap">
       <table class="compare-table">
         <thead><tr><th>${tr('compare.js.item', 'Item')}</th>${quotes.map((_, i) => `<th>${tr('compare.js.quote_n', 'Quote')} ${i + 1}</th>`).join('')}</tr></thead>
-        <tbody>${rows.map(r => {
-          const rowKey = r[0];
-          return `<tr>${r.slice(1).map((c, i) => {
-            const attr = i > 0 ? highlight(rowKey, c, quotes[i - 1]) : '';
-            return i === 0 ? `<th>${c}</th>` : `<td ${attr}>${esc(String(c))}</td>`;
-          }).join('')}</tr>`;
-        }).join('')}</tbody>
+        <tbody>${rows}</tbody>
       </table>
     </div>
-    <p class="form-hint">${tr('compare.js.disclaimer', '')}</p>
+    <p class="form-hint">${esc(data.disclaimer || tr('compare.js.disclaimer', ''))}</p>
   `;
   out.classList.remove('hidden');
+}
+
+function rowLabel(key, fallback) {
+  const map = {
+    total_eur: tr('compare.js.total_cost', 'Total cost'),
+    cost_per_kwp: tr('compare.js.cost_per_kwp', '€/kWp'),
+    kwp: tr('compare.js.system_kwp', 'kWp'),
+    panels: tr('compare.js.panels', 'Panel model'),
+    inverter: tr('compare.js.inverter', 'Inverter'),
+    battery_kwh: tr('compare.js.battery', 'Battery'),
+    includes_mounting: tr('compare.js.chk_mounting', 'Mounting'),
+    includes_electrician: tr('compare.js.chk_electrician', 'Electrical work'),
+    includes_grid_registration: tr('compare.js.chk_grid', 'Grid registration'),
+    includes_mastr: tr('compare.js.chk_mastr', 'MaStR'),
+    warranty_years: tr('compare.js.warranty', 'Warranty'),
+    completeness_pct: tr('compare.js.complete', 'Completeness'),
+    value_score: tr('compare.js.value_score', 'Value score'),
+    missing: tr('compare.js.likely_missing', 'Likely missing'),
+  };
+  return map[key] || fallback || key;
+}
+
+function isBestCell(row, val, quotes, idx) {
+  if (!row.highlight || val == null) return false;
+  const nums = row.values.map(v => (typeof v === 'number' ? v : null)).filter(v => v != null);
+  if (!nums.length) return false;
+  if (row.highlight === 'lowest') return val === Math.min(...nums);
+  if (row.highlight === 'highest') return val === Math.max(...nums);
+  return false;
+}
+
+function renderWarnings(warnings) {
+  if (!warnings?.length) return '';
+  const items = warnings.map(w => {
+    const cls = w.level === 'high' ? 'quote-warn-high' : (w.level === 'medium' ? 'quote-warn-medium' : 'quote-warn-low');
+    return `<li class="${cls}">${esc(w.message)}</li>`;
+  }).join('');
+  return `<div class="quote-warnings"><strong>${tr('compare.js.warnings', 'Warning signs')}</strong><ul>${items}</ul></div>`;
 }
 
 function formatCurrency(n) {

@@ -24,6 +24,8 @@ def calculator_inputs_snapshot(inp) -> dict:
         "shading": getattr(inp, "shading", "unknown"),
         "budget_eur": getattr(inp, "budget_eur", 0),
         "has_roof_photos": getattr(inp, "has_roof_photos", False),
+        "roof_photo_set_id": getattr(inp, "roof_photo_set_id", ""),
+        "roof_photo_count": getattr(inp, "roof_photo_count", 0),
         "has_heat_pump": getattr(inp, "has_heat_pump", False),
         "has_ev": getattr(inp, "has_ev", False),
         "planned_ev": getattr(inp, "planned_ev", False),
@@ -87,10 +89,12 @@ def _supplier_in_service_area(supplier: dict, postcode: str) -> bool:
     return bool(regions)
 
 
-def build_lead_profile(rec: dict, contact: dict, matched_suppliers: list) -> dict:
+def build_lead_profile(rec: dict, contact: dict, matched_suppliers: list, roof_photos: dict | None = None) -> dict:
     ci = rec.get("calculator_inputs") or {}
     fin = rec.get("financials") or {}
     sr = rec.get("system_recommendation") or {}
+    roof_photos = roof_photos or rec.get("roof_photos")
+    photo_count = (roof_photos or {}).get("count") or ci.get("roof_photo_count") or 0
     return {
         "contact": {
             "first_name": contact.get("customer_first_name", ""),
@@ -128,7 +132,15 @@ def build_lead_profile(rec: dict, contact: dict, matched_suppliers: list) -> dic
             "roof_type": ci.get("roof_type"),
             "roof_area_m2": ci.get("roof_area_m2"),
             "shading": ci.get("shading"),
-            "has_roof_photos": ci.get("has_roof_photos"),
+            "has_roof_photos": bool(ci.get("has_roof_photos") or photo_count),
+            "roof_photo_set_id": ci.get("roof_photo_set_id") or rec.get("roof_photo_set_id"),
+            "roof_photo_count": photo_count,
+            "photos": (roof_photos or {}).get("photos") or [],
+            "installer_handoff": (
+                f"{photo_count} roof photo(s) attached — review before site visit."
+                if photo_count
+                else "No roof photos yet — request before quoting."
+            ),
         },
         "preferences": {
             "battery_interest": contact.get("battery_interest") or ci.get("battery_interest", "unsure"),

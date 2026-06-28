@@ -264,6 +264,51 @@ class EvBuyerLead(Base):
         }
 
 
+class RoofPhotoSet(Base):
+    """Uploaded roof photos linked to an assessment or installer quote request."""
+
+    __tablename__ = "roof_photo_sets"
+
+    id = Column(String(32), primary_key=True)
+    quote_id = Column(String(32), default="", index=True)
+    postcode = Column(String(16), default="")
+    customer_email = Column(String(255), default="", index=True)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+
+    def to_dict(self) -> dict:
+        return {
+            "id": self.id,
+            "quote_id": self.quote_id or "",
+            "postcode": self.postcode or "",
+            "customer_email": self.customer_email or "",
+            "created_at": self.created_at.isoformat() if self.created_at else None,
+        }
+
+
+class RoofPhoto(Base):
+    __tablename__ = "roof_photos"
+
+    id = Column(String(32), primary_key=True)
+    set_id = Column(String(32), nullable=False, index=True)
+    stored_name = Column(String(255), nullable=False)
+    original_name = Column(String(255), default="")
+    content_type = Column(String(64), default="image/jpeg")
+    size_bytes = Column(Integer, default=0)
+    label = Column(String(32), default="roof")
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+
+    def to_public_dict(self) -> dict:
+        return {
+            "id": self.id,
+            "set_id": self.set_id,
+            "original_name": self.original_name or "",
+            "content_type": self.content_type or "image/jpeg",
+            "size_bytes": self.size_bytes or 0,
+            "label": self.label or "roof",
+            "url": f"/api/roof-photos/{self.id}/image",
+        }
+
+
 class InstallerQuote(Base):
     """Structured quote submitted by an installer for a homeowner lead."""
 

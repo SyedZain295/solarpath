@@ -24,6 +24,7 @@ data/beta_cookies.txt
 data/pvgis_cache.json
 data/test_solarpath.db
 data/solarpath.db
+data/uploads/
 *.log
 
 # Test artifacts

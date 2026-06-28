@@ -127,7 +127,6 @@ def build_ev_assessment(inp, electricity_price_ct: float = 32.0) -> dict:
         "future_features": [
             "Browse used EVs with Solar Path fit on EV Marketplace",
             "Battery certificate checks when uploaded by dealer",
-            "Home energy bundle: wallbox + PV + smart charging",
         ],
     }
 

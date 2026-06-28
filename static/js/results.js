@@ -757,6 +757,30 @@ function setupQuoteModal(data) {
   const modal = document.getElementById('quoteModal');
   const ci = data.calculator_inputs || {};
   const loc = data.location || {};
+  if (data.roof_photo_set_id) setRoofPhotoSetId(data.roof_photo_set_id);
+  else if (ci.roof_photo_set_id) setRoofPhotoSetId(ci.roof_photo_set_id);
+  const roofSummary = data.roof_photos || null;
+  renderRoofPhotoPreview(document.getElementById('quoteRoofPhotoPreview'), roofSummary);
+  wireRoofPhotoInput(
+    document.getElementById('quote_roof_photos'),
+    document.getElementById('quoteRoofPhotoPreview'),
+    document.getElementById('quoteRoofPhotoStatus'),
+    {
+      getPostcode: () => document.getElementById('quote_postcode')?.value || ci.postcode || '',
+      onUploaded: (summary) => {
+        data.roof_photo_set_id = summary.set_id;
+        data.roof_photos = summary;
+        if (data.calculator_inputs) {
+          data.calculator_inputs.has_roof_photos = true;
+          data.calculator_inputs.roof_photo_set_id = summary.set_id;
+          data.calculator_inputs.roof_photo_count = summary.count;
+        }
+        try {
+          sessionStorage.setItem('solarRecommendation', JSON.stringify(data));
+        } catch { /* ignore */ }
+      },
+    },
+  );
   document.getElementById('closeQuoteModal')?.addEventListener('click', () => modal.classList.add('hidden'));
   modal?.querySelector('.modal-backdrop')?.addEventListener('click', () => modal.classList.add('hidden'));
 
@@ -806,6 +830,7 @@ function setupQuoteModal(data) {
       consent_share_installers: form.consent_share_installers.checked,
       message: form.message.value,
       recommendation: data,
+      roof_photo_set_id: getRoofPhotoSetId() || data.roof_photo_set_id || ci.roof_photo_set_id || '',
       supplier_ids: finalSupplierIds,
       selected_package_id: selectedPackageId,
       selected_package: data.three_packages?.packages?.[selectedPackageId],

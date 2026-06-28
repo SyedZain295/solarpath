@@ -4277,9 +4277,29 @@
 .quote-summary-card h4 { margin: 0 0 0.65rem; font-size: 0.95rem; color: #0f766e; }
 .quote-summary-stats { display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.88rem; }
 .quote-badge { display: inline-block; margin-top: 0.5rem; padding: 0.2rem 0.55rem; background: #d1fae5; color: #065f46; border-radius: 999px; font-size: 0.75rem; font-weight: 600; }
+.quote-badge-value { background: #ccfbf1; color: #0f766e; margin-left: 0.35rem; }
+.compare-summary-line { font-size: 0.95rem; color: #334155; margin: 0 0 1rem; }
+.quote-warnings { margin-top: 0.65rem; font-size: 0.82rem; }
+.quote-warnings ul { margin: 0.35rem 0 0; padding-left: 1.1rem; }
+.quote-warnings li { margin-bottom: 0.25rem; }
+.quote-warn-high { color: #b91c1c; }
+.quote-warn-medium { color: #b45309; }
+.quote-warn-low { color: #64748b; }
 .compare-checks-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 0.35rem 0.75rem; }
 .compare-table .cell-best { background: #ecfdf5; font-weight: 700; color: #065f46; }
 .readonly-field { background: #f1f5f9; color: #475569; }
 .form-hint.warn { color: #b45309; }
 .intersolar-cta-panel { padding: 2rem; text-align: center; margin: 2rem 0; }
+
+.roof-photo-tips { margin: 0.5rem 0; padding-left: 1.1rem; font-size: 0.85rem; color: #64748b; }
+.roof-photo-preview { margin-top: 0.75rem; }
+.roof-photo-preview-grid {
+  display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem;
+}
+.roof-photo-thumb {
+  display: block; width: 88px; height: 66px; border-radius: 8px; overflow: hidden;
+  border: 1px solid #e2e8f0; background: #f8fafc;
+}
+.roof-photo-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.lead-roof-photos { margin: 0.65rem 0; }
 

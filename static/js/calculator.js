@@ -198,11 +198,12 @@ document.addEventListener('DOMContentLoaded', () => {
     syncGoalSummary();
   }
 
-  field('roof_photos')?.addEventListener('change', (e) => {
-    if (e.target.files?.length && field('has_roof_photos')) {
-      field('has_roof_photos').checked = true;
-    }
-  });
+  wireRoofPhotoInput(
+    field('roof_photos'),
+    document.getElementById('roofPhotoPreview'),
+    document.getElementById('roofPhotoStatus'),
+    { getPostcode: () => fieldVal('postcode') },
+  );
 
   function stepLabel(stepNum) {
     const el = form.querySelector(`.calc-step[data-step="${stepNum}"]`);
@@ -438,7 +439,8 @@ document.addEventListener('DOMContentLoaded', () => {
       has_ev: fieldChecked('has_ev'),
       has_electric_water_heater: fieldChecked('has_electric_water_heater'),
       has_pool: fieldChecked('has_pool'),
-      has_roof_photos: fieldChecked('has_roof_photos'),
+      has_roof_photos: fieldChecked('has_roof_photos') || !!getRoofPhotoSetId(),
+      roof_photo_set_id: getRoofPhotoSetId() || '',
       has_home_office: fieldChecked('has_home_office'),
       has_ac: fieldChecked('has_ac'),
       planned_ev: fieldChecked('planned_ev'),

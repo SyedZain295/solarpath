@@ -174,6 +174,8 @@ class CalculatorInput:
     has_electric_water_heater: bool = False
     has_pool: bool = False
     has_roof_photos: bool = False
+    roof_photo_set_id: str = ""
+    roof_photo_count: int = 0
     has_home_office: bool = False
     has_ac: bool = False
     planned_ev: bool = False

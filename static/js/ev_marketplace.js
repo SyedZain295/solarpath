@@ -73,8 +73,9 @@ function renderVehicleCard(v) {
       <p class="evm-fit-line"><strong>${tr('evm.household_kwh', 'Added household demand')}</strong>: ~${(fit.annual_charging_kwh_added || 0).toLocaleString()} kWh/${tr('evm.per_year', 'per year')}</p>
       ${reasons ? `<ul class="evm-match-reasons">${reasons}</ul>` : ''}
       <div class="evm-card-actions">
+        <a href="/ev/bundle?vehicle=${encodeURIComponent(v.slug)}" class="btn btn-primary btn-sm">${tr('evm.bundle_cta_short', 'Build home-energy bundle')}</a>
         <a href="/ev/home-energy?vehicle=${encodeURIComponent(v.slug)}" class="btn btn-outline btn-sm">${tr('evm.view_energy', 'Home energy check')}</a>
-        <button type="button" class="btn btn-primary btn-sm evm-lead-btn" data-slug="${v.slug}">${tr('evm.lead_cta', 'Get dealer contact')}</button>
+        <button type="button" class="btn btn-outline btn-sm evm-lead-btn" data-slug="${v.slug}">${tr('evm.lead_cta', 'Get dealer contact')}</button>
       </div>
     </article>`;
 }
@@ -213,8 +214,11 @@ function initEvHomeEnergy() {
           }</p>
         </div>
         <div class="evm-energy-list">${items}</div>
-        <p class="form-hint">${data.bundle_cta || ''}</p>
-        <a href="/calculator" class="btn btn-primary">${tr('nav.get_started', 'Get Started')}</a>`;
+        <p class="form-hint">${tr('evm.bundle_cta_line', 'Turn this into a full EV + wallbox + PV plan.')}</p>
+        <div class="evm-bundle-cta-row">
+          <a href="/ev/bundle?vehicle=${encodeURIComponent(document.getElementById('ee_vehicle')?.value || new URLSearchParams(window.location.search).get('vehicle') || '')}" class="btn btn-primary">${tr('evm.bundle_cta_short', 'Build home-energy bundle')}</a>
+          <a href="/calculator" class="btn btn-outline">${tr('nav.get_started', 'Get Started')}</a>
+        </div>`;
     } catch {
       results.innerHTML = `<p>${tr('suppliers.error', 'Error')}</p>`;
     }

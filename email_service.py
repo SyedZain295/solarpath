@@ -117,6 +117,7 @@ def notify_quote_request(quote: dict, supplier_emails: list) -> None:
         f"Recommended system: {prefs.get('system_kwp', '—')} kWp\n"
         f"Battery interest: {quote.get('battery_interest', '—')}\n"
         f"Timeframe: {quote.get('installation_timeframe', '—')}\n"
+        f"Roof photos: {(lp.get('roof') or {}).get('roof_photo_count', 0)} attached\n"
         f"Quote ID: {quote.get('id')}\n"
     )
     for email in supplier_emails:

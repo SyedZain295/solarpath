@@ -20,7 +20,10 @@ function renderEvAssessment(ev) {
           <div><dt>${tr('results.ev_pv_cost', 'With PV (est.)')}</dt><dd>~€${(ev.estimated_charging_cost_with_pv_annual_eur || 0).toLocaleString()}/yr</dd></div>
         </dl>
         ${notes ? `<ul class="ev-profile-notes">${notes}</ul>` : ''}
-        <p class="ev-profile-cta-wrap"><a href="/ev/find" class="btn btn-outline btn-sm">${tr('evm.results_cta', 'Find used EVs that fit your setup')}</a></p>
+        <p class="ev-profile-cta-wrap">
+          <a href="/ev/bundle?weekly_km=${Math.round((ev.annual_km || 12000) / 52)}&has_wallbox=${ev.has_wallbox === 'yes' ? '1' : ''}" class="btn btn-primary btn-sm">${tr('evm.bundle_cta_short', 'Build home-energy bundle')}</a>
+          <a href="/ev/find" class="btn btn-outline btn-sm">${tr('evm.results_cta', 'Find used EVs that fit your setup')}</a>
+        </p>
         ${future ? `<div class="info-box"><strong>${tr('results.ev_future', 'Planned enhancements')}</strong><ul>${future}</ul></div>` : ''}
       </div>
     </section>`;

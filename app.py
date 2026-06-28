@@ -25,14 +25,15 @@ from lead_qualification import build_lead_inp, build_lead_profile, evaluate_qual
 from email_service import notify_quote_request, send_email_with_attachment
 from supplier_utils import ensure_intake_slug, public_installer_brand, slugify, prepare_supplier_for_public_listing, is_directory_listing
 from product_catalog import load_catalog, save_catalog, catalog_for_ui, check_component_compatibility, find_alternatives
-from quote_parse_stub import parse_quote_text
+from quote_parse_stub import parse_quote_text, parse_quotes_from_text
+from quote_comparison import compare_quotes as build_quote_comparison
 from gsa_client import get_gsa_yield_estimate, validate_yield
 from api_stubs import stub_bill_upload, stub_roof_analysis, stub_financing_offers, stub_incentives
 from price_list_import import parse_csv_text, merge_products
 from database import (
     init_db, db_session, db_health,
     Customer, Subscription, Quote, Assessment, Document, InstallerQuote,
-    EvDealer, EvVehicle, EvBuyerLead,
+    EvDealer, EvVehicle, EvBuyerLead, RoofPhotoSet, RoofPhoto,
 )
 from auth_customer import (
     hash_password, verify_password, login_customer, logout_customer,
@@ -53,6 +54,17 @@ from demo_data import load_demo_recommendation
 from ev_profile import apply_ev_fields_to_input, estimate_ev_annual_kwh
 from heat_pump_profile import apply_hp_fields_to_input, heat_goals_active
 from quick_estimate import quick_estimate_range
+from roof_photo_store import (
+    add_photos_to_set,
+    can_view_photo,
+    create_photo_set,
+    get_or_create_set,
+    get_photo,
+    get_set_summary,
+    link_set_to_quote,
+    photo_file_path,
+)
+from ev_bundle import build_bundle_plan
 from ev_marketplace import match_vehicles, home_energy_check, vehicles_for_api, vehicle_by_slug, clear_vehicle_cache
 from ev_dealer_store import (
     create_dealer_intake,
@@ -691,7 +703,7 @@ Sitemap: /sitemap.xml
 @app.route("/sitemap.xml")
 def sitemap_xml():
     pages = ["/", "/calculator", "/suppliers", "/compare-quotes", "/compatibility",
-             "/energy-advisor", "/ev", "/ev/find", "/ev/listings", "/ev/dealer/register", "/survey", "/register", "/privacy", "/terms"]
+             "/energy-advisor", "/ev", "/ev/find", "/ev/listings", "/ev/bundle", "/ev/dealer/register", "/survey", "/register", "/privacy", "/terms"]
     base = request.url_root.rstrip("/")
     urls = "\n".join(f"  <url><loc>{base}{p}</loc></url>" for p in pages)
     return f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{urls}</urlset>', 200, {"Content-Type": "application/xml; charset=utf-8"}
@@ -752,6 +764,11 @@ def ev_listings():
 @app.route("/ev/home-energy")
 def ev_home_energy():
     return render_template("ev_home_energy.html")
+
+
+@app.route("/ev/bundle")
+def ev_bundle_page():
+    return render_template("ev_bundle.html")
 
 
 @app.route("/ev/sell")
@@ -824,6 +841,21 @@ def api_ev_home_energy():
     data = request.get_json() or {}
     slug = (data.get("vehicle_slug") or "").strip()
     return jsonify(home_energy_check(data, vehicle_slug=slug))
+
+
+@app.route("/api/ev-bundle", methods=["POST"])
+def api_ev_bundle():
+    data = request.get_json() or {}
+    slug = (data.get("vehicle_slug") or "").strip()
+    wallbox_id = (data.get("wallbox_id") or "").strip()
+    result = build_bundle_plan(data, vehicle_slug=slug, wallbox_id=wallbox_id)
+    if result.get("error") and result.get("step") != "select_vehicle":
+        return jsonify(result), 404
+    try:
+        track_event("ev_bundle", {"vehicle": slug or None, "step": result.get("step")})
+    except Exception:
+        log.debug("ev_bundle analytics failed", exc_info=True)
+    return jsonify(result)
 
 
 @app.route("/api/ev-dealer-intake", methods=["POST"])
@@ -1149,6 +1181,14 @@ def api_calculate():
     if heat_goals_active(inp.goals):
         apply_hp_fields_to_input(inp, data)
 
+    roof_set_id = (data.get("roof_photo_set_id") or "").strip()
+    if roof_set_id:
+        summary = get_set_summary(roof_set_id)
+        if summary and summary.get("count"):
+            inp.has_roof_photos = True
+            inp.roof_photo_set_id = roof_set_id
+            inp.roof_photo_count = int(summary["count"])
+
     recommendation = generate_recommendation(inp, pvgis)
     gsa = get_gsa_yield_estimate(float(lat), float(lon))
     if pvgis and gsa:
@@ -1192,6 +1232,13 @@ def api_calculate():
         })
     except Exception:
         log.debug("analytics track failed", exc_info=True)
+
+    roof_set_id = (data.get("roof_photo_set_id") or "").strip()
+    if roof_set_id:
+        summary = get_set_summary(roof_set_id)
+        if summary:
+            recommendation["roof_photo_set_id"] = roof_set_id
+            recommendation["roof_photos"] = summary
 
     return jsonify(recommendation)
 
@@ -1733,7 +1780,101 @@ def api_parse_quote_text():
     text = data.get("text", "")
     if not text.strip():
         return jsonify({"error": "text required"}), 400
+    if data.get("multi"):
+        quotes = parse_quotes_from_text(text)
+        return jsonify({"quotes": quotes, "count": len(quotes)})
     return jsonify(parse_quote_text(text))
+
+
+@app.route("/api/roof-photos/upload", methods=["POST"])
+def api_roof_photos_upload():
+    files = request.files.getlist("photos") or request.files.getlist("photo") or []
+    if not files and request.files.get("file"):
+        files = [request.files.get("file")]
+    if not files:
+        return jsonify({"error": "photos required"}), 400
+
+    set_id = get_or_create_set(
+        (request.form.get("set_id") or "").strip() or None,
+        postcode=(request.form.get("postcode") or "").strip(),
+        customer_email=(request.form.get("customer_email") or "").strip(),
+    )
+    result = add_photos_to_set(set_id, files)
+    if not result.get("ok"):
+        return jsonify({"error": result.get("error", "Upload failed")}), 400
+    summary = get_set_summary(set_id)
+    return jsonify(summary or result), 201
+
+
+@app.route("/api/roof-photos/<set_id>", methods=["GET"])
+def api_roof_photos_get(set_id):
+    summary = get_set_summary(set_id)
+    if not summary:
+        return jsonify({"error": "Not found"}), 404
+    return jsonify(summary)
+
+
+@app.route("/api/roof-photos/<photo_id>/image", methods=["GET"])
+def api_roof_photo_image(photo_id):
+    from flask import send_file
+
+    photo = get_photo(photo_id)
+    if not photo:
+        return jsonify({"error": "Not found"}), 404
+    quote_id = (request.args.get("quote_id") or "").strip()
+    supplier_id = (request.args.get("supplier_id") or get_current_supplier_id() or "").strip()
+    customer = get_current_customer()
+    customer_email = customer.email if customer else ""
+    if not can_view_photo(
+        photo_id,
+        quote_id=quote_id,
+        supplier_id=supplier_id,
+        customer_email=customer_email,
+        set_id=(request.args.get("set_id") or "").strip(),
+        admin=admin_authorized(),
+    ):
+        return jsonify({"error": "Forbidden"}), 403
+    path = photo_file_path(photo)
+    if not path:
+        return jsonify({"error": "File missing"}), 404
+    return send_file(path, mimetype=photo.get("content_type") or "image/jpeg")
+
+
+@app.route("/api/quotes/compare", methods=["POST"])
+def api_compare_quotes():
+    data = request.get_json() or {}
+    quotes = data.get("quotes") or []
+    if not quotes:
+        return jsonify({"error": "quotes required"}), 400
+    return jsonify(build_quote_comparison(quotes))
+
+
+@app.route("/api/quotes/parse-upload", methods=["POST"])
+def api_parse_quote_upload():
+    upload = request.files.get("file")
+    if not upload or not upload.filename:
+        return jsonify({"error": "file required"}), 400
+    name = (upload.filename or "").lower()
+    raw = upload.read()
+    if not raw:
+        return jsonify({"error": "empty file"}), 400
+    text = ""
+    if name.endswith(".pdf"):
+        try:
+            from io import BytesIO
+
+            from pypdf import PdfReader
+
+            reader = PdfReader(BytesIO(raw))
+            text = "\n".join((page.extract_text() or "") for page in reader.pages).strip()
+        except Exception:
+            return jsonify({"error": "Could not read PDF — paste quote text instead."}), 400
+        if len(text) < 40:
+            return jsonify({"error": "PDF has little extractable text — paste quote text instead."}), 400
+    else:
+        return jsonify({"error": "Only PDF upload supported — paste text or use a text-based PDF."}), 400
+    quotes = parse_quotes_from_text(text)
+    return jsonify({"quotes": quotes, "count": len(quotes), "source": "pdf"})
 
 
 @app.route("/api/suppliers/<supplier_id>/analytics", methods=["GET"])
@@ -1885,7 +2026,20 @@ def api_quotes_create():
             "hint": "Complete your energy use, confirm you can decide for the property, choose a timeframe, and select installers in your area.",
         }), 422
 
-    lead_profile = build_lead_profile(rec, data, matched)
+    roof_set_id = (
+        (data.get("roof_photo_set_id") or "").strip()
+        or (rec.get("roof_photo_set_id") or "").strip()
+        or (ci.get("roof_photo_set_id") or "").strip()
+    )
+    roof_summary = get_set_summary(roof_set_id) if roof_set_id else None
+    if roof_summary and roof_summary.get("count"):
+        rec["roof_photo_set_id"] = roof_set_id
+        rec["roof_photos"] = roof_summary
+        ci["has_roof_photos"] = True
+        ci["roof_photo_set_id"] = roof_set_id
+        ci["roof_photo_count"] = roof_summary["count"]
+
+    lead_profile = build_lead_profile(rec, data, matched, roof_photos=roof_summary)
     lead_tier = qualification["tier"]
 
     quote = {
@@ -1923,6 +2077,10 @@ def api_quotes_create():
         ],
         "created_at": utc_now_iso(),
     }
+    if roof_set_id:
+        quote["roof_photo_set_id"] = roof_set_id
+        if roof_summary:
+            quote["roof_photos"] = roof_summary
     with db_session() as db:
         db.add(Quote(
             id=quote["id"],
@@ -1931,6 +2089,9 @@ def api_quotes_create():
             payload=quote,
             status=quote["status"],
         ))
+
+    if roof_set_id:
+        link_set_to_quote(roof_set_id, quote["id"], quote["customer_email"])
 
     supplier_emails = [s.get("email") for s in suppliers if s.get("id") in supplier_ids]
     try:

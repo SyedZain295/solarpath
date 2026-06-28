@@ -81,6 +81,8 @@
           <input type="text" id="ev_vehicle_model" name="ev_vehicle_model" placeholder="{{ t('calc.ev.vehicle_model_ph') }}">
         </div>
         <div class="calc-ev-marketplace-cta">
+          <a href="{{ invite_href('/ev/bundle') }}">{{ t('evm.bundle_cta_short', 'Build home-energy bundle') }} →</a>
+          ·
           <a href="{{ invite_href('/ev/find') }}">{{ t('evm.calc_cta', 'Already choosing an EV? Find models that fit your home-energy setup.') }} →</a>
         </div>
         <div class="form-row">
@@ -319,6 +321,8 @@
             <li>{{ t('calc.roof_photo.tip3', 'Meter box photo optional') }}</li>
           </ul>
           <p class="form-hint">{{ t('calc.roof_photo.note', 'Helps installers — does not replace an on-site survey.') }}</p>
+          <div id="roofPhotoPreview" class="roof-photo-preview hidden"></div>
+          <p id="roofPhotoStatus" class="form-hint"></p>
         </div>
         <label class="checkbox-inline"><input type="checkbox" id="has_roof_photos" name="has_roof_photos"> {{ t('calc.roof_photos', 'I will provide roof photos later') }}</label>
       </div>
@@ -404,5 +408,6 @@
 {% block scripts %}
 <script>window.BETA_INVITE_DEFAULT = {{ beta_invite|tojson }};</script>
 <script src="{{ url_for('static', filename='js/intake_ref.js') }}?v=1"></script>
-<script src="{{ url_for('static', filename='js/calculator.js') }}?v=28"></script>
+<script src="{{ url_for('static', filename='js/roof_photos.js') }}?v=1"></script>
+<script src="{{ url_for('static', filename='js/calculator.js') }}?v=32"></script>
 {% endblock %}

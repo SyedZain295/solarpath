@@ -387,7 +387,19 @@ async function loadLeads(supplierId) {
       const lp = q.lead_profile || {};
       const energy = lp.energy || {};
       const prefs = lp.preferences || {};
+      const roof = lp.roof || {};
+      const roofPhotos = q.roof_photos?.photos || roof.photos || [];
       const qual = q.qualification?.qualified ? tr('sd.js.qualified_lead', 'Qualified lead') : tier;
+      const roofHtml = roofPhotos.length ? `
+        <div class="lead-roof-photos">
+          <p class="form-hint"><strong>${tr('sd.roof_photos', 'Roof photos')}</strong> (${roofPhotos.length}) — ${roof.installer_handoff || ''}</p>
+          <div class="roof-photo-preview-grid">
+            ${roofPhotos.map((p) => `
+              <a href="/api/roof-photos/${p.id}/image?quote_id=${encodeURIComponent(q.id)}" target="_blank" rel="noopener" class="roof-photo-thumb">
+                <img src="/api/roof-photos/${p.id}/image?quote_id=${encodeURIComponent(q.id)}" alt="${p.original_name || 'Roof'}" loading="lazy">
+              </a>`).join('')}
+          </div>
+        </div>` : (roof.has_roof_photos ? `<p class="form-hint warn">${tr('sd.roof_photos_missing', 'Customer marked photos as available — none attached yet.')}</p>` : '');
       return `
       <div class="lead-card ${q.qualification?.qualified ? 'lead-qualified' : ''}">
         <h4>${q.customer_first_name || q.customer_name}
@@ -397,6 +409,7 @@ async function loadLeads(supplierId) {
         <p>📧 ${q.customer_email} · 📞 ${q.customer_phone} · 📍 ${q.customer_postcode || ''} ${q.customer_town || ''}</p>
         ${q.preferred_contact_time ? `<p class="form-hint">${tr('sd.js.contact_time', 'Preferred')}: ${q.preferred_contact_time}</p>` : ''}
         <p class="lead-summary">${energy.annual_kwh ? `~${energy.annual_kwh.toLocaleString()} kWh/yr` : ''} · ${prefs.system_kwp || q.recommendation?.system_kwp || '—'} kWp · ${(energy.goals || []).slice(0, 2).join(', ')}</p>
+        ${roofHtml}
         <p>${q.message || ''}</p>
         <div class="quote-status-track compact">${(q.status_timeline || []).map(s =>
           `<span class="quote-status-step ${s.done ? 'done' : ''} ${s.current ? 'current' : ''}">${s.label_key ? tr(s.label_key, s.label) : s.label}</span>`

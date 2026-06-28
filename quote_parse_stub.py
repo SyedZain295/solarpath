@@ -55,6 +55,7 @@ def parse_quote_text(text: str) -> dict[str, Any]:
         "price_per_kwp": None,
         "notes": "",
         "includes_installation": any(w in low for w in ("montage", "install", "komplettanlage", "installation")),
+        "includes_mounting": any(w in low for w in ("montage", "unterkonstruktion", "mounting", "racking", "gestell", "module montage")),
         "includes_scaffolding": "gerüst" in low or "scaffold" in low,
         "includes_grid_registration": any(w in low for w in ("netzanmeldung", "netz", "grid registration", "vnb")),
         "includes_mastr": "mastr" in low or "marktstammdaten" in low,
@@ -155,3 +156,19 @@ def parse_quote_text(text: str) -> dict[str, Any]:
         result["price_per_kwp"] = round(result["total_eur"] / result["kwp"])
     result["notes"] = "Auto-parsed — verify line items, net/gross, and VAT before deciding."
     return result
+
+
+def split_quote_texts(text: str) -> list[str]:
+    """Split pasted content into up to 3 separate quotes."""
+    text = (text or "").strip()
+    if not text:
+        return []
+    parts = re.split(r"\n\s*---+\s*\n|\n\s*={3,}\s*\n|(?:\n\s*){2}(?=Angebot\s*(?:Nr\.?|#|\d)|Quote\s*(?:#|\d))", text, flags=re.I)
+    chunks = [p.strip() for p in parts if p.strip()]
+    if len(chunks) <= 1:
+        return [text]
+    return chunks[:3]
+
+
+def parse_quotes_from_text(text: str) -> list[dict]:
+    return [parse_quote_text(chunk) for chunk in split_quote_texts(text)]
