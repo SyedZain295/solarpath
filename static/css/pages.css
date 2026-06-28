@@ -4292,6 +4292,28 @@
 .intersolar-cta-panel { padding: 2rem; text-align: center; margin: 2rem 0; }
 
 .roof-photo-tips { margin: 0.5rem 0; padding-left: 1.1rem; font-size: 0.85rem; color: #64748b; }
+.bill-upload-panel {
+  margin: 0 0 1.25rem;
+  padding: 1rem 1.1rem;
+  border-radius: 12px;
+  border: 1px dashed rgba(15, 118, 110, 0.45);
+  background: rgba(45, 212, 191, 0.08);
+}
+.bill-upload-lead { margin: 0 0 0.65rem; font-size: 0.92rem; color: #334155; }
+.bill-upload-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
+.bill-upload-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+.bill-upload-status { margin-top: 0.5rem; min-height: 1.25rem; }
+.bill-upload-status--ok { color: #0f766e; }
+.bill-upload-status--warn { color: #b45309; }
 .roof-photo-preview { margin-top: 0.75rem; }
 .roof-photo-preview-grid {
   display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem;

@@ -218,6 +218,13 @@ document.addEventListener('DOMContentLoaded', () => {
     { getPostcode: () => fieldVal('postcode') },
   );
 
+  wireBillUploadInput(field('bill_upload'), {
+    billEl: field('monthly_bill'),
+    kwhEl: field('monthly_kwh'),
+    priceEl: field('electricity_price'),
+    statusEl: document.getElementById('billUploadStatus'),
+  });
+
   function stepLabel(stepNum) {
     const el = form.querySelector(`.calc-step[data-step="${stepNum}"]`);
     return el?.dataset.stepLabel || '';

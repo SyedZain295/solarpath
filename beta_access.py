@@ -55,7 +55,9 @@ def invite_href(path: str, invite: str | None = None) -> str:
 
 
 def _api_calculate_post() -> bool:
-    return request.path in ("/api/calculate", "/api/calculate/recalc") and request.method == "POST"
+    if request.path in ("/api/calculate", "/api/calculate/recalc", "/api/bill-upload") and request.method == "POST":
+        return True
+    return False
 
 
 def beta_gate_enabled() -> bool:

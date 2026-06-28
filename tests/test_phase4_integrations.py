@@ -1,5 +1,7 @@
 """Phase 4 integration tests."""
 
+import io
+
 from bill_ocr import parse_bill_text
 from financing_offers import financing_offers
 from incentives_lookup import incentives_lookup
@@ -55,6 +57,27 @@ def test_api_bill_upload(client):
     data = resp.get_json()
     assert data["ok"] is True
     assert data["parsed"]["monthly_kwh"] == 350
+
+
+def test_api_bill_upload_multipart(client):
+    pdf_body = b"""%PDF-1.4
+1 0 obj<<>>endobj
+trailer<<>>
+"""
+    # Append fake text stream content for pypdf-less path - use text endpoint instead
+    resp = client.post(
+        "/api/bill-upload",
+        data={
+            "file": (
+                io.BytesIO(b"Verbrauch 380 kWh\nGesamt 115,20 EUR"),
+                "rechnung.txt",
+            ),
+        },
+        content_type="multipart/form-data",
+    )
+    assert resp.status_code == 200
+    data = resp.get_json()
+    assert data["ok"] is True
 
 
 def test_api_financing_offers(client):

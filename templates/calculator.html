@@ -280,6 +280,16 @@
       <div class="calc-step" data-step="6" data-step-label="{{ t('calc.step.usage') }}">
         <h2>{{ t('calc.s4_title') }}</h2>
         <p class="step-desc">{{ t('calc.s4_sub') }}</p>
+
+        <div class="bill-upload-panel">
+          <p class="bill-upload-lead">{{ t('calc.bill_upload.lead', 'Have a recent electricity bill? Upload it to pre-fill usage.') }}</p>
+          <div class="bill-upload-actions">
+            <label for="bill_upload" class="btn btn-outline btn-sm bill-upload-btn">{{ t('calc.bill_upload.btn', 'Upload bill (PDF)') }}</label>
+            <input type="file" id="bill_upload" name="bill_upload" accept="application/pdf,.pdf" class="bill-upload-input">
+          </div>
+          <p id="billUploadStatus" class="form-hint bill-upload-status" aria-live="polite"></p>
+        </div>
+
         <div class="form-row">
           <div class="form-group"><label for="monthly_bill">{{ t('calc.monthly_bill') }}</label><input type="number" id="monthly_bill" min="0" step="1" placeholder="120"></div>
           <div class="form-group"><label for="monthly_kwh">{{ t('calc.monthly_kwh') }}</label><input type="number" id="monthly_kwh" min="0" step="1" placeholder="350"></div>
@@ -427,5 +437,6 @@
 <script>window.BETA_INVITE_DEFAULT = {{ beta_invite|tojson }};</script>
 <script src="{{ url_for('static', filename='js/intake_ref.js') }}?v=1"></script>
 <script src="{{ url_for('static', filename='js/roof_photos.js') }}?v=1"></script>
-<script src="{{ url_for('static', filename='js/calculator.js') }}?v=32"></script>
+<script src="{{ url_for('static', filename='js/bill_upload.js') }}?v=1"></script>
+<script src="{{ url_for('static', filename='js/calculator.js') }}?v=33"></script>
 {% endblock %}
