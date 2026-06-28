@@ -11,8 +11,12 @@
       <p>{{ t('calculator.hero_sub') }}</p>
     </div>
 
-    <div class="glass-panel">
-    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="glass-panel calc-panel">
+    <div class="calc-progress-head">
+      <p class="calc-progress-meta" id="calcProgressMeta" aria-live="polite"></p>
+      <a href="{{ invite_href('/estimate') }}" class="calc-progress-skip">{{ t('calc.quick_estimate', 'Quick estimate first') }}</a>
+    </div>
+    <div class="progress-bar" role="progressbar" aria-valuemin="1" aria-valuemax="100" aria-valuenow="0" id="progressBar"><div class="progress-fill" id="progressFill"></div></div>
     <div class="progress-steps" id="progressSteps">
       <span class="active">{{ t('calc.step.goals') }}</span>
       <span class="progress-ev-step hidden">{{ t('calc.step.ev') }}</span>
@@ -27,7 +31,7 @@
 
     <form id="calculatorForm" class="calc-form">
       <!-- Step 1: Goals -->
-      <div class="calc-step active" data-step="1">
+      <div class="calc-step active" data-step="1" data-step-label="{{ t('calc.step.goals') }}">
         <h2>{{ t('calc.s1_title') }}</h2>
         <p class="step-desc">{{ t('calc.s1_sub') }}</p>
         <div class="goal-grid">
@@ -42,7 +46,7 @@
       </div>
 
       <!-- Step 2: EV details (only when EV charging goal selected) -->
-      <div class="calc-step" data-step="2" data-conditional="ev_charging">
+      <div class="calc-step" data-step="2" data-conditional="ev_charging" data-step-label="{{ t('calc.step.ev') }}">
         <h2>{{ t('calc.ev.title') }}</h2>
         <p class="step-desc">{{ t('calc.ev.sub') }}</p>
         <div class="form-group">
@@ -116,7 +120,7 @@
       </div>
 
       <!-- Step 3: Heat pump / heating (when space heating or hot water goal selected) -->
-      <div class="calc-step" data-step="3" data-conditional="heat">
+      <div class="calc-step" data-step="3" data-conditional="heat" data-step-label="{{ t('calc.step.heat') }}">
         <h2>{{ t('calc.hp.title') }}</h2>
         <p class="step-desc">{{ t('calc.hp.sub') }}</p>
         <div class="form-group">
@@ -183,7 +187,7 @@
       </div>
 
       <!-- Step 4: Housing -->
-      <div class="calc-step" data-step="4">
+      <div class="calc-step" data-step="4" data-step-label="{{ t('calc.step.home') }}">
         <h2>{{ t('calc.s2_title') }}</h2>
         <p class="step-desc">{{ t('calc.s2_sub') }}</p>
         <div class="form-group">
@@ -212,7 +216,7 @@
       </div>
 
       <!-- Step 5: Location -->
-      <div class="calc-step" data-step="5">
+      <div class="calc-step" data-step="5" data-step-label="{{ t('calc.step.location') }}">
         <h2>{{ t('calc.s3_title') }}</h2>
         <p class="step-desc">{{ t('calc.s3_sub') }}</p>
         <div class="form-group">
@@ -230,7 +234,7 @@
       </div>
 
       <!-- Step 6: Usage -->
-      <div class="calc-step" data-step="6">
+      <div class="calc-step" data-step="6" data-step-label="{{ t('calc.step.usage') }}">
         <h2>{{ t('calc.s4_title') }}</h2>
         <p class="step-desc">{{ t('calc.s4_sub') }}</p>
         <div class="form-row">
@@ -255,7 +259,7 @@
       </div>
 
       <!-- Step 7: Property -->
-      <div class="calc-step" data-step="7">
+      <div class="calc-step" data-step="7" data-step-label="{{ t('calc.step.property') }}">
         <h2>{{ t('calc.s5_title') }}</h2>
         <div class="form-group">
           <label for="roof_type">{{ t('calc.roof_type') }}</label>
@@ -285,7 +289,7 @@
       </div>
 
       <!-- Step 8: Profile -->
-      <div class="calc-step" data-step="8">
+      <div class="calc-step" data-step="8" data-step-label="{{ t('calc.step.profile') }}">
         <h2>{{ t('calc.s6_title') }}</h2>
         <p class="step-desc">{{ t('calc.s6_sub') }}</p>
         <div class="register-checks calc-loads" id="calcLoadsPanel">
@@ -320,7 +324,7 @@
       </div>
 
       <!-- Step 9: Budget -->
-      <div class="calc-step" data-step="9">
+      <div class="calc-step" data-step="9" data-step-label="{{ t('calc.step.budget') }}">
         <h2>{{ t('calc.s7_title') }}</h2>
         <label class="checkbox-inline" style="margin-bottom:1rem">
           <input type="checkbox" id="budget_first_mode" name="budget_first_mode">
@@ -364,5 +368,5 @@
 {% block scripts %}
 <script>window.BETA_INVITE_DEFAULT = {{ beta_invite|tojson }};</script>
 <script src="{{ url_for('static', filename='js/intake_ref.js') }}?v=1"></script>
-<script src="{{ url_for('static', filename='js/calculator.js') }}?v=25"></script>
+<script src="{{ url_for('static', filename='js/calculator.js') }}?v=26"></script>
 {% endblock %}

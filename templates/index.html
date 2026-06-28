@@ -22,8 +22,10 @@
       <h1>{{ t('home.hero_title_prefix') }} <span class="text-gradient-light">{{ t('home.hero_title_highlight') }}</span></h1>
       <p class="hero-sub">{{ t('home.hero_sub') }}</p>
       <div class="hero-actions">
-        <a href="/calculator" class="btn btn-accent btn-lg">{{ t('home.start') }}</a>
-        <a href="/energy-advisor" class="btn btn-glass btn-lg">{{ t('nav.energy_advisor') }}</a>
+        <a href="{{ invite_href('/calculator') }}" class="btn btn-accent btn-lg">{{ t('home.start') }}</a>
+        <a href="{{ invite_href('/estimate') }}" class="btn btn-glass btn-lg">{{ t('home.quick_estimate', '60-second estimate') }}</a>
+        <a href="{{ invite_href('/demo') }}" class="btn btn-outline btn-lg hero-demo-btn">{{ t('nav.demo', 'View demo') }}</a>
+        <p class="hero-quick-note">{{ t('home.quick_note', 'Free pre-assessment · No account required ·') }} <a href="{{ invite_href('/energy-advisor') }}">{{ t('nav.energy_advisor') }}</a></p>
       </div>
       <div class="hero-stats">
         <div class="stat-pill"><span class="stat-icon">📡</span><div><strong>PVGIS</strong><span>{{ t('home.stat.pvgis_sub') }}</span></div></div>

@@ -54,7 +54,7 @@ function renderResults(d) {
   document.getElementById('resultsContent').innerHTML = `
     <div class="results-header">
       <div class="confidence-badge confidence-${conf.level || 'medium'}">
-        ${conf.label || 'Medium'} ${tr('results.confidence_suffix', 'confidence')} · ${conf.estimated_accuracy || '±15%'}
+        ${conf.score_label || tr('results.completeness_index', 'Information completeness')} · ${conf.score ?? '—'} · ${conf.estimated_accuracy || '±15%'}
       </div>
       <h1>${tr('results.report_title', 'Your Solar Decision Report')}</h1>
       <p class="results-header-loc">${formatLocation(loc.name)}</p>

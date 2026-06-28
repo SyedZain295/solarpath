@@ -132,10 +132,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  function stepLabel(stepNum) {
+    const el = form.querySelector(`.calc-step[data-step="${stepNum}"]`);
+    return el?.dataset.stepLabel || '';
+  }
+
   function updateUI() {
     const vis = visibleStepNumbers();
     const pos = Math.max(0, vis.indexOf(currentStep));
     const totalSteps = vis.length || 1;
+    const pct = Math.round(((pos + 1) / totalSteps) * 100);
 
     steps.forEach((s) => {
       const n = parseInt(s.dataset.step, 10);
@@ -143,7 +149,19 @@ document.addEventListener('DOMContentLoaded', () => {
       s.classList.toggle('hidden', !stepVisible(n));
     });
 
-    if (progressFill) progressFill.style.width = `${((pos + 1) / totalSteps) * 100}%`;
+    if (progressFill) progressFill.style.width = `${pct}%`;
+    const progressBar = document.getElementById('progressBar');
+    if (progressBar) progressBar.setAttribute('aria-valuenow', String(pct));
+
+    const meta = document.getElementById('calcProgressMeta');
+    if (meta) {
+      const label = stepLabel(currentStep);
+      const stepWord = tr('calc.js.step_of', 'Step {current} of {total}');
+      meta.innerHTML = stepWord
+        .replace('{current}', `<strong>${pos + 1}</strong>`)
+        .replace('{total}', `<strong>${totalSteps}</strong>`)
+        + (label ? ` · ${label}` : '');
+    }
 
     let progressIdx = 0;
     progressSteps.forEach((span) => {
@@ -156,7 +174,8 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
       span.classList.remove('hidden');
-      span.classList.toggle('active', progressIdx <= pos);
+      span.classList.toggle('active', progressIdx === pos);
+      span.classList.toggle('done', progressIdx < pos);
       progressIdx += 1;
     });
 
