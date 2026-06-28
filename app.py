@@ -32,6 +32,7 @@ from price_list_import import parse_csv_text, merge_products
 from database import (
     init_db, db_session, db_health,
     Customer, Subscription, Quote, Assessment, Document, InstallerQuote,
+    EvDealer, EvVehicle, EvBuyerLead,
 )
 from auth_customer import (
     hash_password, verify_password, login_customer, logout_customer,
@@ -51,7 +52,30 @@ from analytics import track_event, beta_metrics_summary
 from demo_data import load_demo_recommendation
 from ev_profile import apply_ev_fields_to_input, estimate_ev_annual_kwh
 from heat_pump_profile import apply_hp_fields_to_input, heat_goals_active
-from heat_pump_profile import apply_hp_fields_to_input, heat_goals_active
+from quick_estimate import quick_estimate_range
+from ev_marketplace import match_vehicles, home_energy_check, vehicles_for_api, vehicle_by_slug, clear_vehicle_cache
+from ev_dealer_store import (
+    create_dealer_intake,
+    register_dealer,
+    list_dealers,
+    set_dealer_status,
+    list_dealer_vehicles,
+    create_vehicle,
+    update_vehicle,
+    delete_vehicle,
+    list_dealer_leads,
+    update_lead_status,
+    create_buyer_lead_by_slug,
+    dealer_by_email,
+)
+from auth_ev_dealer import (
+    login_ev_dealer,
+    logout_ev_dealer,
+    get_current_ev_dealer,
+    get_current_ev_dealer_id,
+    ev_dealer_authorized,
+    verify_password,
+)
 from logging_config import setup_logging
 
 REGION_FOCUS = os.environ.get("REGION_FOCUS", "Bayern")
@@ -667,7 +691,7 @@ Sitemap: /sitemap.xml
 @app.route("/sitemap.xml")
 def sitemap_xml():
     pages = ["/", "/calculator", "/suppliers", "/compare-quotes", "/compatibility",
-             "/energy-advisor", "/survey", "/register", "/privacy", "/terms"]
+             "/energy-advisor", "/ev", "/ev/find", "/ev/listings", "/ev/dealer/register", "/survey", "/register", "/privacy", "/terms"]
     base = request.url_root.rstrip("/")
     urls = "\n".join(f"  <url><loc>{base}{p}</loc></url>" for p in pages)
     return f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{urls}</urlset>', 200, {"Content-Type": "application/xml; charset=utf-8"}
@@ -708,6 +732,277 @@ def energy_advisor():
     return render_template("energy_advisor.html")
 
 
+# ── Solar Path EV (Phase 1 advisor) ─────────────────────────────────────────
+
+@app.route("/ev")
+def ev_hub():
+    return render_template("ev_hub.html")
+
+
+@app.route("/ev/find")
+def ev_find():
+    return render_template("ev_find.html")
+
+
+@app.route("/ev/listings")
+def ev_listings():
+    return render_template("ev_listings.html")
+
+
+@app.route("/ev/home-energy")
+def ev_home_energy():
+    return render_template("ev_home_energy.html")
+
+
+@app.route("/ev/sell")
+def ev_sell():
+    return render_template("ev_sell.html")
+
+
+@app.route("/ev/dealer/register")
+def ev_dealer_register():
+    return render_template("ev_dealer_register.html")
+
+
+@app.route("/ev/dealer/login")
+def ev_dealer_login_page():
+    return render_template("ev_dealer_login.html")
+
+
+@app.route("/ev/dealer/dashboard")
+def ev_dealer_dashboard():
+    dealer = get_current_ev_dealer()
+    if not dealer:
+        return redirect(url_for("ev_dealer_login_page", next="/ev/dealer/dashboard"))
+    return render_template("ev_dealer_dashboard.html", dealer=dealer.to_dict())
+
+
+@app.route("/api/ev-vehicles", methods=["GET"])
+def api_ev_vehicles():
+    args = request.args
+    filters = {
+        "budget_max": args.get("budget_max"),
+        "range_min": args.get("range_min"),
+        "battery_health_min": args.get("battery_health_min"),
+        "body_type": args.get("body_type"),
+        "family_fit": args.get("family_fit"),
+        "certificate_only": args.get("certificate_only") in ("1", "true", "yes"),
+        "fast_charge_min": args.get("fast_charge_min"),
+        "weekly_km": args.get("weekly_km"),
+        "annual_km": args.get("annual_km"),
+        "has_pv": args.get("has_pv") in ("1", "true", "yes"),
+        "system_kwp": args.get("system_kwp"),
+    }
+    return jsonify({"vehicles": vehicles_for_api(filters), "count": len(vehicles_for_api(filters))})
+
+
+@app.route("/api/ev-vehicles/<slug>", methods=["GET"])
+def api_ev_vehicle_detail(slug):
+    v = vehicle_by_slug(slug)
+    if not v:
+        return jsonify({"error": "Vehicle not found"}), 404
+    profile = request.args.to_dict()
+    from ev_marketplace import build_vehicle_fit, parse_buyer_profile
+    return jsonify({**v, "solar_path_fit": build_vehicle_fit(v, parse_buyer_profile(profile))})
+
+
+@app.route("/api/ev-match", methods=["POST"])
+def api_ev_match():
+    data = request.get_json() or {}
+    if not data.get("budget_eur") and not data.get("weekly_km") and not data.get("annual_km"):
+        return jsonify({"error": "Budget or driving distance required"}), 400
+    result = match_vehicles(data, limit=5)
+    try:
+        track_event("ev_match", {"budget": data.get("budget_eur"), "priority": data.get("priority")})
+    except Exception:
+        log.debug("ev_match analytics failed", exc_info=True)
+    return jsonify(result)
+
+
+@app.route("/api/ev-home-energy", methods=["POST"])
+def api_ev_home_energy():
+    data = request.get_json() or {}
+    slug = (data.get("vehicle_slug") or "").strip()
+    return jsonify(home_energy_check(data, vehicle_slug=slug))
+
+
+@app.route("/api/ev-dealer-intake", methods=["POST"])
+def api_ev_dealer_intake():
+    data = request.get_json() or {}
+    name = (data.get("company_name") or "").strip()
+    email = (data.get("email") or "").strip()
+    if not name or not email:
+        return jsonify({"error": "Company name and email required"}), 400
+    dealer = create_dealer_intake(name, email, data.get("phone", ""), data.get("location", ""))
+    try:
+        track_event("ev_dealer_intake", {"company": name, "location": data.get("location"), "dealer_id": dealer.id})
+    except Exception:
+        pass
+    return jsonify({
+        "ok": True,
+        "dealer_id": dealer.id,
+        "status": dealer.status,
+        "message": "Dealer intake received — register with the same email to set a password, then await approval.",
+    })
+
+
+@app.route("/api/ev-dealer/register", methods=["POST"])
+def api_ev_dealer_register():
+    data = request.get_json() or {}
+    name = (data.get("company_name") or "").strip()
+    email = (data.get("email") or "").strip()
+    password = (data.get("password") or "").strip()
+    if not name or not email or len(password) < 8:
+        return jsonify({"error": "Company name, email and password (8+ chars) required"}), 400
+    dealer = register_dealer(name, email, password, data.get("phone", ""), data.get("location", ""))
+    if os.environ.get("EV_DEALER_AUTO_APPROVE", "").lower() in ("1", "true", "yes"):
+        set_dealer_status(dealer.id, "approved")
+        dealer = dealer_by_email(email) or dealer
+    return jsonify({"ok": True, "dealer": dealer.to_dict(), "status": dealer.status})
+
+
+@app.route("/api/ev-dealer/login", methods=["POST"])
+def api_ev_dealer_login():
+    data = request.get_json() or {}
+    email = (data.get("email") or "").strip().lower()
+    password = (data.get("password") or "").strip()
+    dealer = dealer_by_email(email)
+    if not dealer or not verify_password(dealer, password):
+        return jsonify({"error": "Invalid email or password"}), 401
+    if dealer.status == "suspended":
+        return jsonify({"error": "Account suspended"}), 403
+    login_ev_dealer(dealer.id)
+    return jsonify({"ok": True, "dealer": dealer.to_dict()})
+
+
+@app.route("/api/ev-dealer/logout", methods=["POST"])
+def api_ev_dealer_logout():
+    logout_ev_dealer()
+    return jsonify({"ok": True})
+
+
+@app.route("/api/ev-dealer/me", methods=["GET"])
+def api_ev_dealer_me():
+    dealer = get_current_ev_dealer()
+    if not dealer:
+        return jsonify({"error": "Not logged in"}), 401
+    vehicles = list_dealer_vehicles(dealer.id) if dealer.status == "approved" else []
+    return jsonify({"dealer": dealer.to_dict(), "vehicles": vehicles})
+
+
+@app.route("/api/ev-dealer/vehicles", methods=["GET", "POST"])
+def api_ev_dealer_vehicles():
+    dealer = get_current_ev_dealer()
+    if not dealer:
+        return jsonify({"error": "Not logged in"}), 401
+    if dealer.status != "approved":
+        return jsonify({"error": "Dealer account pending approval"}), 403
+    if request.method == "GET":
+        return jsonify({"vehicles": list_dealer_vehicles(dealer.id)})
+    data = request.get_json() or {}
+    try:
+        vehicle = create_vehicle(dealer.id, data)
+        clear_vehicle_cache()
+        return jsonify(vehicle), 201
+    except PermissionError as exc:
+        return jsonify({"error": str(exc)}), 403
+    except ValueError as exc:
+        return jsonify({"error": str(exc)}), 400
+
+
+@app.route("/api/ev-dealer/vehicles/<vehicle_id>", methods=["PUT", "DELETE"])
+def api_ev_dealer_vehicle(vehicle_id):
+    dealer = get_current_ev_dealer()
+    if not dealer:
+        return jsonify({"error": "Not logged in"}), 401
+    if dealer.status != "approved":
+        return jsonify({"error": "Dealer account pending approval"}), 403
+    if request.method == "DELETE":
+        if delete_vehicle(dealer.id, vehicle_id):
+            clear_vehicle_cache()
+            return jsonify({"ok": True})
+        return jsonify({"error": "Not found"}), 404
+    data = request.get_json() or {}
+    vehicle = update_vehicle(dealer.id, vehicle_id, data)
+    if not vehicle:
+        return jsonify({"error": "Not found"}), 404
+    clear_vehicle_cache()
+    return jsonify(vehicle)
+
+
+@app.route("/api/ev-dealer/leads", methods=["GET"])
+def api_ev_dealer_leads():
+    dealer = get_current_ev_dealer()
+    if not dealer:
+        return jsonify({"error": "Not logged in"}), 401
+    if dealer.status != "approved":
+        return jsonify({"error": "Dealer account pending approval"}), 403
+    return jsonify({"leads": list_dealer_leads(dealer.id)})
+
+
+@app.route("/api/ev-dealer/leads/<lead_id>", methods=["PATCH"])
+def api_ev_dealer_lead_update(lead_id):
+    dealer = get_current_ev_dealer()
+    if not dealer:
+        return jsonify({"error": "Not logged in"}), 401
+    data = request.get_json() or {}
+    status = (data.get("status") or "").strip()
+    if status not in ("new", "contacted", "closed"):
+        return jsonify({"error": "Invalid status"}), 400
+    if update_lead_status(dealer.id, lead_id, status):
+        return jsonify({"ok": True})
+    return jsonify({"error": "Not found"}), 404
+
+
+@app.route("/api/ev-buyer-lead", methods=["POST"])
+def api_ev_buyer_lead():
+    data = request.get_json() or {}
+    slug = (data.get("vehicle_slug") or "").strip()
+    name = (data.get("buyer_name") or data.get("name") or "").strip()
+    email = (data.get("buyer_email") or data.get("email") or "").strip()
+    if not slug or not name or not email:
+        return jsonify({"error": "Vehicle, name and email required"}), 400
+    result = create_buyer_lead_by_slug(
+        slug,
+        buyer_name=name,
+        buyer_email=email,
+        buyer_phone=data.get("buyer_phone") or data.get("phone", ""),
+        buyer_postcode=data.get("buyer_postcode") or data.get("postcode", ""),
+        buyer_profile=data.get("buyer_profile") or data.get("profile"),
+        message=data.get("message", ""),
+    )
+    try:
+        track_event("ev_buyer_lead", {"vehicle_slug": slug, "qualified": result.get("qualified"), "demo": result.get("demo")})
+    except Exception:
+        pass
+    if not result.get("ok"):
+        return jsonify(result), 404
+    return jsonify(result)
+
+
+@app.route("/api/admin/ev-dealers", methods=["GET"])
+def api_admin_ev_dealers():
+    if not admin_authorized():
+        return jsonify({"error": "Unauthorized"}), 401
+    status = request.args.get("status")
+    return jsonify({"dealers": list_dealers(status=status or None)})
+
+
+@app.route("/api/admin/ev-dealers/<dealer_id>", methods=["PATCH"])
+def api_admin_ev_dealer_patch(dealer_id):
+    if not admin_authorized():
+        return jsonify({"error": "Unauthorized"}), 401
+    data = request.get_json() or {}
+    status = (data.get("status") or "").strip()
+    if status not in ("pending", "approved", "suspended"):
+        return jsonify({"error": "Invalid status"}), 400
+    dealer = set_dealer_status(dealer_id, status)
+    if not dealer:
+        return jsonify({"error": "Not found"}), 404
+    clear_vehicle_cache()
+    return jsonify({"ok": True, "dealer": dealer.to_dict()})
+
+
 @app.route("/beta-login", methods=["GET", "POST"])
 def beta_login():
     error = None
@@ -740,6 +1035,46 @@ def health():
 
 
 # ── API: Calculator ─────────────────────────────────────────────────────────
+
+@app.route("/api/quick-estimate", methods=["POST"])
+def api_quick_estimate():
+    data = request.get_json() or {}
+    postcode = (data.get("postcode") or "").strip()
+    goals = data.get("goals") or []
+    if isinstance(goals, str):
+        goals = [goals]
+    goal = data.get("goal") or (goals[0] if goals else "lower_bill")
+    if not goals:
+        goals = [goal]
+
+    specific_yield = None
+    if postcode:
+        geo = geocode_postcode(postcode)
+        if geo:
+            try:
+                roof_type = data.get("roof_type", "pitched_south")
+                angle, aspect = roof_type_to_pvgis_params(roof_type)
+                pvgis = get_pv_estimate(float(geo["latitude"]), float(geo["longitude"]), peakpower=1.0, angle=angle, aspect=aspect)
+                if pvgis and pvgis.get("specific_yield_kwh_kwp"):
+                    specific_yield = float(pvgis["specific_yield_kwh_kwp"])
+            except Exception:
+                log.debug("quick-estimate PVGIS skipped", exc_info=True)
+
+    result = quick_estimate_range(
+        monthly_kwh=float(data.get("monthly_kwh", 0)),
+        monthly_bill_eur=float(data.get("monthly_bill_eur", 0)),
+        electricity_price_ct=float(data.get("electricity_price_ct", 32.0)),
+        roof_area_m2=float(data.get("roof_area_m2", 0)),
+        roof_type=data.get("roof_type", "pitched_south"),
+        goals=goals,
+        specific_yield=specific_yield,
+    )
+    if postcode:
+        result["postcode"] = postcode
+    lang = getattr(g, "lang", "en") or "en"
+    result["message"] = result.get("message_de" if lang == "de" else "message_en", result["message_en"])
+    return jsonify(result)
+
 
 @app.route("/api/calculate", methods=["POST"])
 def api_calculate():
@@ -806,6 +1141,8 @@ def api_calculate():
         connect_meter=bool(data.get("connect_meter")),
         battery_interest=data.get("battery_interest", "unsure"),
         financing_interest=data.get("financing_interest", "no"),
+        user_situation=data.get("user_situation", ""),
+        has_existing_pv=bool(data.get("has_existing_pv")),
     )
     if "ev_charging" in (inp.goals or []):
         apply_ev_fields_to_input(inp, data)
@@ -1744,6 +2081,10 @@ def api_admin_summary():
             "surveys": len(load_json(SURVEYS_FILE)),
             "assessments": db.query(Assessment).count(),
             "subscriptions": db.query(Subscription).count(),
+            "ev_dealers": db.query(EvDealer).count(),
+            "ev_dealers_pending": db.query(EvDealer).filter(EvDealer.status == "pending").count(),
+            "ev_vehicles_published": db.query(EvVehicle).filter(EvVehicle.status == "published").count(),
+            "ev_buyer_leads": db.query(EvBuyerLead).count(),
             "products": {
                 "panels": len(catalog.get("panels", [])),
                 "inverters": len(catalog.get("inverters", [])),

@@ -3,6 +3,7 @@
 from i18n_extra import EXTRA
 from i18n_survey import SURVEY_TRANSLATIONS
 from i18n_portal import PORTAL_TRANSLATIONS
+from i18n_ev_marketplace import EV_MARKETPLACE_TRANSLATIONS
 
 TRANSLATIONS = {
     "en": {
@@ -536,6 +537,7 @@ for _lang in ("en", "de"):
     TRANSLATIONS.setdefault(_lang, {}).update(EXTRA.get(_lang, {}))
     TRANSLATIONS.setdefault(_lang, {}).update(SURVEY_TRANSLATIONS.get(_lang, {}))
     TRANSLATIONS.setdefault(_lang, {}).update(PORTAL_TRANSLATIONS.get(_lang, {}))
+    TRANSLATIONS.setdefault(_lang, {}).update(EV_MARKETPLACE_TRANSLATIONS.get(_lang, {}))
 
 
 def translate(lang: str, key: str, default: str | None = None) -> str:

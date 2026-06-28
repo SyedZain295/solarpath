@@ -42,6 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setupQuoteModal(data);
   setupPDFDownload(data);
   setupPriceScenarioSlider();
+  wireAssumptionSliders(data);
   saveAssessmentToServer(data);
 });
 
@@ -72,7 +73,7 @@ function renderResults(d) {
     ${renderGoalDecisions(d.goal_decisions || [])}
     ${renderEvAssessment(d.ev_assessment)}
     ${renderHpAssessment(d.hp_assessment)}
-    ${renderWhyExplanation(d.why_explanation, d.why_recommend)}
+    ${renderWhyScanBlocks(d)}
     ${d.solar_viable === false ? renderApartmentPath(d.apartment_path) : ''}
     ${renderBudgetFirst(d.budget_first)}
     ${renderHouseholdProfile(d.household_profile)}
@@ -90,6 +91,8 @@ function renderResults(d) {
       </div>
     </section>
 
+    ${renderAssumptionPanel(d)}
+
     ${renderEnergyEconomics(d.energy_economics, d.battery_comparison)}
     ${renderPriceScenarios(d.price_scenarios)}
     ${renderFinancingComparison(d.financing_comparison)}
@@ -101,6 +104,7 @@ function renderResults(d) {
     ${renderQuoteChecklist(d.quote_quality_checklist)}
     ${renderConfidence(conf)}
     ${renderReportExtras(d)}
+    ${renderNextStepsPath(d.project_path)}
     ${renderProjectTracker(d.legal_checklist || [])}
     ${renderEnergyRoadmap(d.energy_roadmap)}
     ${renderProfileAndTech(d)}
@@ -307,31 +311,33 @@ function renderGoalDecisions(decisions) {
 function renderPackageCard(pkg, givesUp) {
   if (!pkg) return '';
   const selected = pkg.id === selectedPackageId || pkg.recommended;
-  const tradeoffList = (pkg.tradeoffs || givesUp || []).map(t => `<li>${t}</li>`).join('');
+  const tradeoffList = (pkg.tradeoffs || givesUp || []);
+  const mainCompromise = tradeoffList[0] || '—';
+  const kwp = pkg.product_spec?.system_kwp_actual || pkg.system_kwp || '—';
+  const ctaMap = {
+    cheapest: tr('results.choose_budget', 'Choose Budget'),
+    best_value: tr('results.choose_recommended', 'Choose Recommended'),
+    most_reliable: tr('results.choose_resilience', 'Choose Resilience'),
+  };
+  const cta = ctaMap[pkg.id] || tr('results.select_package', 'Select this package');
   return `
     <div class="package-card package-card--${pkg.id || 'default'} ${selected ? 'selected' : ''} ${pkg.recommended ? 'recommended' : ''}" data-package-id="${pkg.id}">
-      ${pkg.recommended ? `<span class="package-rec-badge">${tr('results.recommended', 'Recommended')}</span>` : ''}
+      ${pkg.recommended ? `<span class="package-rec-badge" title="${tr('results.recommended_why', 'Recommended because it offers the best 20-year value for your stated goals.')}">${tr('results.recommended', 'Recommended')}</span>` : ''}
       <div class="package-badge">${pkg.badge}</div>
       <h3>${pkg.label}</h3>
       <p class="package-sub">${pkg.subtitle}</p>
-      ${pkg.product_spec ? `<p class="package-spec-line">${pkg.product_spec.num_panels}× ${pkg.product_spec.panel?.brand} · ${pkg.product_spec.system_kwp_actual} kWp</p>` : ''}
-      <div class="package-price">${formatCurrency(pkg.upfront_cost)}</div>
-      <div class="package-metrics">
-        <div><span>${tr('results.monthly_savings', 'Monthly savings')}</span><strong>${formatCurrency(pkg.monthly_savings)}</strong></div>
-        <div><span>${tr('results.annual_savings', 'Annual savings')}</span><strong>${formatCurrency(pkg.annual_savings)}</strong></div>
-        <div><span>${tr('results.export_income', 'Export income')}</span><strong>${formatCurrency(pkg.export_income_annual)}/yr</strong></div>
+      ${pkg.recommended ? `<p class="package-rec-why">${tr('results.recommended_why', 'Recommended because it offers the best 20-year value for your stated goals.')}</p>` : ''}
+      <div class="package-metrics package-metrics--aligned">
+        <div><span>${tr('results.pkg.total_cost', 'Total cost')}</span><strong>${formatCurrency(pkg.upfront_cost)}</strong></div>
+        <div><span>${tr('results.pkg.system_size', 'System size')}</span><strong>${kwp} kWp</strong></div>
         <div><span>${tr('results.battery', 'Battery')}</span><strong>${pkg.battery_kwh ? pkg.battery_kwh + ' kWh' : tr('results.none_short', 'None')}</strong></div>
-        <div><span>${tr('results.self_consumption', 'Self-consumption')}</span><strong>${pkg.self_consumption_ratio}%</strong></div>
+        <div><span>${tr('results.annual_savings', 'Annual savings')}</span><strong>${formatCurrency(pkg.annual_savings)}</strong></div>
         <div><span>${tr('results.payback', 'Payback')}</span><strong>${pkg.payback_years} yrs</strong></div>
-        <div><span>${tr('results.net_10yr', '10-yr net benefit')}</span><strong class="text-green">${formatCurrency(pkg.savings_10yr)}</strong></div>
-        <div><span>${tr('results.net_20yr', '20-yr net benefit')}</span><strong>${formatCurrency(pkg.savings_20yr)}</strong></div>
         <div><span>${tr('results.backup', 'Backup')}</span><strong>${pkg.backup_capable ? tr('results.yes', 'Yes') : tr('results.no', 'No')}</strong></div>
         <div><span>${tr('results.warranty', 'Warranty')}</span><strong>${pkg.warranty_years} yrs</strong></div>
-        <div><span>${tr('results.co2_saved', 'CO2 saved')}</span><strong>${pkg.co2_reduction_tonnes} t/yr</strong></div>
-        <div><span>${tr('results.component_tier', 'Component tier')}</span><strong>${packageComponentTier(pkg)}</strong></div>
+        <div><span>${tr('results.pkg.main_compromise', 'Main compromise')}</span><strong>${mainCompromise}</strong></div>
       </div>
-      ${tradeoffList ? `<div class="package-tradeoffs"><strong>${tr('results.you_give_up', 'You give up')}:</strong><ul>${tradeoffList}</ul></div>` : ''}
-      <button class="btn btn-outline btn-sm btn-block select-pkg-btn">${tr('results.select_package', 'Select this package')}</button>
+      <button class="btn btn-outline btn-sm btn-block select-pkg-btn">${cta}</button>
     </div>`;
 }
 
@@ -898,8 +904,9 @@ async function loadMatchedSuppliers(data) {
       suppliers = await resp.json();
       suppliers = suppliers.filter(s => s.verified).sort((a, b) => (b.quality_score || 0) - (a.quality_score || 0));
     }
-    container.innerHTML = '<p style="font-size:.85rem"><strong>' + tr('results.select_installers', 'Select installers to contact') + ':</strong></p>' +
-      suppliers.map(s => `
+    container.innerHTML = '<p style="font-size:.85rem"><strong>' + tr('results.select_installers', 'Select installers to contact') + ':</strong></p>'
+      + '<p class="form-hint">' + tr('results.supplier_max_note', 'You choose which installers receive your details. Maximum 3 at once.') + '</p>' +
+      suppliers.slice(0, 3).map(s => `
         <label class="matched-supplier">
           <input type="checkbox" value="${s.id}" checked>
           <span>${s.company_name}</span>

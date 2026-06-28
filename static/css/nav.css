@@ -134,6 +134,19 @@
   border-left: 1px solid rgba(148, 163, 184, 0.28);
 }
 
+.nav-login-link {
+  text-decoration: none;
+  color: var(--color-text-muted);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  white-space: nowrap;
+  padding: 0.42rem 0.55rem;
+}
+
+.nav-login-link:hover {
+  color: var(--color-primary);
+}
+
 .nav-actions .btn-primary,
 .nav-actions .nav-cta.btn-sm {
   padding: 0.4rem 0.95rem;

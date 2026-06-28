@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}{{ t('evm.energy_title') }}{% endblock %}
+{% block body_class %}app-page evm-page{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/ev-marketplace.css') }}?v=1">
+{% endblock %}
+
+{% block content %}
+<div class="page-bg-wrap">
+  <div class="page-bg" aria-hidden="true"></div>
+  <div class="page-content">
+    <div class="page-header-hero">
+      <h1>{{ t('evm.energy_title') }}</h1>
+      <p>{{ t('evm.energy_sub') }}</p>
+    </div>
+
+    <form id="evEnergyForm" class="glass-panel evm-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="ee_weekly_km">{{ t('evm.weekly_km') }}</label>
+          <input type="number" id="ee_weekly_km" min="20" value="290" required>
+        </div>
+        <div class="form-group">
+          <label for="ee_vehicle">{{ t('calc.ev.vehicle_model') }}</label>
+          <select id="ee_vehicle">
+            <option value="">—</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="ee_home_charge">{{ t('evm.home_charging') }}</label>
+          <select id="ee_home_charge">
+            <option value="yes">{{ t('common.yes') }}</option>
+            <option value="limited">{{ t('calc.ev.home_charging.limited') }}</option>
+            <option value="no">{{ t('common.no') }}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="ee_kwp">{{ t('evm.system_kwp') }}</label>
+          <input type="number" id="ee_kwp" min="0" step="0.5" placeholder="0">
+        </div>
+      </div>
+      <div class="evm-check-grid">
+        <label class="checkbox-inline"><input type="checkbox" id="ee_has_pv"> {{ t('evm.has_pv') }}</label>
+        <label class="checkbox-inline"><input type="checkbox" id="ee_has_battery"> {{ t('evm.has_battery') }}</label>
+        <label class="checkbox-inline"><input type="checkbox" id="ee_has_wallbox"> {{ t('evm.has_wallbox') }}</label>
+      </div>
+      <button type="submit" class="btn btn-primary btn-lg">{{ t('evm.energy_submit') }}</button>
+    </form>
+
+    <div id="evEnergyResults" class="evm-results hidden" aria-live="polite"></div>
+    <p class="form-hint evm-disclaimer">{{ t('evm.disclaimer') }}</p>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/ev_marketplace.js') }}?v=2"></script>
+<script>document.addEventListener('DOMContentLoaded', () => initEvHomeEnergy());</script>
+{% endblock %}

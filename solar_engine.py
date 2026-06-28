@@ -201,6 +201,8 @@ class CalculatorInput:
     hp_daytime_heating: str = ""
     hp_priority: str = ""
     hp_replacing: str = ""
+    user_situation: str = ""
+    has_existing_pv: bool = False
 
 
 @dataclass
@@ -880,6 +882,7 @@ def generate_recommendation(inp: CalculatorInput, pvgis_data: Optional[dict] = N
         annual_kwh, adjusted_yield, nominal_kwp, annual_production, bool(pvgis_data), raw_kwp=raw_kwp,
         roof_area_m2=inp.roof_area_m2,
     )
+    why_limitations = _build_why_limitations(inp, goals, system_kwp, annual_production, annual_kwh_adj, sizing_summary)
 
     result = {
         "goals": goals,
@@ -901,6 +904,7 @@ def generate_recommendation(inp: CalculatorInput, pvgis_data: Optional[dict] = N
         "assumptions": assumptions,
         "why_recommend": why_recommend,
         "why_explanation": why_explanation,
+        "why_limitations": why_limitations,
         "readiness": readiness,
         "household_profile": household_profile,
         "lead_qualification": lead_tier,
@@ -941,6 +945,7 @@ def generate_recommendation(inp: CalculatorInput, pvgis_data: Optional[dict] = N
             "package_label": primary_pkg["label"],
         },
         "legal_checklist": _project_tracker(),
+        "project_path": _project_path_timeline(),
         "calculator_inputs": calculator_inputs_snapshot(inp),
         "disclaimer": DISCLAIMER,
     }
@@ -951,6 +956,35 @@ def generate_recommendation(inp: CalculatorInput, pvgis_data: Optional[dict] = N
     result["quote_ready_profile"] = build_quote_ready_profile(inp, result)
     result["decision_report"] = build_decision_report(inp, result)
     return result
+
+
+def _build_why_limitations(inp, goals, system_kwp, annual_production, annual_kwh, sizing_summary) -> list:
+    notes = []
+    if "ev_charging" in goals and annual_production < annual_kwh * 1.1:
+        notes.append("This system may not fully cover all EV charging in winter without grid top-up or a larger battery.")
+    if sizing_summary and sizing_summary.get("capped_by_roof"):
+        notes.append("Roof area limits system size — an on-site survey may find more or less usable area.")
+    if inp.shading in ("partial", "heavy", "significant"):
+        notes.append("Shading can reduce real-world yield below this estimate until a site survey confirms production.")
+    if not inp.has_roof_photos:
+        notes.append("No roof photos yet — production and layout assumptions are based on your stated roof type and area.")
+    if getattr(inp, "has_existing_pv", False):
+        notes.append("Existing PV capacity and inverter limits are not verified — expansion may need hardware upgrades.")
+    if not notes:
+        notes.append("Installer quotes, grid connection rules, and structural checks are not included in this digital estimate.")
+    return notes[:4]
+
+
+def _project_path_timeline() -> list:
+    return [
+        {"step": 1, "title_key": "path.step1_title", "detail_key": "path.step1_detail"},
+        {"step": 2, "title_key": "path.step2_title", "detail_key": "path.step2_detail"},
+        {"step": 3, "title_key": "path.step3_title", "detail_key": "path.step3_detail"},
+        {"step": 4, "title_key": "path.step4_title", "detail_key": "path.step4_detail"},
+        {"step": 5, "title_key": "path.step5_title", "detail_key": "path.step5_detail"},
+        {"step": 6, "title_key": "path.step6_title", "detail_key": "path.step6_detail"},
+        {"step": 7, "title_key": "path.step7_title", "detail_key": "path.step7_detail"},
+    ]
 
 
 def _project_tracker() -> list:

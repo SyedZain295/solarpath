@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}{{ t('evm.sell_title') }}{% endblock %}
+{% block body_class %}app-page evm-page{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/ev-marketplace.css') }}?v=1">
+{% endblock %}
+
+{% block content %}
+<div class="page-bg-wrap">
+  <div class="page-bg" aria-hidden="true"></div>
+  <div class="page-content">
+    <div class="page-header-hero">
+      <h1>{{ t('evm.sell_title') }}</h1>
+      <p>{{ t('evm.sell_sub') }}</p>
+    </div>
+
+    <form id="evSellForm" class="glass-panel evm-form">
+      <div class="form-group">
+        <label for="dealer_name">{{ t('evm.dealer_name') }} *</label>
+        <input type="text" id="dealer_name" required>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="dealer_email">{{ t('evm.dealer_email') }} *</label>
+          <input type="email" id="dealer_email" required>
+        </div>
+        <div class="form-group">
+          <label for="dealer_phone">{{ t('evm.dealer_phone') }}</label>
+          <input type="tel" id="dealer_phone">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="dealer_location">{{ t('evm.dealer_location') }} *</label>
+        <input type="text" id="dealer_location" placeholder="München" required>
+      </div>
+      <p class="form-hint">Upload fields for inventory, battery certificates and photos are in the <a href="{{ invite_href('/ev/dealer/dashboard') }}">dealer dashboard</a> after approval.</p>
+      <p class="form-hint"><a href="{{ invite_href('/ev/dealer/register') }}">{{ t('evm.dealer_register_btn') }}</a> · <a href="{{ invite_href('/ev/dealer/login') }}">{{ t('evm.dealer_login_btn') }}</a></p>
+      <button type="submit" class="btn btn-primary btn-lg">{{ t('evm.dealer_submit') }}</button>
+    </form>
+    <div id="evSellSuccess" class="success-message hidden">{{ t('evm.dealer_success') }}</div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/ev_marketplace.js') }}?v=2"></script>
+<script>document.addEventListener('DOMContentLoaded', () => initEvSell());</script>
+{% endblock %}

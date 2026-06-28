@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+{% block title %}{{ t('evm.dealer_dashboard_title') }}{% endblock %}
+{% block body_class %}app-page evm-page{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/ev-marketplace.css') }}?v=2">
+{% endblock %}
+
+{% block content %}
+<div class="page-bg-wrap">
+  <div class="page-bg" aria-hidden="true"></div>
+  <div class="page-content container-wide">
+    <div class="page-header-hero evm-dash-head">
+      <div>
+        <h1>{{ t('evm.dealer_dashboard_title') }}</h1>
+        <p>{{ dealer.company_name }} · {{ dealer.location }} · <span class="evm-status evm-status--{{ dealer.status }}">{{ dealer.status }}</span></p>
+      </div>
+      <button type="button" class="btn btn-outline btn-sm" id="evDealerLogout">{{ t('evm.dealer_logout') }}</button>
+    </div>
+
+    {% if dealer.status != 'approved' %}
+    <div class="glass-panel evm-pending-panel">
+      <h2>{{ t('evm.dealer_pending_title') }}</h2>
+      <p>{{ t('evm.dealer_pending_sub') }}</p>
+    </div>
+    {% else %}
+
+    <div class="dashboard-tabs evm-dash-tabs">
+      <button type="button" class="tab-btn active" data-tab="inventory">{{ t('evm.tab.inventory') }}</button>
+      <button type="button" class="tab-btn" data-tab="leads">{{ t('evm.tab.leads') }}</button>
+      <button type="button" class="tab-btn" data-tab="add">{{ t('evm.tab.add_vehicle') }}</button>
+    </div>
+
+    <div class="tab-panel active glass-panel" id="tab-inventory">
+      <h2>{{ t('evm.tab.inventory') }}</h2>
+      <div id="dealerInventoryList" class="evm-dealer-inventory"></div>
+    </div>
+
+    <div class="tab-panel glass-panel" id="tab-leads">
+      <h2>{{ t('evm.tab.leads') }}</h2>
+      <p class="form-hint">{{ t('evm.leads_sub') }}</p>
+      <div id="dealerLeadsList" class="evm-dealer-leads"></div>
+    </div>
+
+    <div class="tab-panel glass-panel" id="tab-add">
+      <h2>{{ t('evm.tab.add_vehicle') }}</h2>
+      <form id="dealerVehicleForm" class="evm-form evm-vehicle-form">
+        <input type="hidden" id="veh_edit_id" value="">
+        <div class="form-row">
+          <div class="form-group"><label>{{ t('evm.field.make') }} *</label><input type="text" id="veh_make" required></div>
+          <div class="form-group"><label>{{ t('evm.field.model') }} *</label><input type="text" id="veh_model" required></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>{{ t('evm.field.trim') }}</label><input type="text" id="veh_trim"></div>
+          <div class="form-group"><label>{{ t('evm.field.year') }}</label><input type="number" id="veh_year" min="2010" max="2030"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>{{ t('evm.price') }} (€) *</label><input type="number" id="veh_price" required min="1000"></div>
+          <div class="form-group"><label>{{ t('evm.mileage') }} (km)</label><input type="number" id="veh_mileage" min="0"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>{{ t('evm.battery') }} (kWh)</label><input type="number" id="veh_battery" step="0.1"></div>
+          <div class="form-group"><label>{{ t('evm.field.consumption') }}</label><input type="number" id="veh_consumption" step="0.1" value="17"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>{{ t('evm.field.winter_min') }}</label><input type="number" id="veh_winter_min"></div>
+          <div class="form-group"><label>{{ t('evm.field.winter_max') }}</label><input type="number" id="veh_winter_max"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>{{ t('evm.dc_charge') }} (kW)</label><input type="number" id="veh_dc"></div>
+          <div class="form-group"><label>AC (kW)</label><input type="number" id="veh_ac" value="11"></div>
+        </div>
+        <div class="form-group"><label>{{ t('evm.dealer_location') }}</label><input type="text" id="veh_location" value="{{ dealer.location }}"></div>
+
+        <fieldset class="evm-cert-fieldset">
+          <legend>{{ t('evm.cert_section') }}</legend>
+          <label class="checkbox-inline"><input type="checkbox" id="veh_cert_uploaded"> {{ t('evm.cert_uploaded_label') }}</label>
+          <div class="form-row">
+            <div class="form-group"><label>{{ t('evm.cert_provider') }}</label><input type="text" id="veh_cert_provider" placeholder="TÜV SÜD, DEKRA, AVILOO"></div>
+            <div class="form-group"><label>{{ t('evm.cert_date') }}</label><input type="text" id="veh_cert_date" placeholder="2026-01"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>{{ t('evm.cert_soh') }} (%)</label><input type="number" id="veh_cert_soh" min="50" max="100" step="1"></div>
+            <div class="form-group"><label>{{ t('evm.cert_doc_url') }}</label><input type="url" id="veh_cert_url" placeholder="https://"></div>
+          </div>
+          <p class="form-hint">{{ t('evm.cert_disclaimer') }}</p>
+        </fieldset>
+
+        <div class="form-row">
+          <div class="form-group"><label>{{ t('evm.warranty_years') }}</label><input type="number" id="veh_warr_years" min="0"></div>
+          <div class="form-group"><label>{{ t('evm.warranty_km') }}</label><input type="number" id="veh_warr_km" min="0"></div>
+        </div>
+        <div class="form-group">
+          <label>{{ t('evm.photo_urls') }}</label>
+          <textarea id="veh_photos" rows="3" placeholder="https://…"></textarea>
+        </div>
+        <div class="evm-check-grid">
+          <label class="checkbox-inline"><input type="checkbox" id="veh_featured"> {{ t('evm.featured_listing') }}</label>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>{{ t('evm.publish_status') }}</label>
+            <select id="veh_status">
+              <option value="draft">{{ t('evm.status.draft') }}</option>
+              <option value="published">{{ t('evm.status.published') }}</option>
+              <option value="sold">{{ t('evm.status.sold') }}</option>
+            </select>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary">{{ t('evm.save_vehicle') }}</button>
+      </form>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/ev_dealer_portal.js') }}?v=1"></script>
+<script>document.addEventListener('DOMContentLoaded', () => initEvDealerDashboard());</script>
+{% endblock %}

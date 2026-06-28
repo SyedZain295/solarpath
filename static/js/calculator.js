@@ -13,9 +13,66 @@ document.addEventListener('DOMContentLoaded', () => {
   const apartmentNotice = document.getElementById('apartmentNotice');
   const submitBtnDefaultText = submitBtn?.textContent || '';
 
-  let currentStep = 1;
+  let currentStep = 0;
   let isSubmitting = false;
 
+  const SITUATION_PRESETS = {
+    new_pv: { goals: ['lower_bill'], has_existing_pv: false },
+    pv_battery: { goals: ['lower_bill', 'backup'], has_existing_pv: true, battery_interest: 'yes' },
+    pv_ev: { goals: ['lower_bill', 'ev_charging'], has_existing_pv: true },
+    heat_pump: { goals: ['space_heating', 'lower_bill'], has_existing_pv: false },
+    compare_quotes: { redirect: '/compare-quotes' },
+    business_farm: { goals: ['business'], has_existing_pv: false },
+  };
+
+  const SECONDS_PER_STEP = 42;
+
+  function selectedSituation() {
+    const r = form.querySelector('input[name="situation"]:checked');
+    return r ? r.value : '';
+  }
+
+  function applySituationPreset(situation) {
+    const preset = SITUATION_PRESETS[situation];
+    if (!preset) return true;
+    if (preset.redirect) {
+      window.location.href = preset.redirect;
+      return false;
+    }
+    field('user_situation').value = situation;
+    field('has_existing_pv').value = preset.has_existing_pv ? '1' : '0';
+    form.querySelectorAll('input[name="goals"]').forEach((cb) => {
+      cb.checked = (preset.goals || []).includes(cb.value);
+    });
+    if (preset.battery_interest && field('battery_interest')) {
+      field('battery_interest').value = preset.battery_interest;
+    }
+    syncGoalSummary();
+    syncEvProgressLabel();
+    syncHpLoadCheckbox();
+    return true;
+  }
+
+  function syncGoalSummary() {
+    const el = document.getElementById('goalSelectionSummary');
+    if (!el) return;
+    const labels = [...form.querySelectorAll('input[name="goals"]:checked')].map((cb) => {
+      const title = cb.closest('.goal-card')?.querySelector('.goal-title');
+      return title ? title.textContent.trim() : cb.value;
+    });
+    if (!labels.length) {
+      el.classList.add('hidden');
+      el.textContent = '';
+      return;
+    }
+    el.classList.remove('hidden');
+    el.innerHTML = `<strong>${tr('calc.selected_goals', 'Selected')}:</strong> ${labels.join(' · ')}`;
+  }
+
+  function estimatedMinutesLeft(pos, totalSteps) {
+    const remaining = Math.max(0, totalSteps - pos - 1);
+    return Math.max(1, Math.ceil((remaining * SECONDS_PER_STEP) / 60));
+  }
   function hasEvGoal() {
     return [...form.querySelectorAll('input[name="goals"]:checked')].some((c) => c.value === 'ev_charging');
   }
@@ -76,15 +133,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   form.querySelectorAll('input[name="goals"]').forEach((cb) => {
     cb.addEventListener('change', () => {
+      syncGoalSummary();
       syncEvProgressLabel();
-    syncHpLoadCheckbox();
+      syncHpLoadCheckbox();
       if (!hasEvGoal() && currentStep === 2) {
         currentStep = 1;
       }
       if (!hasHeatGoal() && currentStep === 3) {
         currentStep = hasEvGoal() ? 2 : 1;
       }
-      syncHpLoadCheckbox();
       updateUI();
     });
   });
@@ -123,14 +180,29 @@ document.addEventListener('DOMContentLoaded', () => {
     const kwh = quickParams.get('kwh');
     const roof = quickParams.get('roof');
     const goal = quickParams.get('goal');
+    const owner = quickParams.get('owner');
+    const roofType = quickParams.get('roof_type');
     if (plz && field('postcode')) field('postcode').value = plz;
     if (kwh && field('monthly_kwh')) field('monthly_kwh').value = kwh;
     if (roof && field('roof_area')) field('roof_area').value = roof;
+    if (owner && field('owner_status')) field('owner_status').value = owner;
+    if (roofType && field('roof_type')) field('roof_type').value = roofType;
     if (goal) {
       const goalCb = form.querySelector(`input[name="goals"][value="${goal}"]`);
       if (goalCb) goalCb.checked = true;
     }
+    const newPv = form.querySelector('input[name="situation"][value="new_pv"]');
+    if (newPv) newPv.checked = true;
+    if (field('user_situation')) field('user_situation').value = 'new_pv';
+    currentStep = 1;
+    syncGoalSummary();
   }
+
+  field('roof_photos')?.addEventListener('change', (e) => {
+    if (e.target.files?.length && field('has_roof_photos')) {
+      field('has_roof_photos').checked = true;
+    }
+  });
 
   function stepLabel(stepNum) {
     const el = form.querySelector(`.calc-step[data-step="${stepNum}"]`);
@@ -157,10 +229,13 @@ document.addEventListener('DOMContentLoaded', () => {
     if (meta) {
       const label = stepLabel(currentStep);
       const stepWord = tr('calc.js.step_of', 'Step {current} of {total}');
+      const mins = estimatedMinutesLeft(pos, totalSteps);
+      const timeLeft = tr('calc.js.time_left', 'About {min} min left').replace('{min}', String(mins));
       meta.innerHTML = stepWord
         .replace('{current}', `<strong>${pos + 1}</strong>`)
         .replace('{total}', `<strong>${totalSteps}</strong>`)
-        + (label ? ` · ${label}` : '');
+        + (label ? ` · ${label}` : '')
+        + ` · ${timeLeft}`;
     }
 
     let progressIdx = 0;
@@ -190,6 +265,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function validateStep(step = currentStep) {
     if (!stepVisible(step)) return true;
+    if (step === 0 && !selectedSituation()) {
+      alert(tr('calc.js.select_situation', 'Please select the option that best describes you.'));
+      return false;
+    }
     if (step === 1 && !form.querySelectorAll('input[name="goals"]:checked').length) {
       alert(tr('calc.js.select_goal', 'Please select at least one goal.'));
       return false;
@@ -278,6 +357,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   nextBtn?.addEventListener('click', () => {
     if (!validateStep()) return;
+    if (currentStep === 0) {
+      if (!applySituationPreset(selectedSituation())) return;
+    }
     const vis = visibleStepNumbers();
     if (vis.indexOf(currentStep) < vis.length - 1) {
       currentStep = stepAfter(currentStep);
@@ -383,6 +465,8 @@ document.addEventListener('DOMContentLoaded', () => {
       hp_replacing: fieldVal('hp_replacing'),
       hp_daytime_heating: fieldVal('hp_daytime_heating'),
       hp_priority: fieldVal('hp_priority'),
+      user_situation: fieldVal('user_situation'),
+      has_existing_pv: fieldVal('has_existing_pv') === '1',
     };
   }
 

@@ -564,3 +564,286 @@
     width: 100%;
   }
 }
+
+/* ── Situation step ──────────────────────────────────── */
+.situation-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 0.85rem;
+}
+
+.situation-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 1rem 1.1rem;
+  border: 2px solid rgba(15, 118, 110, 0.14);
+  border-radius: var(--radius-lg, 12px);
+  background: #fff;
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  position: relative;
+}
+
+.situation-card input { display: none; }
+
+.situation-card::after {
+  content: '✓';
+  position: absolute;
+  top: 0.65rem;
+  right: 0.75rem;
+  width: 1.35rem;
+  height: 1.35rem;
+  border-radius: 50%;
+  border: 2px solid rgba(15, 118, 110, 0.2);
+  color: transparent;
+  font-size: 0.75rem;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+}
+
+.situation-card:has(input:checked) {
+  border-color: var(--color-primary, #0f766e);
+  background: #f0fdfa;
+  box-shadow: 0 0 0 1px var(--color-primary, #0f766e);
+}
+
+.situation-card:has(input:checked)::after {
+  background: var(--color-primary, #0f766e);
+  border-color: var(--color-primary, #0f766e);
+  color: #fff;
+}
+
+.situation-icon { font-size: 1.5rem; }
+.situation-title { font-weight: 700; font-size: 0.95rem; }
+.situation-desc { font-size: 0.8rem; color: var(--color-text-muted); }
+
+.why-ask {
+  margin: 0.5rem 0 1rem;
+  font-size: 0.82rem;
+}
+
+.why-ask summary {
+  cursor: pointer;
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.goal-selection-summary {
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-md, 10px);
+  background: rgba(15, 118, 110, 0.08);
+  font-size: 0.9rem;
+}
+
+/* ── Quick estimate preview ──────────────────────────── */
+.estimate-preview {
+  margin: 1rem 0;
+  padding: 1rem 1.15rem;
+  border-radius: var(--radius-lg, 12px);
+  background: linear-gradient(135deg, #f0fdfa, #ecfdf5);
+  border: 1px solid rgba(15, 118, 110, 0.15);
+}
+
+.estimate-preview-kicker {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-teal-deep);
+}
+
+.estimate-preview-range {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin: 0.35rem 0;
+}
+
+/* ── Results: why scan, path, assumptions ───────────── */
+.why-scan-headline {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--color-primary-dark, #115e59);
+  margin: 0.25rem 0 0;
+}
+
+.why-scan-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.85rem;
+  margin-top: 1rem;
+}
+
+.why-scan-block {
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius-md, 10px);
+  background: rgba(15, 118, 110, 0.05);
+  border: 1px solid rgba(15, 118, 110, 0.08);
+}
+
+.why-scan-block h3 {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-teal-deep);
+  margin: 0 0 0.4rem;
+}
+
+.why-scan-block--limits {
+  background: rgba(245, 158, 11, 0.06);
+  border-color: rgba(245, 158, 11, 0.15);
+}
+
+.why-scan-limits {
+  margin: 0;
+  padding-left: 1.1rem;
+  font-size: 0.88rem;
+}
+
+.project-path-steps {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.path-step {
+  display: flex;
+  gap: 0.85rem;
+  align-items: flex-start;
+  padding: 0.75rem 0.9rem;
+  border-radius: var(--radius-md, 10px);
+  border: 1px solid rgba(15, 118, 110, 0.1);
+}
+
+.path-step--current {
+  border-color: var(--color-primary);
+  background: #f0fdfa;
+}
+
+.path-step-num {
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.8rem;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.path-step-title { font-weight: 700; margin: 0; font-size: 0.92rem; }
+.path-step-detail { margin: 0.15rem 0 0; font-size: 0.82rem; color: var(--color-text-muted); }
+
+.assumption-sliders { display: grid; gap: 0.85rem; margin: 1rem 0; }
+.assumption-slider-row { display: grid; grid-template-columns: 1fr auto; gap: 0.35rem 1rem; align-items: center; }
+.assumption-slider-row input[type="range"] { grid-column: 1 / -1; width: 100%; }
+
+.assumption-live-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.65rem;
+  margin: 1rem 0;
+}
+
+.assumption-live-metrics div {
+  padding: 0.75rem;
+  border-radius: var(--radius-md, 10px);
+  background: rgba(15, 118, 110, 0.06);
+  text-align: center;
+}
+
+.assumption-live-metrics span { display: block; font-size: 0.75rem; color: var(--color-text-muted); }
+.assumption-live-metrics strong { font-size: 1.05rem; }
+
+.battery-worth-panel {
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.battery-worth-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.battery-worth-col {
+  padding: 0.85rem;
+  border-radius: var(--radius-md, 10px);
+  border: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.85rem;
+}
+
+.battery-worth-col.highlight {
+  border-color: var(--color-primary);
+  background: #f0fdfa;
+}
+
+.cashflow-chart-panel { margin-top: 1.25rem; }
+.cashflow-chart-panel canvas {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius-md, 10px);
+  background: #f8fafc;
+}
+
+.cashflow-legend {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+}
+
+.cashflow-legend-cash::before,
+.cashflow-legend-loan::before {
+  content: '';
+  display: inline-block;
+  width: 12px;
+  height: 3px;
+  margin-right: 0.35rem;
+  vertical-align: middle;
+}
+
+.cashflow-legend-cash::before { background: #0f766e; }
+.cashflow-legend-loan::before { background: #f59e0b; }
+
+.package-metrics--aligned {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+.package-rec-why {
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+  margin: 0 0 0.75rem;
+}
+
+.matched-suppliers-note {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-teal-deep);
+  margin: 0 0 1rem;
+}
+
+.match-fit-because {
+  font-size: 0.8rem;
+  margin: 0.25rem 0 0.5rem;
+}
+
+@media (max-width: 640px) {
+  .why-scan-grid,
+  .battery-worth-grid,
+  .assumption-live-metrics {
+    grid-template-columns: 1fr;
+  }
+}

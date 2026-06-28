@@ -20,6 +20,7 @@ function renderEvAssessment(ev) {
           <div><dt>${tr('results.ev_pv_cost', 'With PV (est.)')}</dt><dd>~€${(ev.estimated_charging_cost_with_pv_annual_eur || 0).toLocaleString()}/yr</dd></div>
         </dl>
         ${notes ? `<ul class="ev-profile-notes">${notes}</ul>` : ''}
+        <p class="ev-profile-cta-wrap"><a href="/ev/find" class="btn btn-outline btn-sm">${tr('evm.results_cta', 'Find used EVs that fit your setup')}</a></p>
         ${future ? `<div class="info-box"><strong>${tr('results.ev_future', 'Planned enhancements')}</strong><ul>${future}</ul></div>` : ''}
       </div>
     </section>`;
@@ -110,32 +111,81 @@ function renderReadiness(r) {
 }
 
 function renderWhyExplanation(text, bullets) {
-  const bulletMeta = [
-    { icon: '☀', tone: 'solar' },
-    { icon: '💰', tone: 'money' },
-    { icon: '🌱', tone: 'eco' },
-    { icon: '⚡', tone: 'power' },
-    { icon: '📈', tone: 'chart' },
-  ];
-  const items = (bullets || []).map((b, i) => {
-    const clean = b.replace(/\*\*/g, '');
-    const meta = bulletMeta[i % bulletMeta.length];
-    return `<li class="why-bullet why-bullet--${meta.tone}">
-      <span class="why-bullet-icon" aria-hidden="true">${meta.icon}</span>
-      <span class="why-bullet-text">${clean}</span>
-    </li>`;
-  }).join('');
+  return renderWhyScanBlocks({ why_explanation: text, why_recommend: bullets });
+}
+
+function renderWhyScanBlocks(d) {
+  const rec = d.system_recommendation || {};
+  const sizing = d.sizing_summary || {};
+  const ci = d.calculator_inputs || {};
+  const goals = (d.goals || ci.goals || []).map(formatDisplayLabel).join(', ') || '—';
+  const annualKwh = sizing.annual_consumption_kwh || sizingAnnualKwhFromData(d);
+  const yieldKwh = d.specific_yield_kwh_kwp || 950;
+  const batt = rec.battery_kwh || d.battery_kwh || 0;
+  const parts = [`${rec.headline_kwp || d.system_kwp || '—'} kWp PV`];
+  if (batt > 0) parts.push(`${batt} kWh battery`);
+  if ((d.goals || []).includes('ev_charging')) parts.push('smart wallbox');
+  const headline = parts.join(' + ');
+
+  const useText = d.why_explanation || `Estimated use ~${Number(annualKwh).toLocaleString()} kWh/year at ${ci.electricity_price_ct || 32} ct/kWh drives the target system size.`;
+  const roofText = sizing.roof_note || sizing.formula_text || `Roof type ${formatDisplayLabel(ci.roof_type || 'pitched_south')} with ~${yieldKwh} kWh/kWp yield.`;
+  const goalText = (d.why_recommend || []).slice(0, 2).map((b) => b.replace(/\*\*/g, '')).join(' ') || `Goals: ${goals}.`;
+  const limits = (d.why_limitations || []).map((n) => `<li>${n}</li>`).join('');
+
   return `
     <section class="result-section compact-section">
-      <div class="result-insight-card why-recommendation-card">
-        <div class="result-insight-header why-recommendation-header">
+      <div class="result-insight-card why-scan-card">
+        <div class="result-insight-header">
           <span class="result-insight-kicker">${tr('results.why_kicker', 'Our analysis')}</span>
-          <h2 class="why-card-title">${tr('results.why_recommendation', 'Why this recommendation?')}</h2>
+          <h2 class="why-card-title">${tr('results.why_scan_headline', 'Your recommended system')}</h2>
+          <p class="why-scan-headline">${headline}</p>
         </div>
-        <div class="result-insight-body why-recommendation-body">
-          ${text ? `<p class="why-panel-text">${text}</p>` : ''}
-          ${items ? `<ul class="why-panel-list">${items}</ul>` : ''}
+        <div class="why-scan-grid">
+          <div class="why-scan-block">
+            <h3>${tr('results.why_because_use', 'Because of your electricity use')}</h3>
+            <p>${useText}</p>
+          </div>
+          <div class="why-scan-block">
+            <h3>${tr('results.why_because_roof', 'Because of your roof')}</h3>
+            <p>${roofText}</p>
+          </div>
+          <div class="why-scan-block">
+            <h3>${tr('results.why_because_goals', 'Because of your goals')}</h3>
+            <p>${goalText}</p>
+          </div>
+          <div class="why-scan-block why-scan-block--limits">
+            <h3>${tr('results.why_not_cover', 'What this does not cover')}</h3>
+            <ul class="why-scan-limits">${limits || `<li>${tr('results.why_not_cover', 'What this does not cover')}</li>`}</ul>
+          </div>
         </div>
+      </div>
+    </section>`;
+}
+
+function sizingAnnualKwhFromData(d) {
+  const ci = d.calculator_inputs || {};
+  if (ci.monthly_kwh > 0) return Math.round(ci.monthly_kwh * 12);
+  return 4000;
+}
+
+function renderNextStepsPath(steps) {
+  const items = (steps || []).map((s, i) => `
+    <div class="path-step ${i === 0 ? 'path-step--current' : ''}">
+      <span class="path-step-num">${s.step || i + 1}</span>
+      <div>
+        <p class="path-step-title">${tr(s.title_key || '', s.title || '')}</p>
+        <p class="path-step-detail">${tr(s.detail_key || '', s.detail || '')}</p>
+      </div>
+    </div>
+  `).join('');
+  if (!items) return '';
+  return `
+    <section class="result-section compact-section">
+      <div class="results-panel project-path-panel">
+        <span class="results-panel-kicker">${tr('results.path_kicker', 'Your project path')}</span>
+        <h2 class="results-panel-title">${tr('results.path_title', 'Next steps')}</h2>
+        <p class="results-panel-sub">${tr('results.path_sub', 'A typical journey from first estimate to monitoring — your installer will confirm timing.')}</p>
+        <div class="project-path-steps">${items}</div>
       </div>
     </section>`;
 }
@@ -363,6 +413,7 @@ function renderMatchedSuppliers(suppliers) {
           </div>
         </div>
         <p class="match-fit-label">${s.fit_label || tr('results.match_label', 'Match')}</p>
+        ${reasons.length ? `<p class="match-fit-because"><strong>${tr('results.supplier_matched_because', 'Matched because')}:</strong> ${reasons.join(' · ')}</p>` : ''}
         <div class="match-reason-chips">${reasonChips}</div>
         <div class="match-supplier-meta">
           ${verified
@@ -379,6 +430,7 @@ function renderMatchedSuppliers(suppliers) {
         <span class="matched-suppliers-kicker">${tr('results.matched_suppliers_kicker', 'Top matches for your project')}</span>
         <h2 class="matched-suppliers-title">${tr('results.matched_suppliers_title', 'Matched suppliers')}</h2>
         <p class="matched-suppliers-sub">${tr('results.matched_suppliers_sub', 'Ranked by fit for your project - not just who pays the most.')}</p>
+        <p class="matched-suppliers-note">${tr('results.supplier_max_note', 'You choose which installers receive your details. Maximum 3 at once.')}</p>
         <div class="match-supplier-grid">${cards}</div>
       </div>
     </section>`;

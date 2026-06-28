@@ -30,6 +30,8 @@ def calculator_inputs_snapshot(inp) -> dict:
         "battery_interest": getattr(inp, "battery_interest", "unsure"),
         "financing_interest": getattr(inp, "financing_interest", "no"),
         "goals": getattr(inp, "goals", []) or [],
+        "user_situation": getattr(inp, "user_situation", ""),
+        "has_existing_pv": getattr(inp, "has_existing_pv", False),
     }
     snap.update(ev_snapshot(inp))
     snap.update(hp_snapshot(inp))

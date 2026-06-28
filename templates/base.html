@@ -17,7 +17,7 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/pages.css') }}?v=45">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/ui-polish.css') }}?v=45">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/aesthetic.css') }}?v=37">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/app-experience.css') }}?v=2">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/app-experience.css') }}?v=3">
   {% block head %}{% endblock %}
 </head>
 <body class="{% block body_class %}{% endblock %}">
@@ -30,30 +30,35 @@
 
       <div class="nav-panel" id="navMenu">
         <div class="nav-pills">
-          <div class="nav-pill nav-pill--tools">
-            <span class="nav-drawer-label">{{ t('footer.platform') }}</span>
+          <div class="nav-pill nav-pill--plan">
+            <span class="nav-drawer-label">{{ t('nav.group.plan', 'Plan') }}</span>
             <div class="nav-pill-links">
               <a href="{{ invite_href('/calculator') }}" class="{% if request.path == '/calculator' %}nav-active{% endif %}">{{ t('nav.calculator') }}</a>
-              <a href="{{ invite_href('/suppliers') }}" class="{% if request.path == '/suppliers' %}nav-active{% endif %}">{{ t('nav.suppliers') }}</a>
-              <a href="{{ invite_href('/compare-quotes') }}" class="{% if request.path == '/compare-quotes' %}nav-active{% endif %}">{{ t('nav.compare_quotes') }}</a>
-              <a href="{{ invite_href('/compatibility') }}" class="{% if request.path == '/compatibility' %}nav-active{% endif %}">{{ t('nav.compatibility') }}</a>
               <a href="{{ invite_href('/energy-advisor') }}" class="{% if request.path == '/energy-advisor' %}nav-active{% endif %}">{{ t('nav.energy_advisor') }}</a>
-              <a href="{{ invite_href('/survey') }}" class="{% if request.path.startswith('/survey') %}nav-active{% endif %}">{{ t('nav.survey') }}</a>
-              <a href="{{ invite_href('/demo') }}" class="{% if request.path == '/demo' %}nav-active{% endif %}">{{ t('nav.demo', 'Demo') }}</a>
+              <a href="{{ invite_href('/compatibility') }}" class="{% if request.path == '/compatibility' %}nav-active{% endif %}">{{ t('nav.compatibility') }}</a>
+              <a href="{{ invite_href('/ev') }}" class="{% if request.path.startswith('/ev') %}nav-active{% endif %}">{{ t('nav.ev_marketplace', 'EV Marketplace') }}</a>
             </div>
           </div>
-          <div class="nav-pill nav-pill--account">
-            <span class="nav-drawer-label">{{ t('nav.account') }}</span>
+          <div class="nav-pill nav-pill--compare">
+            <span class="nav-drawer-label">{{ t('nav.group.compare', 'Compare') }}</span>
             <div class="nav-pill-links">
-              <a href="{{ invite_href('/login') }}" class="{% if request.path == '/login' %}nav-active{% endif %}">{{ t('nav.login') }}</a>
-              <a href="{{ invite_href('/register') }}" class="{% if request.path == '/register' or request.path.startswith('/suppliers/register') %}nav-active{% endif %}">{{ t('nav.register') }}</a>
-              <a href="{{ invite_href('/suppliers/dashboard') }}" class="{% if request.path.startswith('/suppliers/dashboard') %}nav-active{% endif %}">{{ t('nav.dashboard') }}</a>
-              <a href="{{ invite_href('/account') }}" class="{% if request.path == '/account' %}nav-active{% endif %}">{{ t('nav.account') }}</a>
+              <a href="{{ invite_href('/compare-quotes') }}" class="{% if request.path == '/compare-quotes' %}nav-active{% endif %}">{{ t('nav.compare_quotes') }}</a>
+              <a href="{{ invite_href('/suppliers') }}" class="{% if request.path == '/suppliers' %}nav-active{% endif %}">{{ t('nav.suppliers') }}</a>
+              <a href="{{ invite_href('/demo') }}" class="{% if request.path == '/demo' %}nav-active{% endif %}">{{ t('nav.packages', 'Packages') }}</a>
+            </div>
+          </div>
+          <div class="nav-pill nav-pill--manage">
+            <span class="nav-drawer-label">{{ t('nav.group.manage', 'Manage') }}</span>
+            <div class="nav-pill-links">
+              <a href="{{ invite_href('/account') }}" class="{% if request.path == '/account' %}nav-active{% endif %}">{{ t('nav.dashboard') }}</a>
+              <a href="{{ invite_href('/account') }}#documents" class="{% if request.path == '/account' %}nav-active{% endif %}">{{ t('nav.documents', 'Documents') }}</a>
+              <a href="{{ invite_href('/account') }}#projects" class="{% if request.path == '/account' %}nav-active{% endif %}">{{ t('nav.project_status', 'Project status') }}</a>
             </div>
           </div>
         </div>
 
         <div class="nav-actions">
+          <a href="{{ invite_href('/login') }}" class="nav-login-link">{{ t('nav.sign_in', 'Sign in') }}</a>
           <a href="{{ invite_href('/calculator') }}" class="btn btn-primary btn-sm nav-cta">{{ t('nav.get_started') }}</a>
           <div class="lang-switch" aria-label="{{ t('nav.language') }}">
             <a href="{{ lang_url('en') }}" class="{% if lang == 'en' %}active{% endif %}">{{ t('lang.en') }}</a>

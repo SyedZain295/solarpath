@@ -25,6 +25,12 @@
         <span id="catalogSaveMsg" class="form-hint" style="margin-left:0.75rem"></span>
       </div>
     </section>
+
+    <section class="glass-panel register-panel" style="margin-top:1.5rem" id="evDealersSection">
+      <h2>Solar Path EV — dealers (Phase 2)</h2>
+      <p class="section-sub">Approve Bavarian partner dealers. Pending dealers cannot publish until approved.</p>
+      <div id="evDealerAdminList" class="form-hint">Loading…</div>
+    </section>
   </div>
 </div>
 {% endblock %}
@@ -79,5 +85,30 @@ document.getElementById('adminLogout')?.addEventListener('click', async () => {
   await fetch('/api/admin/logout', { method: 'POST' });
   window.location.href = '/admin';
 });
+
+async function loadEvDealersAdmin() {
+  const el = document.getElementById('evDealerAdminList');
+  if (!el) return;
+  const resp = await fetch('/api/admin/ev-dealers');
+  if (!resp.ok) { el.textContent = 'Could not load dealers'; return; }
+  const data = await resp.json();
+  const dealers = data.dealers || [];
+  if (!dealers.length) { el.innerHTML = '<p>No EV dealers yet.</p>'; return; }
+  el.innerHTML = dealers.map(d => `
+    <div style="display:flex;gap:1rem;align-items:center;margin:0.5rem 0;padding:0.5rem 0;border-bottom:1px solid #e2e8f0">
+      <div style="flex:1"><strong>${d.company_name}</strong> · ${d.email} · ${d.location} · <em>${d.status}</em></div>
+      ${d.status === 'pending' ? `<button type="button" class="btn btn-primary btn-sm" data-approve="${d.id}">Approve</button>` : ''}
+      ${d.status === 'approved' ? `<button type="button" class="btn btn-outline btn-sm" data-suspend="${d.id}">Suspend</button>` : ''}
+    </div>`).join('');
+  el.querySelectorAll('[data-approve]').forEach(btn => btn.addEventListener('click', async () => {
+    await fetch('/api/admin/ev-dealers/' + btn.dataset.approve, { method: 'PATCH', headers: {'Content-Type':'application/json'}, body: JSON.stringify({status:'approved'}) });
+    loadEvDealersAdmin();
+  }));
+  el.querySelectorAll('[data-suspend]').forEach(btn => btn.addEventListener('click', async () => {
+    await fetch('/api/admin/ev-dealers/' + btn.dataset.suspend, { method: 'PATCH', headers: {'Content-Type':'application/json'}, body: JSON.stringify({status:'suspended'}) });
+    loadEvDealersAdmin();
+  }));
+}
+loadEvDealersAdmin();
 </script>
 {% endblock %}

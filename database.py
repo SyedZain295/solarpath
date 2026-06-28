@@ -172,6 +172,98 @@ class BetaEvent(Base):
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
 
 
+class EvDealer(Base):
+    """Solar Path EV partner dealer (Phase 2)."""
+
+    __tablename__ = "ev_dealers"
+
+    id = Column(String(40), primary_key=True)
+    company_name = Column(String(255), nullable=False, index=True)
+    email = Column(String(255), unique=True, nullable=False, index=True)
+    password_hash = Column(String(255), default="")
+    phone = Column(String(64), default="")
+    location = Column(String(255), default="")
+    status = Column(String(32), default="pending", index=True)  # pending | approved | suspended
+    profile = Column(JSON, default=dict)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+
+    def to_dict(self) -> dict:
+        return {
+            "id": self.id,
+            "company_name": self.company_name,
+            "email": self.email,
+            "phone": self.phone or "",
+            "location": self.location or "",
+            "status": self.status or "pending",
+            "profile": self.profile or {},
+            "created_at": self.created_at.isoformat() if self.created_at else None,
+        }
+
+
+class EvVehicle(Base):
+    """Dealer-listed used EV."""
+
+    __tablename__ = "ev_vehicles"
+
+    id = Column(String(40), primary_key=True)
+    dealer_id = Column(String(40), nullable=False, index=True)
+    slug = Column(String(120), unique=True, nullable=False, index=True)
+    status = Column(String(32), default="draft", index=True)  # draft | published | sold
+    featured = Column(Boolean, default=False)
+    payload = Column(JSON, nullable=False, default=dict)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+
+    def to_public_dict(self, dealer: EvDealer | None = None) -> dict:
+        data = dict(self.payload or {})
+        data["id"] = self.id
+        data["slug"] = self.slug
+        data["dealer_id"] = self.dealer_id
+        data["listing_status"] = "partner"
+        data["featured"] = bool(self.featured)
+        data["vehicle_status"] = self.status
+        if dealer:
+            data["dealer_name"] = dealer.company_name
+            data["location"] = data.get("location") or dealer.location
+        return data
+
+
+class EvBuyerLead(Base):
+    """Qualified EV buyer lead sent to a partner dealer."""
+
+    __tablename__ = "ev_buyer_leads"
+
+    id = Column(String(32), primary_key=True)
+    vehicle_id = Column(String(40), nullable=False, index=True)
+    dealer_id = Column(String(40), nullable=False, index=True)
+    buyer_name = Column(String(200), default="")
+    buyer_email = Column(String(255), default="", index=True)
+    buyer_phone = Column(String(64), default="")
+    buyer_postcode = Column(String(16), default="")
+    buyer_profile = Column(JSON, default=dict)
+    message = Column(Text, default="")
+    qualified = Column(Boolean, default=False)
+    status = Column(String(32), default="new", index=True)  # new | contacted | closed
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+
+    def to_dict(self) -> dict:
+        return {
+            "id": self.id,
+            "vehicle_id": self.vehicle_id,
+            "dealer_id": self.dealer_id,
+            "buyer_name": self.buyer_name,
+            "buyer_email": self.buyer_email,
+            "buyer_phone": self.buyer_phone,
+            "buyer_postcode": self.buyer_postcode,
+            "buyer_profile": self.buyer_profile or {},
+            "message": self.message or "",
+            "qualified": bool(self.qualified),
+            "status": self.status,
+            "created_at": self.created_at.isoformat() if self.created_at else None,
+        }
+
+
 class InstallerQuote(Base):
     """Structured quote submitted by an installer for a homeowner lead."""
 

@@ -125,11 +125,9 @@ def build_ev_assessment(inp, electricity_price_ct: float = 32.0) -> dict:
         "estimated_charging_cost_with_pv_annual_eur": with_pv_annual,
         "notes": notes,
         "future_features": [
-            "Used EV realistic range guidance",
-            "Battery-health certificate checks",
-            "Home charging fit assessment",
-            "Wallbox compatibility matching",
-            "Annual charging cost with and without PV (detailed)",
+            "Browse used EVs with Solar Path fit on EV Marketplace",
+            "Battery certificate checks when uploaded by dealer",
+            "Home energy bundle: wallbox + PV + smart charging",
         ],
     }
 

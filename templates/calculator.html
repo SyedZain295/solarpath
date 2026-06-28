@@ -18,7 +18,8 @@
     </div>
     <div class="progress-bar" role="progressbar" aria-valuemin="1" aria-valuemax="100" aria-valuenow="0" id="progressBar"><div class="progress-fill" id="progressFill"></div></div>
     <div class="progress-steps" id="progressSteps">
-      <span class="active">{{ t('calc.step.goals') }}</span>
+      <span class="progress-situation-step">{{ t('calc.step.situation', 'Your situation') }}</span>
+      <span>{{ t('calc.step.goals') }}</span>
       <span class="progress-ev-step hidden">{{ t('calc.step.ev') }}</span>
       <span class="progress-heat-step hidden">{{ t('calc.step.heat') }}</span>
       <span>{{ t('calc.step.home') }}</span>
@@ -30,8 +31,25 @@
     </div>
 
     <form id="calculatorForm" class="calc-form">
+      <input type="hidden" id="user_situation" name="user_situation" value="">
+      <input type="hidden" id="has_existing_pv" name="has_existing_pv" value="0">
+
+      <!-- Step 0: Your situation -->
+      <div class="calc-step active" data-step="0" data-step-label="{{ t('calc.step.situation') }}">
+        <h2>{{ t('calc.situation.title') }}</h2>
+        <p class="step-desc">{{ t('calc.situation.sub') }}</p>
+        <div class="situation-grid" role="radiogroup" aria-label="{{ t('calc.situation.title') }}">
+          <label class="situation-card"><input type="radio" name="situation" value="new_pv" required><span class="situation-icon">🏠</span><span class="situation-title">{{ t('calc.situation.new_pv') }}</span><span class="situation-desc">{{ t('calc.situation.new_pv_desc') }}</span></label>
+          <label class="situation-card"><input type="radio" name="situation" value="pv_battery"><span class="situation-icon">🔋</span><span class="situation-title">{{ t('calc.situation.pv_battery') }}</span><span class="situation-desc">{{ t('calc.situation.pv_battery_desc') }}</span></label>
+          <label class="situation-card"><input type="radio" name="situation" value="pv_ev"><span class="situation-icon">⚡</span><span class="situation-title">{{ t('calc.situation.pv_ev') }}</span><span class="situation-desc">{{ t('calc.situation.pv_ev_desc') }}</span></label>
+          <label class="situation-card"><input type="radio" name="situation" value="heat_pump"><span class="situation-icon">🌡️</span><span class="situation-title">{{ t('calc.situation.heat_pump') }}</span><span class="situation-desc">{{ t('calc.situation.heat_pump_desc') }}</span></label>
+          <label class="situation-card"><input type="radio" name="situation" value="compare_quotes"><span class="situation-icon">📄</span><span class="situation-title">{{ t('calc.situation.compare_quotes') }}</span><span class="situation-desc">{{ t('calc.situation.compare_quotes_desc') }}</span></label>
+          <label class="situation-card"><input type="radio" name="situation" value="business_farm"><span class="situation-icon">🏢</span><span class="situation-title">{{ t('calc.situation.business') }}</span><span class="situation-desc">{{ t('calc.situation.business_desc') }}</span></label>
+        </div>
+      </div>
+
       <!-- Step 1: Goals -->
-      <div class="calc-step active" data-step="1" data-step-label="{{ t('calc.step.goals') }}">
+      <div class="calc-step" data-step="1" data-step-label="{{ t('calc.step.goals') }}">
         <h2>{{ t('calc.s1_title') }}</h2>
         <p class="step-desc">{{ t('calc.s1_sub') }}</p>
         <div class="goal-grid">
@@ -43,6 +61,7 @@
           <label class="goal-card"><input type="checkbox" name="goals" value="farming"><span class="goal-icon">🌾</span><span class="goal-title">{{ t('home.goal.farming') }}</span><span class="goal-desc">{{ t('home.goal.farming_desc') }}</span></label>
           <label class="goal-card"><input type="checkbox" name="goals" value="ev_charging"><span class="goal-icon">⚡</span><span class="goal-title">{{ t('home.goal.ev_charging') }}</span><span class="goal-desc">{{ t('home.goal.ev_charging_desc') }}</span></label>
         </div>
+        <p class="goal-selection-summary hidden" id="goalSelectionSummary" aria-live="polite"></p>
       </div>
 
       <!-- Step 2: EV details (only when EV charging goal selected) -->
@@ -60,6 +79,9 @@
         <div class="form-group">
           <label for="ev_vehicle_model">{{ t('calc.ev.vehicle_model') }}</label>
           <input type="text" id="ev_vehicle_model" name="ev_vehicle_model" placeholder="{{ t('calc.ev.vehicle_model_ph') }}">
+        </div>
+        <div class="calc-ev-marketplace-cta">
+          <a href="{{ invite_href('/ev/find') }}">{{ t('evm.calc_cta', 'Already choosing an EV? Find models that fit your home-energy setup.') }} →</a>
         </div>
         <div class="form-row">
           <div class="form-group">
@@ -209,6 +231,7 @@
             <option value="tenant">{{ t('calc.owner_status.tenant') }}</option>
             <option value="landlord">{{ t('calc.owner_status.landlord') }}</option>
           </select>
+          <details class="why-ask"><summary>{{ t('calc.why_ask', 'Why do we ask this?') }}</summary><p>{{ t('calc.why_ask.owner') }}</p></details>
         </div>
         <div id="apartmentNotice" class="info-box hidden">
           {{ t('calc.apartment_note') }}
@@ -241,6 +264,7 @@
           <div class="form-group"><label for="monthly_bill">{{ t('calc.monthly_bill') }}</label><input type="number" id="monthly_bill" min="0" step="1" placeholder="120"></div>
           <div class="form-group"><label for="monthly_kwh">{{ t('calc.monthly_kwh') }}</label><input type="number" id="monthly_kwh" min="0" step="1" placeholder="350"></div>
         </div>
+        <details class="why-ask"><summary>{{ t('calc.why_ask', 'Why do we ask this?') }}</summary><p>{{ t('calc.why_ask.usage') }}</p></details>
         <div class="form-group">
           <label for="electricity_price">{{ t('calc.electricity_price') }}</label>
           <input type="number" id="electricity_price" value="32" min="1" step="0.1">
@@ -285,7 +309,18 @@
             </select>
           </div>
         </div>
-        <label class="checkbox-inline"><input type="checkbox" id="has_roof_photos" name="has_roof_photos"> {{ t('calc.roof_photos') }}</label>
+        <details class="why-ask"><summary>{{ t('calc.why_ask', 'Why do we ask this?') }}</summary><p>{{ t('calc.why_ask.roof') }}</p></details>
+        <div class="form-group roof-photo-upload">
+          <label for="roof_photos">{{ t('calc.roof_photos_upload', 'Roof photos (optional)') }}</label>
+          <input type="file" id="roof_photos" name="roof_photos" accept="image/*" multiple>
+          <ul class="roof-photo-tips">
+            <li>{{ t('calc.roof_photo.tip1', 'Photo from garden or street') }}</li>
+            <li>{{ t('calc.roof_photo.tip2', 'Roof surface, chimneys and skylights visible') }}</li>
+            <li>{{ t('calc.roof_photo.tip3', 'Meter box photo optional') }}</li>
+          </ul>
+          <p class="form-hint">{{ t('calc.roof_photo.note', 'Helps installers — does not replace an on-site survey.') }}</p>
+        </div>
+        <label class="checkbox-inline"><input type="checkbox" id="has_roof_photos" name="has_roof_photos"> {{ t('calc.roof_photos', 'I will provide roof photos later') }}</label>
       </div>
 
       <!-- Step 8: Profile -->
@@ -333,6 +368,7 @@
         <div class="form-group">
           <label for="budget">{{ t('calc.budget') }}</label>
           <input type="number" id="budget" min="0" step="500" placeholder="15000">
+          <details class="why-ask"><summary>{{ t('calc.why_ask', 'Why do we ask this?') }}</summary><p>{{ t('calc.why_ask.budget') }}</p></details>
         </div>
         <div class="form-group">
           <label for="financing_interest">{{ t('calc.financing_interest') }}</label>
@@ -368,5 +404,5 @@
 {% block scripts %}
 <script>window.BETA_INVITE_DEFAULT = {{ beta_invite|tojson }};</script>
 <script src="{{ url_for('static', filename='js/intake_ref.js') }}?v=1"></script>
-<script src="{{ url_for('static', filename='js/calculator.js') }}?v=26"></script>
+<script src="{{ url_for('static', filename='js/calculator.js') }}?v=28"></script>
 {% endblock %}
