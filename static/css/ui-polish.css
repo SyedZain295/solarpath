@@ -211,8 +211,8 @@ html { scroll-behavior: smooth; }
   outline: none;
 }
 
-.app-page label:not(.goal-card):not(.survey-choice-card):not(.checkbox-inline),
-.glass-panel label:not(.goal-card):not(.survey-choice-card):not(.checkbox-inline) {
+.app-page label:not(.goal-card):not(.survey-choice-card):not(.checkbox-inline):not(.situation-card),
+.glass-panel label:not(.goal-card):not(.survey-choice-card):not(.checkbox-inline):not(.situation-card) {
   font-weight: 600;
   font-size: 0.875rem;
   color: var(--color-teal-deep);
