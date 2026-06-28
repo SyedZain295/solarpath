@@ -165,8 +165,10 @@
 {% endblock %}
 
 {% block scripts %}
+<script>window.BETA_INVITE_DEFAULT = {{ beta_invite_default|tojson }};</script>
 <script src="{{ url_for('static', filename='js/roof_photos.js') }}?v=1"></script>
-<script src="{{ url_for('static', filename='js/results_features.js') }}?v=30"></script>
+<script src="{{ url_for('static', filename='js/results_features.js') }}?v=31"></script>
 <script src="{{ url_for('static', filename='js/results_assumptions.js') }}?v=1"></script>
-<script src="{{ url_for('static', filename='js/results.js') }}?v=31"></script>
+<script src="{{ url_for('static', filename='js/results_programs.js') }}?v=1"></script>
+<script src="{{ url_for('static', filename='js/results.js') }}?v=32"></script>
 {% endblock %}

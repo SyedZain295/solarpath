@@ -69,6 +69,8 @@ def beta_gate_enabled() -> bool:
 def _path_exempt(path: str) -> bool:
     if path in PUBLIC_EXACT:
         return True
+    if path.startswith("/api/incentives") or path.startswith("/api/financing-offers"):
+        return True
     return any(path.startswith(p) for p in PUBLIC_PATH_PREFIXES)
 
 

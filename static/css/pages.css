@@ -4314,6 +4314,78 @@
 .bill-upload-status { margin-top: 0.5rem; min-height: 1.25rem; }
 .bill-upload-status--ok { color: #0f766e; }
 .bill-upload-status--warn { color: #b45309; }
+.programs-grid,
+.fin-offers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 0.85rem;
+  margin: 1rem 0;
+}
+.program-card,
+.fin-offer-card {
+  padding: 1rem 1.05rem;
+  border-radius: 12px;
+  border: 1px solid rgba(15, 118, 110, 0.22);
+  background: rgba(255, 255, 255, 0.72);
+}
+.program-card-head,
+.fin-offer-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.35rem;
+  margin-bottom: 0.45rem;
+}
+.program-type-badge,
+.fin-offer-badge {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 0.2rem 0.45rem;
+  border-radius: 999px;
+  background: rgba(15, 118, 110, 0.12);
+  color: #0f766e;
+}
+.program-status {
+  font-size: 0.78rem;
+  color: #64748b;
+}
+.program-status--active { color: #0f766e; }
+.program-name,
+.fin-offer-card h3 {
+  margin: 0 0 0.35rem;
+  font-size: 1rem;
+  color: #0f172a;
+}
+.program-detail,
+.fin-offer-meta {
+  margin: 0;
+  font-size: 0.88rem;
+  color: #475569;
+  line-height: 1.45;
+}
+.program-link {
+  display: inline-block;
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.fin-offer-card--highlight {
+  border-color: rgba(15, 118, 110, 0.45);
+  box-shadow: 0 4px 18px rgba(15, 118, 110, 0.12);
+}
+.fin-offer-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem 1rem;
+  font-size: 0.88rem;
+  color: #334155;
+  margin: 0.35rem 0;
+}
+.fin-offer-stats strong { color: #0f766e; }
+.programs-loading { font-style: italic; }
 .roof-photo-preview { margin-top: 0.75rem; }
 .roof-photo-preview-grid {
   display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem;

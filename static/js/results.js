@@ -37,6 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const rec = data.selected_package || data.three_packages?.packages?.best_value;
   if (rec) selectedPackageId = rec.id || 'best_value';
   renderResults(data);
+  loadIncentivesAndFinancing(data);
   document.getElementById('resultsLoading').classList.add('hidden');
   document.getElementById('resultsContent').classList.remove('hidden');
   setupQuoteModal(data);
@@ -96,6 +97,7 @@ function renderResults(d) {
     ${renderEnergyEconomics(d.energy_economics, d.battery_comparison)}
     ${renderPriceScenarios(d.price_scenarios)}
     ${renderFinancingComparison(d.financing_comparison)}
+    ${renderProgramsPlaceholders()}
     ${renderUsageBreakdown(d.usage_breakdown || [])}
     ${renderMeterTimeline(d.meter_timeline || {})}
     ${renderFinancialModel(pkgs[selectedPackageId]?.financial_model || d.financial_model)}
