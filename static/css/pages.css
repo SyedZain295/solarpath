@@ -4292,15 +4292,84 @@
 .intersolar-cta-panel { padding: 2rem; text-align: center; margin: 2rem 0; }
 
 .roof-photo-tips { margin: 0.5rem 0; padding-left: 1.1rem; font-size: 0.85rem; color: #64748b; }
-.bill-upload-panel {
-  margin: 0 0 1.25rem;
+.bill-upload-panel,
+.bill-upload-card {
+  margin: 0 0 1.5rem;
+  padding: 1.25rem 1.35rem;
+  border-radius: var(--radius-lg, 14px);
+  border: 1px solid rgba(15, 118, 110, 0.22);
+  background: linear-gradient(145deg, rgba(15, 118, 110, 0.09), rgba(255, 255, 255, 0.96));
+  box-shadow: 0 8px 28px rgba(15, 118, 110, 0.1);
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+.bill-upload-card:hover {
+  box-shadow: 0 12px 32px rgba(15, 118, 110, 0.14);
+}
+.bill-upload-card--loading {
+  opacity: 0.92;
+  pointer-events: none;
+}
+.bill-upload-card--ok {
+  border-color: rgba(15, 118, 110, 0.45);
+  background: linear-gradient(145deg, rgba(15, 118, 110, 0.12), rgba(240, 253, 250, 0.98));
+}
+.bill-upload-icon {
+  font-size: 1.75rem;
+  display: block;
+  margin-bottom: 0.5rem;
+  line-height: 1;
+}
+.bill-upload-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--color-teal-deep, #0f766e);
+  margin: 0 0 0.35rem;
+  letter-spacing: -0.01em;
+}
+.bill-upload-desc,
+.bill-upload-lead {
+  margin: 0 0 1rem;
+  font-size: 0.85rem;
+  color: var(--color-text-muted, #64748b);
+  line-height: 1.45;
+  max-width: 52ch;
+}
+.bill-upload-drop { position: relative; }
+.bill-upload-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
+.bill-upload-cta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
   padding: 1rem 1.1rem;
   border-radius: 12px;
-  border: 1px dashed rgba(15, 118, 110, 0.45);
-  background: rgba(45, 212, 191, 0.08);
+  border: 1.5px dashed rgba(15, 118, 110, 0.38);
+  background: rgba(255, 255, 255, 0.55);
+  cursor: pointer;
+  text-align: center;
+  transition: background 0.2s, border-color 0.2s, transform 0.15s;
 }
-.bill-upload-lead { margin: 0 0 0.65rem; font-size: 0.92rem; color: #334155; }
-.bill-upload-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
+.bill-upload-cta:hover {
+  background: rgba(15, 118, 110, 0.07);
+  border-color: var(--color-primary, #0f766e);
+  transform: translateY(-1px);
+}
+.bill-upload-cta-icon {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-teal-deep, #0f766e);
+  line-height: 1;
+}
+.bill-upload-cta-text {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--color-teal-deep, #0f766e);
+}
+.bill-upload-cta-hint {
+  font-size: 0.78rem;
+  color: var(--color-text-muted, #64748b);
+}
 .bill-upload-input {
   position: absolute;
   width: 1px;
@@ -4311,9 +4380,9 @@
   clip: rect(0, 0, 0, 0);
   border: 0;
 }
-.bill-upload-status { margin-top: 0.5rem; min-height: 1.25rem; }
-.bill-upload-status--ok { color: #0f766e; }
-.bill-upload-status--warn { color: #b45309; }
+.bill-upload-status { margin-top: 0.75rem; min-height: 1.25rem; font-size: 0.82rem; line-height: 1.4; }
+.bill-upload-status--ok { color: #0f766e; font-weight: 600; }
+.bill-upload-status--warn { color: #b45309; font-weight: 600; }
 .programs-grid,
 .fin-offers-grid {
   display: grid;

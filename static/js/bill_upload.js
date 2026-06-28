@@ -63,20 +63,23 @@ function formatBillUploadStatus(data, filled) {
   );
 }
 
-function wireBillUploadInput(inputEl, { billEl, kwhEl, priceEl, statusEl, onParsed } = {}) {
+function wireBillUploadInput(inputEl, { billEl, kwhEl, priceEl, statusEl, onParsed, cardEl } = {}) {
   if (!inputEl) return;
+  const card = cardEl || document.getElementById('billUploadCard');
   inputEl.addEventListener('change', async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
     const name = (file.name || '').toLowerCase();
     if (!name.endsWith('.pdf') && !file.type.includes('pdf') && !file.type.includes('text')) {
       if (statusEl) {
-        statusEl.textContent = tr('calc.bill_upload.pdf_only', 'Please upload a PDF bill (or paste values manually).');
+        statusEl.textContent = tr('calc.bill_upload.pdf_only', 'Please upload a PDF bill (or enter values manually).');
         statusEl.classList.add('bill-upload-status--warn');
       }
       e.target.value = '';
       return;
     }
+    card?.classList.add('bill-upload-card--loading');
+    card?.classList.remove('bill-upload-card--ok');
     if (statusEl) {
       statusEl.textContent = tr('calc.bill_upload.reading', 'Reading bill…');
       statusEl.classList.remove('bill-upload-status--ok', 'bill-upload-status--warn');
@@ -89,6 +92,7 @@ function wireBillUploadInput(inputEl, { billEl, kwhEl, priceEl, statusEl, onPars
         statusEl.classList.toggle('bill-upload-status--ok', filled > 0);
         statusEl.classList.toggle('bill-upload-status--warn', filled === 0);
       }
+      card?.classList.toggle('bill-upload-card--ok', filled > 0);
       if (typeof onParsed === 'function') onParsed({ data, filled, parsed });
     } catch (err) {
       if (statusEl) {
@@ -96,6 +100,7 @@ function wireBillUploadInput(inputEl, { billEl, kwhEl, priceEl, statusEl, onPars
         statusEl.classList.add('bill-upload-status--warn');
       }
     } finally {
+      card?.classList.remove('bill-upload-card--loading');
       e.target.value = '';
     }
   });

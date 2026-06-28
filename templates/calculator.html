@@ -281,13 +281,19 @@
         <h2>{{ t('calc.s4_title') }}</h2>
         <p class="step-desc">{{ t('calc.s4_sub') }}</p>
 
-        <div class="bill-upload-panel">
-          <p class="bill-upload-lead">{{ t('calc.bill_upload.lead', 'Have a recent electricity bill? Upload it to pre-fill usage.') }}</p>
-          <div class="bill-upload-actions">
-            <label for="bill_upload" class="btn btn-outline btn-sm bill-upload-btn">{{ t('calc.bill_upload.btn', 'Upload bill (PDF)') }}</label>
+        <div class="bill-upload-card" id="billUploadCard">
+          <span class="bill-upload-icon" aria-hidden="true">📄</span>
+          <h3 class="bill-upload-title">{{ t('calc.bill_upload.title', 'Upload your electricity bill') }}</h3>
+          <p class="bill-upload-desc">{{ t('calc.bill_upload.lead', 'Have a recent bill? Upload a PDF to pre-fill monthly cost and kWh — or enter values below.') }}</p>
+          <div class="bill-upload-drop">
+            <label for="bill_upload" class="bill-upload-cta">
+              <span class="bill-upload-cta-icon" aria-hidden="true">↑</span>
+              <span class="bill-upload-cta-text">{{ t('calc.bill_upload.btn', 'Choose PDF bill') }}</span>
+              <span class="bill-upload-cta-hint">{{ t('calc.bill_upload.hint', 'From your energy supplier · max 8 MB') }}</span>
+            </label>
             <input type="file" id="bill_upload" name="bill_upload" accept="application/pdf,.pdf" class="bill-upload-input">
           </div>
-          <p id="billUploadStatus" class="form-hint bill-upload-status" aria-live="polite"></p>
+          <p id="billUploadStatus" class="bill-upload-status" aria-live="polite"></p>
         </div>
 
         <div class="form-row">
@@ -437,6 +443,6 @@
 <script>window.BETA_INVITE_DEFAULT = {{ beta_invite|tojson }};</script>
 <script src="{{ url_for('static', filename='js/intake_ref.js') }}?v=1"></script>
 <script src="{{ url_for('static', filename='js/roof_photos.js') }}?v=1"></script>
-<script src="{{ url_for('static', filename='js/bill_upload.js') }}?v=1"></script>
+<script src="{{ url_for('static', filename='js/bill_upload.js') }}?v=2"></script>
 <script src="{{ url_for('static', filename='js/calculator.js') }}?v=33"></script>
 {% endblock %}
