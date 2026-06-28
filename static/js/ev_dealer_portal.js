@@ -176,6 +176,31 @@ async function saveDealerVehicle(e) {
   e.preventDefault();
   const editId = document.getElementById('veh_edit_id').value;
   const payload = vehicleFormPayload();
+
+  const photoFiles = document.getElementById('veh_photo_files')?.files;
+  if (photoFiles?.length) {
+    const fd = new FormData();
+    [...photoFiles].forEach((f) => fd.append('photos', f));
+    const up = await fetch('/api/ev-dealer/upload-photos', { method: 'POST', body: fd });
+    const upData = await up.json();
+    if (up.ok && upData.urls?.length) {
+      const existing = payload.photo_urls ? payload.photo_urls.split('\n').map((s) => s.trim()).filter(Boolean) : [];
+      payload.photo_urls = [...existing, ...upData.urls].join('\n');
+    }
+  }
+
+  const certFile = document.getElementById('veh_cert_file')?.files?.[0];
+  if (certFile) {
+    const fd = new FormData();
+    fd.append('cert', certFile);
+    const up = await fetch('/api/ev-dealer/upload-cert', { method: 'POST', body: fd });
+    const upData = await up.json();
+    if (up.ok && upData.url) {
+      payload.cert_document_url = upData.url;
+      payload.certificate_uploaded = true;
+    }
+  }
+
   const url = editId ? `/api/ev-dealer/vehicles/${editId}` : '/api/ev-dealer/vehicles';
   const method = editId ? 'PUT' : 'POST';
   const resp = await fetch(url, {

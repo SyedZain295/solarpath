@@ -81,6 +81,7 @@
           <div class="form-row">
             <div class="form-group"><label>{{ t('evm.cert_soh') }} (%)</label><input type="number" id="veh_cert_soh" min="50" max="100" step="1"></div>
             <div class="form-group"><label>{{ t('evm.cert_doc_url') }}</label><input type="url" id="veh_cert_url" placeholder="https://"></div>
+            <div class="form-group"><label>{{ t('evm.cert_upload_file', 'Or upload certificate') }}</label><input type="file" id="veh_cert_file" accept="image/*,application/pdf"></div>
           </div>
           <p class="form-hint">{{ t('evm.cert_disclaimer') }}</p>
         </fieldset>
@@ -92,6 +93,8 @@
         <div class="form-group">
           <label>{{ t('evm.photo_urls') }}</label>
           <textarea id="veh_photos" rows="3" placeholder="https://…"></textarea>
+          <label class="form-hint" for="veh_photo_files">{{ t('evm.photo_upload', 'Or upload photos') }}</label>
+          <input type="file" id="veh_photo_files" accept="image/*" multiple>
         </div>
         <div class="evm-check-grid">
           <label class="checkbox-inline"><input type="checkbox" id="veh_featured"> {{ t('evm.featured_listing') }}</label>

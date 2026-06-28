@@ -34,6 +34,9 @@ def calculator_inputs_snapshot(inp) -> dict:
         "goals": getattr(inp, "goals", []) or [],
         "user_situation": getattr(inp, "user_situation", ""),
         "has_existing_pv": getattr(inp, "has_existing_pv", False),
+        "existing_pv_kwp": getattr(inp, "existing_pv_kwp", 0),
+        "existing_inverter_kwp": getattr(inp, "existing_inverter_kwp", 0),
+        "existing_pv_year": getattr(inp, "existing_pv_year", 0),
     }
     snap.update(ev_snapshot(inp))
     snap.update(hp_snapshot(inp))

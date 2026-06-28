@@ -41,6 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     field('user_situation').value = situation;
     field('has_existing_pv').value = preset.has_existing_pv ? '1' : '0';
+    syncExistingPvPanel();
     form.querySelectorAll('input[name="goals"]').forEach((cb) => {
       cb.checked = (preset.goals || []).includes(cb.value);
     });
@@ -52,6 +53,18 @@ document.addEventListener('DOMContentLoaded', () => {
     syncHpLoadCheckbox();
     return true;
   }
+
+  function syncExistingPvPanel() {
+    const panel = document.getElementById('existingPvPanel');
+    if (!panel) return;
+    const show = fieldVal('has_existing_pv') === '1';
+    panel.classList.toggle('hidden', !show);
+  }
+
+  form.querySelectorAll('input[name="situation"]').forEach((radio) => {
+    radio.addEventListener('change', syncExistingPvPanel);
+  });
+  syncExistingPvPanel();
 
   function syncGoalSummary() {
     const el = document.getElementById('goalSelectionSummary');
@@ -469,6 +482,9 @@ document.addEventListener('DOMContentLoaded', () => {
       hp_priority: fieldVal('hp_priority'),
       user_situation: fieldVal('user_situation'),
       has_existing_pv: fieldVal('has_existing_pv') === '1',
+      existing_pv_kwp: parseFloat(fieldVal('existing_pv_kwp')) || 0,
+      existing_inverter_kwp: parseFloat(fieldVal('existing_inverter_kwp')) || 0,
+      existing_pv_year: parseInt(fieldVal('existing_pv_year'), 10) || 0,
     };
   }
 

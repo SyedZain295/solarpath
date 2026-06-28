@@ -205,6 +205,9 @@ class CalculatorInput:
     hp_replacing: str = ""
     user_situation: str = ""
     has_existing_pv: bool = False
+    existing_pv_kwp: float = 0
+    existing_inverter_kwp: float = 0
+    existing_pv_year: int = 0
 
 
 @dataclass
@@ -791,6 +794,7 @@ def generate_recommendation(inp: CalculatorInput, pvgis_data: Optional[dict] = N
     if budget_info:
         system_kwp = min(system_kwp, budget_info["max_system_kwp"])
 
+    pv_upgrade = apply_existing_pv_upgrade(inp, system_kwp)
     annual_production = round(system_kwp * adjusted_yield) if system_kwp > 0 else 0
 
     if monthly_production and system_kwp > 0:
@@ -808,6 +812,32 @@ def generate_recommendation(inp: CalculatorInput, pvgis_data: Optional[dict] = N
         nominal_kwp = system_kwp
 
     three_packages = build_three_packages(inp, system_kwp, annual_production, adjusted_yield, goals, annual_kwh)
+    if pv_upgrade.get("has_existing_pv"):
+        for pkg in three_packages["packages"].values():
+            scaled = scale_upfront_for_pv_upgrade(pkg["upfront_cost"], pv_upgrade)
+            if scaled == pkg["upfront_cost"]:
+                continue
+            fin_adj = calculate_financials_with_upfront(
+                inp, scaled, pkg["system_kwp"],
+                round(pkg["system_kwp"] * adjusted_yield), pkg["battery_kwh"],
+            )
+            pkg["upfront_cost"] = scaled
+            pkg["upfront_cost_range"] = f"€{round(scaled * 0.95):,} – €{round(scaled * 1.05):,}"
+            pkg["monthly_savings"] = fin_adj["monthly_savings"]
+            pkg["annual_savings"] = fin_adj["annual_savings"]
+            pkg["payback_years"] = fin_adj["payback_years"]
+            pkg["financial_model"] = build_financial_model(
+                scaled,
+                fin_adj["annual_savings"],
+                fin_adj["monthly_savings"],
+                fin_adj["feed_in_income_annual"],
+                fin_adj["self_consumption_savings_annual"],
+                pkg["battery_kwh"],
+                pkg["system_kwp"],
+                round(pkg["system_kwp"] * adjusted_yield),
+            )
+            pkg["savings_10yr"] = pkg["financial_model"]["projection_10yr"]["net_benefit"]
+            pkg["savings_20yr"] = pkg["financial_model"]["projection_20yr"]["net_benefit"]
     primary_pkg = next((p for p in three_packages["packages"].values() if p.get("recommended")), three_packages["packages"]["best_value"])
     primary_spec = primary_pkg["product_spec"]
 
@@ -949,6 +979,7 @@ def generate_recommendation(inp: CalculatorInput, pvgis_data: Optional[dict] = N
         "legal_checklist": _project_tracker(),
         "project_path": _project_path_timeline(),
         "calculator_inputs": calculator_inputs_snapshot(inp),
+        "pv_upgrade": pv_upgrade,
         "disclaimer": DISCLAIMER,
     }
     if "ev_charging" in goals:
@@ -958,6 +989,169 @@ def generate_recommendation(inp: CalculatorInput, pvgis_data: Optional[dict] = N
     result["quote_ready_profile"] = build_quote_ready_profile(inp, result)
     result["decision_report"] = build_decision_report(inp, result)
     return result
+
+
+def apply_existing_pv_upgrade(inp: CalculatorInput, target_kwp: float) -> dict:
+    """Adjust sizing/cost context when customer already has PV."""
+    existing = float(getattr(inp, "existing_pv_kwp", 0) or 0)
+    if not getattr(inp, "has_existing_pv", False) or existing <= 0:
+        return {
+            "has_existing_pv": False,
+            "existing_pv_kwp": 0,
+            "target_kwp": target_kwp,
+            "expansion_kwp": target_kwp,
+            "mode": "new_install",
+            "cost_factor": 1.0,
+            "summary": "",
+        }
+    expansion = round(max(0.0, target_kwp - existing), 1)
+    situation = getattr(inp, "user_situation", "") or ""
+    if situation == "pv_battery" and expansion < 1.0:
+        mode = "battery_only"
+        cost_factor = 0.35
+        summary = f"Existing ~{existing:g} kWp — focus on battery and smart energy integration."
+    elif expansion < 0.5:
+        mode = "optimize"
+        cost_factor = 0.25
+        summary = f"Existing ~{existing:g} kWp already meets target — monitoring and tariff optimization may be enough."
+    else:
+        mode = "expand"
+        cost_factor = max(0.3, min(1.0, expansion / target_kwp if target_kwp else 0.5))
+        summary = f"Expand by ~{expansion:g} kWp from existing {existing:g} kWp to reach ~{target_kwp:g} kWp."
+    inv = float(getattr(inp, "existing_inverter_kwp", 0) or 0)
+    if inv > 0 and inv < target_kwp * 0.7:
+        summary += " Inverter upgrade may be required — verify AC capacity with installer."
+    return {
+        "has_existing_pv": True,
+        "existing_pv_kwp": existing,
+        "existing_pv_year": int(getattr(inp, "existing_pv_year", 0) or 0),
+        "target_kwp": target_kwp,
+        "expansion_kwp": expansion,
+        "mode": mode,
+        "cost_factor": round(cost_factor, 2),
+        "summary": summary,
+    }
+
+
+def scale_upfront_for_pv_upgrade(upfront: float, upgrade: dict) -> int:
+    if not upgrade.get("has_existing_pv"):
+        return int(round(upfront))
+    return int(round(upfront * float(upgrade.get("cost_factor") or 1.0)))
+
+
+def inp_from_recalc_payload(base: dict, location: dict, overrides: dict) -> CalculatorInput:
+    merged = {**base, **{k: v for k, v in overrides.items() if v is not None}}
+    monthly_kwh = float(merged.get("monthly_kwh") or 0)
+    if overrides.get("annual_kwh"):
+        monthly_kwh = float(overrides["annual_kwh"]) / 12
+    return CalculatorInput(
+        latitude=float(location.get("latitude") or 48.13),
+        longitude=float(location.get("longitude") or 11.58),
+        location_name=merged.get("location_name") or merged.get("postcode") or "",
+        postcode=merged.get("postcode") or "",
+        monthly_bill_eur=float(merged.get("monthly_bill_eur") or 0),
+        monthly_kwh=monthly_kwh,
+        roof_type=merged.get("roof_type") or "pitched_south",
+        roof_area_m2=float(merged.get("roof_area_m2") or overrides.get("roof_area_m2") or 0),
+        budget_eur=float(merged.get("budget_eur") or overrides.get("budget_eur") or 0),
+        goals=merged.get("goals") or ["lower_bill"],
+        electricity_price_ct=float(merged.get("electricity_price_ct") or overrides.get("electricity_price_ct") or 32),
+        feed_in_type=merged.get("feed_in_type") or "partial",
+        housing_type=merged.get("housing_type") or "detached",
+        owner_status=merged.get("owner_status") or "owner",
+        shading=merged.get("shading") or "unknown",
+        has_heat_pump=bool(merged.get("has_heat_pump")),
+        has_ev=bool(merged.get("has_ev")),
+        planned_ev=bool(merged.get("planned_ev")),
+        has_roof_photos=bool(merged.get("has_roof_photos")),
+        installation_timeframe=merged.get("installation_timeframe") or "not_sure",
+        battery_interest=merged.get("battery_interest") or "unsure",
+        ev_annual_km=float(merged.get("ev_annual_km") or overrides.get("ev_annual_km") or 0),
+        ev_consumption_kwh_100km=float(merged.get("ev_consumption_kwh_100km") or 18),
+        ev_home_charging=merged.get("ev_home_charging") or "",
+        ev_park_home_daytime=merged.get("ev_park_home_daytime") or "",
+        ev_has_wallbox=merged.get("ev_has_wallbox") or "",
+        ev_charging_priority=merged.get("ev_charging_priority") or "",
+        user_situation=merged.get("user_situation") or "",
+        has_existing_pv=bool(merged.get("has_existing_pv")),
+        existing_pv_kwp=float(merged.get("existing_pv_kwp") or 0),
+        existing_inverter_kwp=float(merged.get("existing_inverter_kwp") or 0),
+        existing_pv_year=int(merged.get("existing_pv_year") or 0),
+    )
+
+
+def recalculate_assumptions(
+    base_inputs: dict,
+    location: dict,
+    pvgis_data: dict | None,
+    overrides: dict,
+    package_id: str = "best_value",
+) -> dict:
+    """Re-run financials after slider changes using cached PVGIS data."""
+    inp = inp_from_recalc_payload(base_inputs, location, overrides)
+    if overrides.get("battery_kwh") is not None:
+        inp._battery_override = float(overrides["battery_kwh"])  # noqa: SLF001
+
+    goals = inp.goals or ["lower_bill"]
+    annual_kwh = estimate_annual_consumption_kwh(inp)
+    specific_yield = (pvgis_data or {}).get("specific_yield_kwh_kwp", 950)
+    adjusted_yield = apply_shading_factor(specific_yield, inp.shading)
+    system_kwp = recommend_system_size_kwp(annual_kwh, adjusted_yield, goals, roof_area_m2=inp.roof_area_m2)
+    upgrade = apply_existing_pv_upgrade(inp, system_kwp)
+    system_kwp = upgrade["target_kwp"]
+    annual_production = round(system_kwp * adjusted_yield)
+
+    pkg = build_package(inp, package_id, system_kwp, annual_production, adjusted_yield, goals, annual_kwh)
+    batt_override = getattr(inp, "_battery_override", None)
+    if batt_override is not None:
+        pkg["battery_kwh"] = batt_override
+        pkg["upfront_cost"] = scale_upfront_for_pv_upgrade(pkg["upfront_cost"], upgrade)
+        fin = calculate_financials_with_upfront(
+            inp, pkg["upfront_cost"], pkg["system_kwp"],
+            round(pkg["system_kwp"] * adjusted_yield), batt_override,
+        )
+        pkg["annual_savings"] = fin["annual_savings"]
+        pkg["payback_years"] = fin["payback_years"]
+    else:
+        pkg["upfront_cost"] = scale_upfront_for_pv_upgrade(pkg["upfront_cost"], upgrade)
+
+    loan_years = int(overrides.get("loan_years") or 10)
+    from financial_model import build_financial_model, calculate_financing
+
+    fin_model = build_financial_model(
+        pkg["upfront_cost"],
+        pkg.get("annual_savings") or 0,
+        pkg.get("monthly_savings") or 0,
+        0,
+        0,
+        pkg.get("battery_kwh") or 0,
+        pkg["system_kwp"],
+        annual_production,
+    )
+    monthly_savings = pkg.get("monthly_savings") or (pkg.get("annual_savings") or 0) / 12
+    fin_loan = calculate_financing(pkg["upfront_cost"], term_years=loan_years)
+    loan_cmp = {
+        **fin_loan,
+        "monthly_savings_offset": round(monthly_savings, 2),
+        "net_monthly_cash": round(monthly_savings - fin_loan["monthly_payment"], 2),
+    }
+
+    return {
+        "system_kwp": pkg["system_kwp"],
+        "annual_savings": pkg.get("annual_savings"),
+        "payback_years": pkg.get("payback_years"),
+        "upfront_cost": pkg["upfront_cost"],
+        "battery_kwh": pkg.get("battery_kwh"),
+        "pv_upgrade": upgrade,
+        "financials": {
+            "annual_savings": pkg.get("annual_savings"),
+            "payback_years": pkg.get("payback_years"),
+            "system_cost_typical": pkg["upfront_cost"],
+            "monthly_savings": pkg.get("monthly_savings"),
+        },
+        "financing_comparison": {"loan": loan_cmp},
+        "financial_model": fin_model,
+    }
 
 
 def _build_why_limitations(inp, goals, system_kwp, annual_production, annual_kwh, sizing_summary) -> list:
@@ -971,7 +1165,8 @@ def _build_why_limitations(inp, goals, system_kwp, annual_production, annual_kwh
     if not inp.has_roof_photos:
         notes.append("No roof photos yet — production and layout assumptions are based on your stated roof type and area.")
     if getattr(inp, "has_existing_pv", False):
-        notes.append("Existing PV capacity and inverter limits are not verified — expansion may need hardware upgrades.")
+        up = apply_existing_pv_upgrade(inp, system_kwp)
+        notes.append(up.get("summary") or "Existing PV capacity and inverter limits are not verified — expansion may need hardware upgrades.")
     if not notes:
         notes.append("Installer quotes, grid connection rules, and structural checks are not included in this digital estimate.")
     return notes[:4]

@@ -44,10 +44,17 @@ def send_email(to: str, subject: str, body: str) -> bool:
     msg["Subject"] = subject
     msg["From"] = from_addr
     msg["To"] = to
-    with smtplib.SMTP(host, port) as server:
-        server.starttls()
-        server.login(user, password)
-        server.send_message(msg)
+    use_ssl = os.environ.get("SMTP_USE_SSL", "").strip().lower() in ("1", "true", "yes")
+    if use_ssl or port == 465:
+        with smtplib.SMTP_SSL(host, port or 465) as server:
+            if password:
+                server.login(user, password)
+            server.send_message(msg)
+    else:
+        with smtplib.SMTP(host, port) as server:
+            server.starttls()
+            server.login(user, password)
+            server.send_message(msg)
     return True
 
 
@@ -92,10 +99,17 @@ def send_email_with_attachment(
     port = int(os.environ.get("SMTP_PORT", "587"))
     user = os.environ.get("SMTP_USER")
     password = os.environ.get("SMTP_PASSWORD")
-    with smtplib.SMTP(host, port) as server:
-        server.starttls()
-        server.login(user, password)
-        server.send_message(msg)
+    use_ssl = os.environ.get("SMTP_USE_SSL", "").strip().lower() in ("1", "true", "yes")
+    if use_ssl or port == 465:
+        with smtplib.SMTP_SSL(host, port or 465) as server:
+            if password:
+                server.login(user, password)
+            server.send_message(msg)
+    else:
+        with smtplib.SMTP(host, port) as server:
+            server.starttls()
+            server.login(user, password)
+            server.send_message(msg)
     return {"ok": True, "mode": "smtp"}
 
 
@@ -125,3 +139,32 @@ def notify_quote_request(quote: dict, supplier_emails: list) -> None:
             send_email(email, subject, body)
     send_email(quote.get("customer_email", ""), "Solar Path – quote request received",
                "We received your quote request. Matched suppliers will contact you within 1–2 business days.")
+
+
+def notify_ev_buyer_lead(lead: dict, dealer_email: str, dealer_name: str, vehicle_label: str) -> None:
+    if not dealer_email:
+        return
+    subject = f"New EV buyer lead: {vehicle_label or 'listing'}"
+    profile = lead.get("buyer_profile") or {}
+    body = (
+        f"A new buyer enquiry was submitted on Solar Path.\n\n"
+        f"Vehicle: {vehicle_label or '—'}\n"
+        f"Buyer: {lead.get('buyer_name', '—')}\n"
+        f"Email: {lead.get('buyer_email', '—')}\n"
+        f"Phone: {lead.get('buyer_phone') or '—'}\n"
+        f"Postcode: {lead.get('buyer_postcode') or '—'}\n"
+        f"Qualified: {'yes' if lead.get('qualified') else 'no'}\n"
+        f"Budget: {profile.get('budget_eur') or '—'}\n"
+        f"Message: {lead.get('message') or '—'}\n"
+        f"Lead ID: {lead.get('id', '—')}\n\n"
+        f"Sign in to your dealer dashboard to respond.\n"
+    )
+    send_email(dealer_email, subject, body)
+    buyer_email = (lead.get("buyer_email") or "").strip()
+    if buyer_email:
+        send_email(
+            buyer_email,
+            "Solar Path – your EV enquiry was sent",
+            f"Thanks {lead.get('buyer_name', '')} — your interest in {vehicle_label or 'this vehicle'} "
+            f"was forwarded to {dealer_name or 'the dealer'}. Expect contact within 1–2 business days.",
+        )

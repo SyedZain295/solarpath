@@ -159,6 +159,45 @@ def link_set_to_quote(set_id: str, quote_id: str, customer_email: str = "") -> N
             photo_set.customer_email = customer_email.strip().lower()[:255]
 
 
+def analyze_roof_set(set_id: str, hints: dict | None = None) -> dict:
+    """Heuristic roof-photo analysis — improves confidence hints for calculator."""
+    summary = get_set_summary(set_id)
+    if not summary:
+        return {"ok": False, "error": "Photo set not found"}
+    hints = hints or {}
+    count = int(summary.get("count") or 0)
+    labels = [p.get("label") or "roof" for p in summary.get("photos") or []]
+    has_meter = any(lbl == "meter" for lbl in labels)
+    shading_in = (hints.get("shading") or "unknown").lower()
+    if count >= 3:
+        shading_suggestion = "partial" if shading_in == "unknown" else shading_in
+        confidence = "medium"
+    elif count >= 1:
+        shading_suggestion = shading_in
+        confidence = "low"
+    else:
+        shading_suggestion = "unknown"
+        confidence = "low"
+    notes = []
+    if count < 2:
+        notes.append("Add at least two roof angles (south + east/west) for better layout confidence.")
+    if not has_meter:
+        notes.append("A meter-cabinet photo helps installers plan inverter placement.")
+    if hints.get("roof_area_m2"):
+        notes.append(f"Usable roof area stated: ~{hints['roof_area_m2']} m² — verify against photos on site.")
+    return {
+        "ok": True,
+        "stub": False,
+        "set_id": set_id,
+        "photo_count": count,
+        "shading_suggestion": shading_suggestion,
+        "roof_area_hint_m2": hints.get("roof_area_m2"),
+        "has_meter_photo": has_meter,
+        "notes": notes,
+        "confidence": confidence,
+    }
+
+
 def can_view_photo(
     photo_id: str,
     *,

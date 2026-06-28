@@ -18,7 +18,7 @@ from flask import Flask, jsonify, request, send_file, render_template, session, 
 from pdf_report import generate_decision_report_pdf
 from i18n import translate, TRANSLATIONS
 
-from solar_engine import CalculatorInput, generate_recommendation
+from solar_engine import CalculatorInput, generate_recommendation, recalculate_assumptions
 from pvgis_client import get_pv_estimate, geocode_location, geocode_postcode, roof_type_to_pvgis_params
 from platform_features import match_suppliers, build_quote_status
 from lead_qualification import build_lead_inp, build_lead_profile, evaluate_qualified_lead
@@ -56,6 +56,7 @@ from heat_pump_profile import apply_hp_fields_to_input, heat_goals_active
 from quick_estimate import quick_estimate_range
 from roof_photo_store import (
     add_photos_to_set,
+    analyze_roof_set,
     can_view_photo,
     create_photo_set,
     get_or_create_set,
@@ -64,6 +65,7 @@ from roof_photo_store import (
     link_set_to_quote,
     photo_file_path,
 )
+from ev_media_store import media_file_path, save_dealer_cert, save_dealer_photos
 from ev_bundle import build_bundle_plan
 from ev_marketplace import match_vehicles, home_energy_check, vehicles_for_api, vehicle_by_slug, clear_vehicle_cache
 from ev_dealer_store import (
@@ -919,7 +921,11 @@ def api_ev_dealer_me():
     if not dealer:
         return jsonify({"error": "Not logged in"}), 401
     vehicles = list_dealer_vehicles(dealer.id) if dealer.status == "approved" else []
-    return jsonify({"dealer": dealer.to_dict(), "vehicles": vehicles})
+    leads = list_dealer_leads(dealer.id) if dealer.status == "approved" else []
+    dealer_info = dealer.to_dict()
+    dealer_info["leads_total"] = len(leads)
+    dealer_info["leads_new"] = sum(1 for row in leads if row.get("status") == "new")
+    return jsonify({"dealer": dealer_info, "vehicles": vehicles, "leads_preview": leads[:5]})
 
 
 @app.route("/api/ev-dealer/vehicles", methods=["GET", "POST"])
@@ -984,6 +990,50 @@ def api_ev_dealer_lead_update(lead_id):
     if update_lead_status(dealer.id, lead_id, status):
         return jsonify({"ok": True})
     return jsonify({"error": "Not found"}), 404
+
+
+@app.route("/api/ev-dealer/upload-photos", methods=["POST"])
+def api_ev_dealer_upload_photos():
+    dealer = get_current_ev_dealer()
+    if not dealer:
+        return jsonify({"error": "Not logged in"}), 401
+    if dealer.status != "approved":
+        return jsonify({"error": "Dealer account pending approval"}), 403
+    files = request.files.getlist("photos") or request.files.getlist("photo") or []
+    if not files:
+        return jsonify({"error": "photos required"}), 400
+    urls = save_dealer_photos(dealer.id, files)
+    if not urls:
+        return jsonify({"error": "No valid images uploaded"}), 400
+    return jsonify({"ok": True, "urls": urls}), 201
+
+
+@app.route("/api/ev-dealer/upload-cert", methods=["POST"])
+def api_ev_dealer_upload_cert():
+    dealer = get_current_ev_dealer()
+    if not dealer:
+        return jsonify({"error": "Not logged in"}), 401
+    if dealer.status != "approved":
+        return jsonify({"error": "Dealer account pending approval"}), 403
+    upload = request.files.get("cert") or request.files.get("file")
+    if not upload:
+        return jsonify({"error": "cert file required"}), 400
+    url = save_dealer_cert(dealer.id, upload)
+    if not url:
+        return jsonify({"error": "Invalid certificate file"}), 400
+    return jsonify({"ok": True, "url": url}), 201
+
+
+@app.route("/api/ev-dealer/media/<dealer_id>/<filename>", methods=["GET"])
+def api_ev_dealer_media(dealer_id, filename):
+    dealer = get_current_ev_dealer()
+    if not dealer or dealer.id != dealer_id:
+        if not admin_authorized():
+            return jsonify({"error": "Forbidden"}), 403
+    path = media_file_path(dealer_id, filename)
+    if not path:
+        return jsonify({"error": "Not found"}), 404
+    return send_file(path)
 
 
 @app.route("/api/ev-buyer-lead", methods=["POST"])
@@ -1175,6 +1225,9 @@ def api_calculate():
         financing_interest=data.get("financing_interest", "no"),
         user_situation=data.get("user_situation", ""),
         has_existing_pv=bool(data.get("has_existing_pv")),
+        existing_pv_kwp=float(data.get("existing_pv_kwp") or 0),
+        existing_inverter_kwp=float(data.get("existing_inverter_kwp") or 0),
+        existing_pv_year=int(data.get("existing_pv_year") or 0),
     )
     if "ev_charging" in (inp.goals or []):
         apply_ev_fields_to_input(inp, data)
@@ -1188,6 +1241,13 @@ def api_calculate():
             inp.has_roof_photos = True
             inp.roof_photo_set_id = roof_set_id
             inp.roof_photo_count = int(summary["count"])
+            analysis = analyze_roof_set(
+                roof_set_id,
+                hints={"shading": inp.shading, "roof_area_m2": inp.roof_area_m2},
+            )
+            if analysis.get("ok") and analysis.get("shading_suggestion") not in ("unknown", None):
+                if inp.shading in ("unknown", "", None):
+                    inp.shading = analysis["shading_suggestion"]
 
     recommendation = generate_recommendation(inp, pvgis)
     gsa = get_gsa_yield_estimate(float(lat), float(lon))
@@ -1239,8 +1299,29 @@ def api_calculate():
         if summary:
             recommendation["roof_photo_set_id"] = roof_set_id
             recommendation["roof_photos"] = summary
+            recommendation["roof_analysis"] = analyze_roof_set(
+                roof_set_id,
+                hints={
+                    "shading": data.get("shading") or inp.shading,
+                    "roof_area_m2": inp.roof_area_m2,
+                },
+            )
 
     return jsonify(recommendation)
+
+
+@app.route("/api/calculate/recalc", methods=["POST"])
+def api_calculate_recalc():
+    data = request.get_json() or {}
+    base = data.get("calculator_inputs") or data.get("base_inputs") or {}
+    location = data.get("location") or {}
+    overrides = data.get("overrides") or {}
+    pvgis = data.get("pvgis") or {}
+    package_id = (data.get("selected_package_id") or data.get("package_id") or "best_value").strip()
+    if not base and not location:
+        return jsonify({"error": "calculator_inputs and location required"}), 400
+    result = recalculate_assumptions(base, location, pvgis, overrides, package_id=package_id)
+    return jsonify(result)
 
 
 @app.route("/api/survey", methods=["POST"])
@@ -1803,7 +1884,16 @@ def api_roof_photos_upload():
     if not result.get("ok"):
         return jsonify({"error": result.get("error", "Upload failed")}), 400
     summary = get_set_summary(set_id)
-    return jsonify(summary or result), 201
+    analysis = analyze_roof_set(
+        set_id,
+        hints={
+            "shading": (request.form.get("shading") or "").strip() or None,
+            "roof_area_m2": float(request.form.get("roof_area_m2") or 0) or None,
+        },
+    )
+    payload = summary or result
+    payload["analysis"] = analysis
+    return jsonify(payload), 201
 
 
 @app.route("/api/roof-photos/<set_id>", methods=["GET"])
@@ -1812,6 +1902,28 @@ def api_roof_photos_get(set_id):
     if not summary:
         return jsonify({"error": "Not found"}), 404
     return jsonify(summary)
+
+
+@app.route("/api/roof-photos/<set_id>/analyze", methods=["GET", "POST"])
+def api_roof_photos_analyze(set_id):
+    hints = {}
+    if request.method == "POST":
+        body = request.get_json(silent=True) or {}
+        hints = body.get("hints") or body
+    else:
+        hints = {
+            "shading": request.args.get("shading"),
+            "roof_area_m2": request.args.get("roof_area_m2"),
+        }
+    if hints.get("roof_area_m2"):
+        try:
+            hints["roof_area_m2"] = float(hints["roof_area_m2"])
+        except (TypeError, ValueError):
+            hints.pop("roof_area_m2", None)
+    result = analyze_roof_set(set_id, hints=hints)
+    if not result.get("ok"):
+        return jsonify(result), 404
+    return jsonify(result)
 
 
 @app.route("/api/roof-photos/<photo_id>/image", methods=["GET"])

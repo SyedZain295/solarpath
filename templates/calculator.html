@@ -46,6 +46,24 @@
           <label class="situation-card"><input type="radio" name="situation" value="compare_quotes"><span class="situation-icon">📄</span><span class="situation-title">{{ t('calc.situation.compare_quotes') }}</span><span class="situation-desc">{{ t('calc.situation.compare_quotes_desc') }}</span></label>
           <label class="situation-card"><input type="radio" name="situation" value="business_farm"><span class="situation-icon">🏢</span><span class="situation-title">{{ t('calc.situation.business') }}</span><span class="situation-desc">{{ t('calc.situation.business_desc') }}</span></label>
         </div>
+        <div id="existingPvPanel" class="existing-pv-panel hidden" aria-live="polite">
+          <h3 class="existing-pv-title">{{ t('calc.existing_pv.title', 'Your existing solar system') }}</h3>
+          <p class="step-desc">{{ t('calc.existing_pv.sub', 'We size expansion and battery add-ons from what you already have.') }}</p>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="existing_pv_kwp">{{ t('calc.existing_pv.kwp', 'Installed capacity (kWp)') }}</label>
+              <input type="number" id="existing_pv_kwp" name="existing_pv_kwp" min="0" max="100" step="0.1" placeholder="8">
+            </div>
+            <div class="form-group">
+              <label for="existing_inverter_kwp">{{ t('calc.existing_pv.inverter', 'Inverter AC limit (kW, optional)') }}</label>
+              <input type="number" id="existing_inverter_kwp" name="existing_inverter_kwp" min="0" max="50" step="0.1" placeholder="5">
+            </div>
+            <div class="form-group">
+              <label for="existing_pv_year">{{ t('calc.existing_pv.year', 'Year installed (optional)') }}</label>
+              <input type="number" id="existing_pv_year" name="existing_pv_year" min="1990" max="2030" step="1" placeholder="2019">
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- Step 1: Goals -->
@@ -140,7 +158,7 @@
             <option value="yes">{{ t('common.yes') }}</option>
           </select>
         </div>
-        <div class="info-box">{{ t('calc.ev.later_note') }}</div>
+        <div class="info-box">{{ t('calc.ev.marketplace_note') }} <a href="{{ invite_href('/ev/find') }}">{{ t('evm.find_cta', 'Browse used EVs') }}</a> · <a href="{{ invite_href('/ev/bundle') }}">{{ t('evm.bundle_cta_short', 'Home-energy bundle') }}</a></div>
       </div>
 
       <!-- Step 3: Heat pump / heating (when space heating or hot water goal selected) -->

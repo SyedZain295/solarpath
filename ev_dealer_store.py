@@ -390,8 +390,28 @@ def create_buyer_lead(
         )
         db.add(lead)
         db.flush()
+        payload = vehicle.payload or {}
+        vehicle_label = f"{payload.get('make', '')} {payload.get('model', '')}".strip()
+        notify_ctx = {
+            "id": lead.id,
+            "buyer_name": lead.buyer_name,
+            "buyer_email": lead.buyer_email,
+            "buyer_phone": lead.buyer_phone,
+            "buyer_postcode": lead.buyer_postcode,
+            "buyer_profile": profile,
+            "message": lead.message,
+            "qualified": lead.qualified,
+        }
+        dealer_email = dealer.email
+        dealer_name = dealer.company_name or ""
         db.expunge(lead)
-        return lead
+    try:
+        from email_service import notify_ev_buyer_lead
+
+        notify_ev_buyer_lead(notify_ctx, dealer_email, dealer_name, vehicle_label)
+    except Exception:
+        pass
+    return lead
 
 
 def list_dealer_leads(dealer_id: str, limit: int = 50) -> list[dict]:

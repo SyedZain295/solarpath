@@ -154,8 +154,62 @@ function wireAssumptionSliders(d) {
     };
   }
 
+  let recalcTimer = null;
+  let recalcBusy = false;
+
   function recalc() {
     const v = readVals();
+    clearTimeout(recalcTimer);
+    recalcTimer = setTimeout(async () => {
+      if (recalcBusy) return;
+      recalcBusy = true;
+      try {
+        const resp = await fetch('/api/calculate/recalc', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({
+            calculator_inputs: d.calculator_inputs || {},
+            location: d.location || {},
+            pvgis: d.pvgis || { specific_yield_kwh_kwp: d.specific_yield_kwh_kwp },
+            selected_package_id: d.selected_package_id || selectedPackageId || 'best_value',
+            overrides: {
+              electricity_price_ct: v.price,
+              annual_kwh: v.annualKwh,
+              battery_kwh: v.battery,
+              ev_annual_km: v.evKm,
+              budget_eur: v.budget,
+              loan_years: v.loanYears,
+              roof_area_m2: v.roofArea,
+            },
+          }),
+        });
+        if (resp.ok) {
+          const data = await resp.json();
+          const savings = data.annual_savings ?? data.financials?.annual_savings ?? base.savings;
+          const payback = data.payback_years ?? data.financials?.payback_years ?? base.payback;
+          const kwp = data.system_kwp ?? base.kwp;
+          const upfront = data.upfront_cost ?? data.financials?.system_cost_typical ?? base.upfront;
+          if (liveSavings) liveSavings.textContent = formatCurrency(savings);
+          if (livePayback) livePayback.textContent = `${Number(payback).toFixed(1)} yrs`;
+          if (liveKwp) liveKwp.textContent = `${Number(kwp).toFixed(1)} kWp`;
+          drawCashflowChart(
+            { ...d, financing_comparison: data.financing_comparison || d.financing_comparison },
+            savings,
+            upfront,
+            v.loanYears,
+          );
+          return;
+        }
+      } catch (_err) {
+        /* fall through to local heuristic */
+      } finally {
+        recalcBusy = false;
+      }
+      recalcLocal(v);
+    }, 280);
+  }
+
+  function recalcLocal(v) {
     const priceRatio = v.price / (base.price || 32);
     const useRatio = v.annualKwh / (base.annualKwh || 4000);
     const battBonus = 1 + (v.battery / 20) * 0.12;
@@ -194,7 +248,7 @@ function wireAssumptionSliders(d) {
     }
   });
 
-  recalc();
+  recalcLocal(readVals());
 }
 
 function drawCashflowChart(d, annualSavings, upfront, loanYears) {

@@ -29,6 +29,22 @@ def stub_bill_upload(data: dict) -> dict:
 
 
 def stub_roof_analysis(data: dict) -> dict:
+    set_id = (data.get("set_id") or data.get("roof_photo_set_id") or "").strip()
+    if set_id:
+        try:
+            from roof_photo_store import analyze_roof_set
+
+            result = analyze_roof_set(
+                set_id,
+                hints={
+                    "shading": data.get("shading"),
+                    "roof_area_m2": data.get("roof_area_m2"),
+                },
+            )
+            if result.get("ok"):
+                return result
+        except Exception:
+            pass
     return _stub(
         "roof_analysis",
         lat=data.get("latitude"),
