@@ -235,7 +235,7 @@ html { scroll-behavior: smooth; }
 }
 
 .calculator-page .glass-panel {
-  overflow: visible;
+  overflow: hidden;
 }
 
 .loading-overlay-calc {
