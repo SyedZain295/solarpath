@@ -1,0 +1,311 @@
+{% extends "base.html" %}
+{% block title %}{{ t('home.title') }}{% endblock %}
+{% block body_class %}home-page{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}?v=47">
+{% endblock %}
+
+{% block content %}
+<!-- Hero – full width with background -->
+<section class="hero-full">
+  <div class="hero-bg" aria-hidden="true">
+    <picture>
+      <img src="{{ url_for('static', filename='images/hero-solar.svg') }}" alt="" class="hero-bg-img">
+    </picture>
+    <div class="hero-bg-overlay"></div>
+    <div class="hero-bg-rays"></div>
+  </div>
+  <div class="container-wide hero-inner">
+    <div class="hero-content">
+      <span class="badge badge-glass">☀️ {{ t('home.badge') }}</span>
+      <h1>{{ t('home.hero_title_prefix') }} <span class="text-gradient-light">{{ t('home.hero_title_highlight') }}</span></h1>
+      <p class="hero-sub">{{ t('home.hero_sub') }}</p>
+      <div class="hero-actions">
+        <a href="{{ invite_href('/calculator') }}" class="btn btn-accent btn-lg">{{ t('home.start') }}</a>
+        <a href="{{ invite_href('/estimate') }}" class="btn btn-glass btn-lg">{{ t('home.quick_estimate', '60-second estimate') }}</a>
+        <a href="{{ invite_href('/demo') }}" class="btn btn-outline btn-lg hero-demo-btn">{{ t('nav.demo', 'View demo') }}</a>
+        <p class="hero-quick-note">{{ t('home.quick_note', 'Free pre-assessment · No account required ·') }} <a href="{{ invite_href('/energy-advisor') }}">{{ t('nav.energy_advisor') }}</a></p>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-pill"><span class="stat-icon">📡</span><div><strong>PVGIS</strong><span>{{ t('home.stat.pvgis_sub') }}</span></div></div>
+        <div class="stat-pill"><span class="stat-icon">⚖️</span><div><strong>{{ t('home.stat.packages') }}</strong><span>{{ t('home.stat.packages_sub') }}</span></div></div>
+        <div class="stat-pill"><span class="stat-icon">✓</span><div><strong>{{ t('home.stat.verified') }}</strong><span>{{ t('home.stat.verified_sub') }}</span></div></div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-card glass-card float-animation">
+        <div class="hero-card-header">
+          <span class="pulse-dot"></span> {{ t('home.live_preview') }}
+        </div>
+        <div class="hero-card-body">
+          <div class="metric-row"><span>{{ t('home.system_size') }}</span><strong>8.4 kWp</strong></div>
+          <div class="metric-row"><span>{{ t('home.annual_savings') }}</span><strong class="text-green-light">€1,842</strong></div>
+          <div class="metric-row"><span>{{ t('home.payback') }}</span><strong>8.2 years</strong></div>
+          <div class="metric-row"><span>{{ t('home.co2_saved') }}</span><strong>3.2 t/year</strong></div>
+          <div class="suitability-bar"><div class="suitability-fill" style="width:87%"></div></div>
+          <p class="suitability-label">{{ t('home.suitability') }}</p>
+        </div>
+      </div>
+      <div class="hero-floating-card glass-card-sm">
+        <span>🔋</span> {{ t('home.battery_optional') }}
+      </div>
+    </div>
+  </div>
+  <div class="hero-wave" aria-hidden="true">
+    <svg viewBox="0 0 1440 80" preserveAspectRatio="none"><path fill="#f8fafc" d="M0,40 C360,80 720,0 1080,40 C1260,60 1380,50 1440,40 L1440,80 L0,80 Z"/></svg>
+  </div>
+</section>
+
+<!-- How it works -->
+<section class="section section-how section-reveal is-visible">
+  <div class="container-wide">
+    <div class="section-header">
+      <span class="section-label">{{ t('home.simple_process') }}</span>
+      <h2 class="section-title">{{ t('home.how_it_works') }}</h2>
+      <p class="section-sub">{{ t('home.how_sub') }}</p>
+    </div>
+    <div class="steps-grid steps-grid-enhanced stagger-children">
+      <div class="step-card step-card-enhanced">
+        <div class="step-icon-wrap">🎯</div>
+        <div class="step-num">01</div>
+        <h3>{{ t('home.step1_title') }}</h3>
+        <p>{{ t('home.step1_desc') }}</p>
+      </div>
+      <div class="step-card step-card-enhanced">
+        <div class="step-icon-wrap">📊</div>
+        <div class="step-num">02</div>
+        <h3>{{ t('home.step2_title') }}</h3>
+        <p>{{ t('home.step2_desc') }}</p>
+      </div>
+      <div class="step-card step-card-enhanced">
+        <div class="step-icon-wrap">🤝</div>
+        <div class="step-num">03</div>
+        <h3>{{ t('home.step3_title') }}</h3>
+        <p>{{ t('home.step3_desc') }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Goals – full width visual section -->
+<section class="section-goals section-reveal">
+  <div class="goals-bg-pattern" aria-hidden="true"></div>
+  <div class="container-wide">
+    <div class="section-header section-header-light">
+      <span class="section-label">{{ t('home.tech_match') }}</span>
+      <h2 class="section-title">{{ t('home.goals_title') }}</h2>
+      <p class="section-sub">{{ t('home.goals_sub') }}</p>
+    </div>
+    <div class="goals-grid stagger-children">
+      <a href="{{ invite_href('/calculator') }}" class="goal-card-home">
+        <span class="goal-card-icon">💡</span>
+        <h3>{{ t('home.goal.lower_bill') }}</h3>
+        <p>{{ t('home.goal.lower_bill_desc') }}</p>
+      </a>
+      <a href="{{ invite_href('/calculator') }}" class="goal-card-home">
+        <span class="goal-card-icon">🔋</span>
+        <h3>{{ t('home.goal.backup') }}</h3>
+        <p>{{ t('home.goal.backup_desc') }}</p>
+      </a>
+      <a href="{{ invite_href('/calculator') }}" class="goal-card-home">
+        <span class="goal-card-icon">🚿</span>
+        <h3>{{ t('home.goal.hot_water') }}</h3>
+        <p>{{ t('home.goal.hot_water_desc') }}</p>
+      </a>
+      <a href="{{ invite_href('/calculator') }}" class="goal-card-home">
+        <span class="goal-card-icon">🏠</span>
+        <h3>{{ t('home.goal.space_heating') }}</h3>
+        <p>{{ t('home.goal.space_heating_desc') }}</p>
+      </a>
+      <a href="{{ invite_href('/calculator') }}" class="goal-card-home">
+        <span class="goal-card-icon">🏢</span>
+        <h3>{{ t('home.goal.business') }}</h3>
+        <p>{{ t('home.goal.business_desc') }}</p>
+      </a>
+      <a href="{{ invite_href('/calculator') }}" class="goal-card-home">
+        <span class="goal-card-icon">🌾</span>
+        <h3>{{ t('home.goal.farming') }}</h3>
+        <p>{{ t('home.goal.farming_desc') }}</p>
+      </a>
+      <a href="{{ invite_href('/calculator') }}" class="goal-card-home">
+        <span class="goal-card-icon">⚡</span>
+        <h3>{{ t('home.goal.ev_charging') }}</h3>
+        <p>{{ t('home.goal.ev_charging_desc') }}</p>
+      </a>
+    </div>
+    <div class="goals-footer">
+      <div class="goals-cta">
+        <a href="{{ invite_href('/calculator') }}" class="btn btn-accent btn-lg">{{ t('home.find_technology') }} →</a>
+        <p class="apartment-note">{{ t('home.apartment_note') }} – <a href="{{ invite_href('/energy-advisor') }}">{{ t('home.try_energy_advisor') }}</a></p>
+      </div>
+      <div class="trust-cards">
+        <div class="trust-card">
+          <span class="trust-card-icon" aria-hidden="true">📡</span>
+          <div class="trust-card-text">
+            <strong>PVGIS</strong>
+            <span>{{ t('home.trust.pvgis_sub') }}</span>
+          </div>
+        </div>
+        <div class="trust-card">
+          <span class="trust-card-icon" aria-hidden="true">🇩🇪</span>
+          <div class="trust-card-text">
+            <strong>Bundesnetzagentur</strong>
+            <span>{{ t('home.trust.bnetza_sub') }}</span>
+          </div>
+        </div>
+        <div class="trust-card">
+          <span class="trust-card-icon" aria-hidden="true">⚖️</span>
+          <div class="trust-card-text">
+            <strong>{{ t('home.trust.packages_title') }}</strong>
+            <span>{{ t('home.trust.packages_sub') }}</span>
+          </div>
+        </div>
+        <div class="trust-card">
+          <span class="trust-card-icon" aria-hidden="true">✓</span>
+          <div class="trust-card-text">
+            <strong>{{ t('home.trust.leads_title') }}</strong>
+            <span>{{ t('home.trust.leads_sub') }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-tools section-reveal">
+  <div class="container-wide">
+    <div class="section-header">
+      <span class="section-label">{{ t('home.tools_label') }}</span>
+      <h2 class="section-title">{{ t('home.tools_title') }}</h2>
+    </div>
+    <div class="tools-grid stagger-children">
+      <a href="{{ invite_href('/compare-quotes') }}" class="tool-card">
+        <span class="tool-icon">📊</span>
+        <h3>{{ t('home.tools_compare_title') }}</h3>
+        <p>{{ t('home.tools_compare_desc') }}</p>
+      </a>
+      <a href="{{ invite_href('/calculator') }}" class="tool-card">
+        <span class="tool-icon">⚡</span>
+        <h3>{{ t('home.tools_calc_title') }}</h3>
+        <p>{{ t('home.tools_calc_desc') }}</p>
+      </a>
+      <a href="{{ invite_href('/suppliers/register') }}" class="tool-card">
+        <span class="tool-icon">🔗</span>
+        <h3>{{ t('home.tools_intake_title') }}</h3>
+        <p>{{ t('home.tools_intake_desc') }}</p>
+      </a>
+      <a href="{{ invite_href('/compatibility') }}" class="tool-card">
+        <span class="tool-icon">🔧</span>
+        <h3>{{ t('nav.compatibility') }}</h3>
+        <p>{{ t('compat.instructions') }}</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Suppliers pricing -->
+<section class="section section-pricing section-reveal">
+  <div class="container-wide">
+    <div class="section-header">
+      <span class="section-label">{{ t('home.suppliers_label') }}</span>
+      <h2 class="section-title">{{ t('home.suppliers_title') }}</h2>
+      <p class="section-sub">{{ t('home.suppliers_sub') }}</p>
+    </div>
+    <div class="pricing-grid pricing-grid-enhanced stagger-children">
+      <article class="pricing-card pricing-card-enhanced pricing-card-clickable" data-plan="basic">
+        <div class="pricing-card-top">
+          <span class="pricing-tier">{{ t('plans.basic.tier') }}</span>
+          {% if plans.basic.trial_days %}<span class="pricing-trial-badge">{{ t('home.pricing.trial_badge') }}</span>{% endif %}
+          <h3>{{ t('plans.basic.name') }}</h3>
+          <p class="pricing-tagline">{{ t('plans.basic.tagline') }}</p>
+        </div>
+        <div class="pricing-price">
+          {% if plans.basic.trial_days %}
+          <span class="pricing-amount">€0</span>
+          <span class="pricing-period">{{ t('home.pricing.today') }}</span>
+          {% else %}
+          <span class="pricing-amount">€{{ plans.basic.price_eur }}</span>
+          <span class="pricing-period">{{ t('home.pricing.month') }}</span>
+          {% endif %}
+        </div>
+        {% if plans.basic.trial_days %}<p class="pricing-trial-note">{{ t('plans.basic.trial_note') }}</p>{% endif %}
+        <p class="pricing-lead-note">{{ t('plans.basic.lead_note') }}</p>
+        <ul class="pricing-features">
+          <li>{{ t('plans.basic.feature0') }}</li>
+          <li>{{ t('plans.basic.feature1') }}</li>
+          <li>{{ t('plans.basic.feature2') }}</li>
+          <li>{{ t('plans.basic.feature3') }}</li>
+          <li>{{ t('plans.basic.feature4') }}</li>
+        </ul>
+        <div class="pricing-card-foot">
+          <a href="{{ invite_href('/suppliers/checkout?plan=basic') }}" class="btn btn-pricing btn-block">{{ t('plans.basic.cta') }}</a>
+        </div>
+      </article>
+
+      <article class="pricing-card pricing-card-enhanced featured pricing-card-clickable" data-plan="verified">
+        <div class="pricing-card-top">
+          <div class="pricing-card-top-main">
+            <span class="pricing-tier">{{ t('plans.verified.tier') }}</span>
+            <h3>{{ t('plans.verified.name') }}</h3>
+            <p class="pricing-tagline">{{ t('plans.verified.tagline') }}</p>
+          </div>
+          <span class="pricing-badge">{{ t('home.pricing.popular') }}</span>
+        </div>
+        <div class="pricing-price">
+          <span class="pricing-amount">€{{ plans.verified.price_eur }}</span>
+          <span class="pricing-period">{{ t('home.pricing.month') }}</span>
+        </div>
+        <p class="pricing-lead-note">{{ t('plans.verified.lead_note') }}</p>
+        <ul class="pricing-features">
+          <li>{{ t('plans.verified.feature0') }}</li>
+          <li>{{ t('plans.verified.feature1') }}</li>
+          <li>{{ t('plans.verified.feature2') }}</li>
+          <li>{{ t('plans.verified.feature3') }}</li>
+        </ul>
+        <div class="pricing-card-foot">
+          <a href="{{ invite_href('/suppliers/checkout?plan=verified') }}" class="btn btn-pricing btn-pricing-primary btn-block">{{ t('plans.verified.cta') }}</a>
+        </div>
+      </article>
+
+      <article class="pricing-card pricing-card-enhanced pricing-card-clickable" data-plan="premium">
+        <div class="pricing-card-top">
+          <span class="pricing-tier">{{ t('plans.premium.tier') }}</span>
+          <h3>{{ t('plans.premium.name') }}</h3>
+          <p class="pricing-tagline">{{ t('plans.premium.tagline') }}</p>
+        </div>
+        <div class="pricing-price">
+          <span class="pricing-amount">€{{ plans.premium.price_eur }}</span>
+          <span class="pricing-period">{{ t('home.pricing.month') }}</span>
+        </div>
+        <p class="pricing-lead-note">{{ t('plans.premium.lead_note') }}</p>
+        <ul class="pricing-features">
+          <li>{{ t('plans.premium.feature0') }}</li>
+          <li>{{ t('plans.premium.feature1') }}</li>
+          <li>{{ t('plans.premium.feature2') }}</li>
+          <li>{{ t('plans.premium.feature3') }}</li>
+        </ul>
+        <div class="pricing-card-foot">
+          <a href="{{ invite_href('/suppliers/checkout?plan=premium') }}" class="btn btn-pricing btn-block">{{ t('plans.premium.cta') }}</a>
+        </div>
+      </article>
+    </div>
+    <p class="pricing-lead-explainer">{{ t('home.pricing.lead_explainer') }}</p>
+  </div>
+</section>
+
+<!-- Final CTA -->
+<section class="section-cta section-reveal">
+  <div class="container-wide cta-inner">
+    <div class="cta-content">
+      <h2>{{ t('home.final_title') }}</h2>
+      <p>{{ t('home.final_sub') }}</p>
+    </div>
+    <a href="{{ invite_href('/calculator') }}" class="btn btn-accent btn-lg">{{ t('home.start') }}</a>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/home.js') }}?v=36"></script>
+{% endblock %}

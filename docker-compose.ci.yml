@@ -1,0 +1,21 @@
+# CI smoke test — no bind mount; uses the built image only (more reliable than Codespaces dev mount).
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      APP_ENV: development
+      SOLARPATH_SQLITE: "1"
+      PYTHONPATH: /app
+      SECRET_KEY: ${SECRET_KEY:?Set SECRET_KEY}
+      ADMIN_TOKEN: ${ADMIN_TOKEN:?Set ADMIN_TOKEN}
+      BETA_DEMO_MODE: "1"
+      BETA_GATE_ENABLED: "0"
+      FLASK_DEBUG: "0"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:5000/health')"]
+      interval: 5s
+      timeout: 10s
+      retries: 18
+      start_period: 60s

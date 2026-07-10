@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}{{ t('account.title') }}{% endblock %}
+{% block body_class %}app-page{% endblock %}
+
+{% block content %}
+<div class="register-page page-bg-wrap">
+  <div class="page-bg" aria-hidden="true"></div>
+  <div class="page-content">
+    <div class="page-header-hero">
+      <h1>{{ t('account.hero_title') }}</h1>
+      <p>{{ t('account.hero_sub') }}</p>
+    </div>
+    <div class="glass-panel register-panel" id="accountPanel">
+      <div id="accountGuest" class="hidden">
+        <p>{{ t('account.guest_prefix') }} <a href="/login">{{ t('auth.sign_in') }}</a> {{ t('account.guest_or') }} <a href="/register">{{ t('account.create_account') }}</a>.</p>
+        <a href="/calculator" class="btn btn-primary">{{ t('account.start_assessment') }}</a>
+      </div>
+      <div id="accountContent" class="hidden">
+        <div class="account-profile" id="accountProfile"></div>
+        <button type="button" class="btn btn-outline btn-sm" id="logoutBtn" style="margin-bottom:1rem">{{ t('auth.sign_out') }}</button>
+        <section class="account-section">
+          <h2>{{ t('account.saved_assessments') }}</h2>
+          <div id="assessmentsList"></div>
+        </section>
+        <section class="account-section">
+          <h2>{{ t('account.quote_requests') }}</h2>
+          <div id="quotesList"></div>
+        </section>
+        <section class="account-section">
+          <h2>{{ t('account.after_assessment') }}</h2>
+          <p class="form-hint">{{ t('account.after_assessment_sub') }}</p>
+          <a href="/compare-quotes" class="btn btn-outline btn-sm">{{ t('nav.compare_quotes') }} →</a>
+          <a href="/calculator" class="btn btn-outline btn-sm" style="margin-left:0.5rem">{{ t('nav.calculator') }} →</a>
+        </section>
+        <section class="account-section">
+          <h2>{{ t('account.doc_vault') }}</h2>
+          <p class="form-hint">{{ t('account.doc_vault_sub') }}</p>
+          <form id="docForm" class="doc-form">
+            <input type="text" name="title" placeholder="{{ t('account.doc_title_ph') }}" required>
+            <select name="doc_type">
+              <option value="quote">{{ t('account.doc_type.quote') }}</option>
+              <option value="contract">{{ t('account.doc_type.contract') }}</option>
+              <option value="warranty">{{ t('account.doc_type.warranty') }}</option>
+              <option value="grid">{{ t('account.doc_type.grid') }}</option>
+              <option value="invoice">{{ t('account.doc_type.invoice') }}</option>
+              <option value="other">{{ t('account.doc_type.other') }}</option>
+            </select>
+            <button type="submit" class="btn btn-outline btn-sm">{{ t('account.add_record') }}</button>
+          </form>
+          <div id="documentsList"></div>
+        </section>
+        <section class="account-section">
+          <h2>{{ t('account.alerts') }}</h2>
+          <p class="form-hint">{{ t('account.alerts_sub') }}</p>
+          <label class="checkbox-inline"><input type="checkbox" id="alertOptIn"> {{ t('account.alert_optin') }}</label>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/account.js') }}?v=19"></script>
+{% endblock %}

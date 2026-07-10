@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}{{ t('survey.title') }}{% endblock %}
+{% block body_class %}app-page{% endblock %}
+
+{% block content %}
+<div class="survey-page page-bg-wrap">
+  <div class="page-bg" aria-hidden="true"></div>
+  <div class="page-content">
+    <div class="page-header-hero">
+      <h1>{{ t('survey.hero_title') }}</h1>
+      <p>{{ t('survey.hero_sub') }}</p>
+    </div>
+
+    <div class="survey-choice-grid">
+      <a href="/survey/homeowners" class="survey-choice-card survey-choice-homeowner">
+        <span class="survey-choice-icon" aria-hidden="true">🏠</span>
+        <h2>{{ t('survey.homeowner') }}</h2>
+        <p>{{ t('survey.homeowner_sub') }}</p>
+        <span class="survey-choice-cta">{{ t('survey.start_homeowner') }} →</span>
+      </a>
+      <a href="/survey/companies" class="survey-choice-card survey-choice-company">
+        <span class="survey-choice-icon" aria-hidden="true">☀️</span>
+        <h2>{{ t('survey.company') }}</h2>
+        <p>{{ t('survey.company_sub') }}</p>
+        <span class="survey-choice-cta">{{ t('survey.start_company') }} →</span>
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock %}

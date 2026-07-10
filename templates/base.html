@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="{% block meta_description %}{{ t('meta.description') }}{% endblock %}">
+  <meta name="theme-color" content="#0f766e">
+  <meta property="og:title" content="{% block og_title %}Solar Path{% endblock %} – {{ t('meta.site_suffix') }}">
+  <meta property="og:description" content="{% block og_description %}{{ t('meta.description') }}{% endblock %}">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="{{ url_for('static', filename='favicon.svg') }}" type="image/svg+xml">
+  <title>{% block title %}Solar Path{% endblock %} – {{ t('meta.site_suffix') }}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=45">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/nav.css') }}?v=45">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/pages.css') }}?v=51">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/ui-polish.css') }}?v=52">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/aesthetic.css') }}?v=42">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/app-experience.css') }}?v=11">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/design-refinement.css') }}?v=3">
+  {% block head %}{% endblock %}
+</head>
+<body class="{% block body_class %}{% endblock %}">
+  <nav class="navbar">
+    <div class="container nav-inner">
+      <a href="{{ invite_href('/') }}" class="logo">
+        <span class="logo-icon" aria-hidden="true">☀️</span>
+        <span class="logo-text">Solar Path</span>
+      </a>
+
+      <div class="nav-panel" id="navMenu">
+        <div class="nav-pills">
+          <div class="nav-pill nav-pill--plan">
+            <span class="nav-drawer-label">{{ t('nav.group.plan', 'Plan') }}</span>
+            <div class="nav-pill-links">
+              <a href="{{ invite_href('/calculator') }}" class="{% if request.path == '/calculator' %}nav-active{% endif %}">{{ t('nav.calculator') }}</a>
+              <a href="{{ invite_href('/energy-advisor') }}" class="{% if request.path == '/energy-advisor' %}nav-active{% endif %}">{{ t('nav.energy_advisor') }}</a>
+              <a href="{{ invite_href('/compatibility') }}" class="{% if request.path == '/compatibility' %}nav-active{% endif %}">{{ t('nav.compatibility') }}</a>
+              <a href="{{ invite_href('/ev') }}" class="{% if request.path.startswith('/ev') %}nav-active{% endif %}">{{ t('nav.ev_marketplace', 'EV Marketplace') }}</a>
+            </div>
+          </div>
+          <div class="nav-pill nav-pill--compare">
+            <span class="nav-drawer-label">{{ t('nav.group.compare', 'Compare') }}</span>
+            <div class="nav-pill-links">
+              <a href="{{ invite_href('/compare-quotes') }}" class="{% if request.path == '/compare-quotes' %}nav-active{% endif %}">{{ t('nav.compare_quotes') }}</a>
+              <a href="{{ invite_href('/suppliers') }}" class="{% if request.path == '/suppliers' %}nav-active{% endif %}">{{ t('nav.suppliers') }}</a>
+              <a href="{{ invite_href('/demo') }}" class="{% if request.path == '/demo' %}nav-active{% endif %}">{{ t('nav.packages', 'Packages') }}</a>
+            </div>
+          </div>
+          <div class="nav-pill nav-pill--manage">
+            <span class="nav-drawer-label">{{ t('nav.group.manage', 'Manage') }}</span>
+            <div class="nav-pill-links">
+              <a href="{{ invite_href('/account') }}" class="{% if request.path == '/account' and not request.args.get('section') %}nav-active{% endif %}">{{ t('nav.dashboard') }}</a>
+              <a href="{{ invite_href('/account') }}#documents">{{ t('nav.documents', 'Documents') }}</a>
+              <a href="{{ invite_href('/account') }}#projects">{{ t('nav.project_status', 'Project status') }}</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="nav-actions">
+          <a href="{{ invite_href('/login') }}" class="nav-login-link">{{ t('nav.sign_in', 'Sign in') }}</a>
+          <a href="{{ invite_href('/calculator') }}" class="btn btn-primary btn-sm nav-cta">{{ t('nav.get_started') }}</a>
+          <div class="lang-switch" aria-label="{{ t('nav.language') }}">
+            <a href="{{ lang_url('en') }}" class="{% if lang == 'en' %}active{% endif %}">{{ t('lang.en') }}</a>
+            <span aria-hidden="true">/</span>
+            <a href="{{ lang_url('de') }}" class="{% if lang == 'de' %}active{% endif %}">{{ t('lang.de') }}</a>
+          </div>
+        </div>
+      </div>
+
+      <button type="button" class="mobile-menu-btn" aria-label="Menu" aria-expanded="false" aria-controls="navMenu">
+        <span class="menu-bar"></span>
+        <span class="menu-bar"></span>
+        <span class="menu-bar"></span>
+      </button>
+    </div>
+  </nav>
+
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <span class="logo-icon">☀️</span>
+        <span>Solar Path</span>
+        <p>{{ t('footer.brand') }}</p>
+      </div>
+      <div class="footer-links">
+        <h4>{{ t('footer.platform') }}</h4>
+        <a href="{{ invite_href('/calculator') }}">{{ t('footer.solar_calculator') }}</a>
+        <a href="{{ invite_href('/suppliers') }}">{{ t('footer.find_suppliers') }}</a>
+        <a href="{{ invite_href('/compare-quotes') }}">{{ t('footer.compare_quotes') }}</a>
+        <a href="{{ invite_href('/energy-advisor') }}">{{ t('nav.energy_advisor') }}</a>
+        <a href="{{ invite_href('/survey') }}">{{ t('footer.surveys') }}</a>
+        <a href="{{ invite_href('/register') }}">{{ t('footer.create_account') }}</a>
+        <a href="{{ invite_href('/demo') }}">{{ t('nav.demo', 'Demo') }}</a>
+      </div>
+      <div class="footer-links">
+        <h4>{{ t('footer.for_suppliers') }}</h4>
+        <a href="{{ invite_href('/suppliers/register') }}">{{ t('footer.supplier_registration') }}</a>
+        <a href="{{ invite_href('/suppliers/dashboard') }}">{{ t('footer.dashboard') }}</a>
+      </div>
+      <div class="footer-links">
+        <h4>{{ t('footer.legal') }}</h4>
+        <a href="{{ invite_href('/privacy') }}">{{ t('footer.privacy') }}</a>
+        <a href="{{ invite_href('/terms') }}">{{ t('footer.terms') }}</a>
+      </div>
+    </div>
+    <div class="footer-bottom container">
+      <p>&copy; 2026 Solar Path. {{ t('footer.copyright') }}{% block photo_credit %}{% endblock %}</p>
+    </div>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}?v=45"></script>
+  <script>window.BETA_INVITE_DEFAULT = {{ beta_invite_default|tojson }};</script>
+  <script src="{{ url_for('static', filename='js/beta_invite.js') }}?v=2"></script>
+  <script>
+    window.APP_LANG = {{ lang|tojson }};
+    window.APP_TRANSLATIONS = {{ js_translations|tojson }};
+  </script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

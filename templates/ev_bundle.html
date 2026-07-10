@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% block title %}{{ t('evm.bundle_title') }}{% endblock %}
+{% block body_class %}app-page evm-page{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/ev-marketplace.css') }}?v=3">
+{% endblock %}
+
+{% block content %}
+<div class="page-bg-wrap">
+  <div class="page-bg" aria-hidden="true"></div>
+  <div class="page-content">
+    <div class="page-header-hero">
+      <p class="evm-tagline">{{ t('evm.tagline') }}</p>
+      <h1>{{ t('evm.bundle_title') }}</h1>
+      <p>{{ t('evm.bundle_sub') }}</p>
+      <p class="evm-phase-note">{{ t('evm.phase3_note') }}</p>
+    </div>
+
+    <div class="evm-bundle-stepper glass-panel" id="bundleStepper" aria-label="{{ t('evm.bundle_steps_label') }}">
+      <ol class="evm-steps">
+        <li class="evm-step evm-step--active" data-step="1"><span>1</span> {{ t('evm.bundle_step1') }}</li>
+        <li class="evm-step" data-step="2"><span>2</span> {{ t('evm.bundle_step2') }}</li>
+        <li class="evm-step" data-step="3"><span>3</span> {{ t('evm.bundle_step3') }}</li>
+        <li class="evm-step" data-step="4"><span>4</span> {{ t('evm.bundle_step4') }}</li>
+      </ol>
+    </div>
+
+    <section id="bundleStep1" class="evm-bundle-panel glass-panel">
+      <h2>{{ t('evm.bundle_step1_title') }}</h2>
+      <p class="section-sub">{{ t('evm.bundle_step1_sub') }}</p>
+      <form id="bundleProfileForm" class="evm-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="bdg_budget">{{ t('evm.budget') }}</label>
+            <input type="number" id="bdg_budget" min="5000" step="500" value="28000" required>
+          </div>
+          <div class="form-group">
+            <label for="bdg_weekly_km">{{ t('evm.weekly_km') }}</label>
+            <input type="number" id="bdg_weekly_km" min="20" step="10" value="290" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="bdg_home_charge">{{ t('evm.home_charging') }}</label>
+            <select id="bdg_home_charge">
+              <option value="yes">{{ t('common.yes') }}</option>
+              <option value="limited">{{ t('calc.ev.home_charging.limited') }}</option>
+              <option value="no">{{ t('common.no') }}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="bdg_kwp">{{ t('evm.system_kwp') }}</label>
+            <input type="number" id="bdg_kwp" min="0" step="0.5" placeholder="5.04">
+          </div>
+        </div>
+        <div class="evm-check-grid">
+          <label class="checkbox-inline"><input type="checkbox" id="bdg_has_pv"> {{ t('evm.has_pv') }}</label>
+          <label class="checkbox-inline"><input type="checkbox" id="bdg_has_battery"> {{ t('evm.has_battery') }}</label>
+          <label class="checkbox-inline"><input type="checkbox" id="bdg_has_wallbox"> {{ t('evm.has_wallbox') }}</label>
+        </div>
+        <button type="submit" class="btn btn-primary">{{ t('evm.bundle_next_vehicle') }}</button>
+      </form>
+    </section>
+
+    <section id="bundleStep2" class="evm-bundle-panel glass-panel hidden">
+      <h2>{{ t('evm.bundle_step2_title') }}</h2>
+      <p class="section-sub">{{ t('evm.bundle_step2_sub') }}</p>
+      <div id="bundleVehicleGrid" class="evm-vehicle-grid"></div>
+      <button type="button" class="btn btn-outline" id="bundleBackTo1">{{ t('evm.bundle_back') }}</button>
+    </section>
+
+    <section id="bundleStep3" class="evm-bundle-panel glass-panel hidden">
+      <h2>{{ t('evm.bundle_step3_title') }}</h2>
+      <div id="bundleWallboxPv"></div>
+      <div class="evm-bundle-nav">
+        <button type="button" class="btn btn-outline" id="bundleBackTo2">{{ t('evm.bundle_back') }}</button>
+        <button type="button" class="btn btn-primary" id="bundleToSummary">{{ t('evm.bundle_view_summary') }}</button>
+      </div>
+    </section>
+
+    <section id="bundleStep4" class="evm-bundle-panel glass-panel hidden">
+      <h2>{{ t('evm.bundle_step4_title') }}</h2>
+      <div id="bundleSummary"></div>
+      <div id="bundleLeadForm" class="hidden evm-lead-form glass-panel">
+        <h3>{{ t('evm.bundle_lead_title') }}</h3>
+        <p class="section-sub">{{ t('evm.bundle_lead_sub') }}</p>
+        <div class="form-row">
+          <div class="form-group"><label>{{ t('common.name') }}</label><input type="text" id="bundle_lead_name" required></div>
+          <div class="form-group"><label>{{ t('register.email') }}</label><input type="email" id="bundle_lead_email" required></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>{{ t('register.phone') }}</label><input type="tel" id="bundle_lead_phone"></div>
+          <div class="form-group"><label>{{ t('register.postcode') }}</label><input type="text" id="bundle_lead_postcode"></div>
+        </div>
+        <div class="form-group"><label>{{ t('evm.lead_message') }}</label><textarea id="bundle_lead_message" rows="3"></textarea></div>
+        <button type="button" class="btn btn-primary" id="bundleLeadSubmit">{{ t('evm.bundle_lead_submit') }}</button>
+        <p id="bundleLeadMsg" class="form-hint"></p>
+      </div>
+      <div class="evm-bundle-nav">
+        <button type="button" class="btn btn-outline" id="bundleBackTo3">{{ t('evm.bundle_back') }}</button>
+      </div>
+    </section>
+
+    <p class="form-hint evm-disclaimer">{{ t('evm.disclaimer') }}</p>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/ev_marketplace.js') }}?v=3"></script>
+<script src="{{ url_for('static', filename='js/ev_bundle.js') }}?v=1"></script>
+<script>document.addEventListener('DOMContentLoaded', () => initEvBundle());</script>
+{% endblock %}

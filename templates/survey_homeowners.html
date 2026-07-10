@@ -1,0 +1,249 @@
+{% extends "base.html" %}
+{% block title %}{{ t('survey.h.title') }}{% endblock %}
+{% block body_class %}app-page{% endblock %}
+
+{% block content %}
+<div class="survey-page page-bg-wrap">
+  <div class="page-bg" aria-hidden="true"></div>
+  <div class="page-content">
+    <div class="page-header-hero">
+      <p class="survey-breadcrumb"><a href="/survey">{{ t('survey.breadcrumb.all_surveys') }}</a> · {{ t('survey.h.homeowners') }}</p>
+      <h1>{{ t('survey.h.title') }}</h1>
+      <p>{{ t('survey.h.sub') }}</p>
+    </div>
+
+    <div class="glass-panel survey-panel survey-panel-wide">
+      <div id="surveyError" class="survey-error hidden" role="alert"></div>
+
+      <form id="surveyForm" class="survey-form" data-survey-type="homeowner" novalidate>
+
+        <fieldset>
+          <legend>{{ t('survey.h.sec1') }}</legend>
+          <div class="survey-questions-grid survey-questions-single">
+
+          <div class="survey-q full-width">
+            <label>{{ t('survey.h.q1.label') }}</label>
+            <div class="radio-group">
+              <label><input type="radio" name="h1_use_tool" value="yes_definitely" required> {{ t('survey.h.q1.opt.yes_definitely') }}</label>
+              <label><input type="radio" name="h1_use_tool" value="probably"> {{ t('survey.h.q1.opt.probably') }}</label>
+              <label><input type="radio" name="h1_use_tool" value="maybe"> {{ t('survey.h.q1.opt.maybe') }}</label>
+              <label><input type="radio" name="h1_use_tool" value="no"> {{ t('survey.h.q1.opt.no') }}</label>
+            </div>
+          </div>
+
+          <div class="survey-q full-width">
+            <label for="h1_biggest_concern">{{ t('survey.h.q2.label') }}</label>
+            <select id="h1_biggest_concern" name="h1_biggest_concern" required>
+              <option value="">{{ t('common.select') }}</option>
+              <option value="upfront_cost">{{ t('survey.h.q2.opt.upfront_cost') }}</option>
+              <option value="real_savings">{{ t('survey.h.q2.opt.real_savings') }}</option>
+              <option value="trust_installer">{{ t('survey.h.q2.opt.trust_installer') }}</option>
+              <option value="understanding_quotes">{{ t('survey.h.q2.opt.understanding_quotes') }}</option>
+              <option value="roof_planning">{{ t('survey.h.q2.opt.roof_planning') }}</option>
+              <option value="maintenance">{{ t('survey.h.q2.opt.maintenance') }}</option>
+              <option value="battery">{{ t('survey.h.q2.opt.battery') }}</option>
+              <option value="wait_times">{{ t('survey.h.q2.opt.wait_times') }}</option>
+              <option value="other">{{ t('common.other') }}</option>
+            </select>
+            <label for="h1_biggest_concern_other" class="survey-other-label">{{ t('common.if_other') }}</label>
+            <input type="text" id="h1_biggest_concern_other" name="h1_biggest_concern_other" placeholder="{{ t('survey.h.q2.other_placeholder') }}">
+          </div>
+
+          <div class="survey-q full-width">
+            <label>{{ t('survey.h.q3.label') }}</label>
+            <div class="radio-group">
+              <label><input type="radio" name="h1_bill_understanding" value="fully" required> {{ t('survey.h.q3.opt.fully') }}</label>
+              <label><input type="radio" name="h1_bill_understanding" value="some"> {{ t('survey.h.q3.opt.some') }}</label>
+              <label><input type="radio" name="h1_bill_understanding" value="confusing"> {{ t('survey.h.q3.opt.confusing') }}</label>
+              <label><input type="radio" name="h1_bill_understanding" value="rarely"> {{ t('survey.h.q3.opt.rarely') }}</label>
+            </div>
+          </div>
+
+          <div class="survey-q full-width">
+            <label>{{ t('survey.h.q4.label') }}</label>
+            <div class="radio-group">
+              <label><input type="radio" name="h1_share_info" value="bill_and_roof" required> {{ t('survey.h.q4.opt.bill_and_roof') }}</label>
+              <label><input type="radio" name="h1_share_info" value="postcode_only"> {{ t('survey.h.q4.opt.postcode_only') }}</label>
+              <label><input type="radio" name="h1_share_info" value="anonymous"> {{ t('survey.h.q4.opt.anonymous') }}</label>
+              <label><input type="radio" name="h1_share_info" value="no"> {{ t('survey.h.q4.opt.no') }}</label>
+            </div>
+          </div>
+
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>{{ t('survey.h.sec2') }}</legend>
+          <div class="survey-questions-grid survey-questions-single">
+
+          <div class="survey-q full-width">
+            <label for="h2_property_type">{{ t('survey.h.q5.label') }}</label>
+            <select id="h2_property_type" name="h2_property_type" required>
+              <option value="">{{ t('common.select') }}</option>
+              <option value="detached">{{ t('survey.h.q5.opt.detached') }}</option>
+              <option value="semi_detached">{{ t('survey.h.q5.opt.semi_detached') }}</option>
+              <option value="terraced">{{ t('survey.h.q5.opt.terraced') }}</option>
+              <option value="apartment">{{ t('survey.h.q5.opt.apartment') }}</option>
+              <option value="farm">{{ t('survey.h.q5.opt.farm') }}</option>
+              <option value="business">{{ t('survey.h.q5.opt.business') }}</option>
+              <option value="other">{{ t('common.other') }}</option>
+            </select>
+            <label for="h2_property_type_other" class="survey-other-label">{{ t('common.if_other') }}</label>
+            <input type="text" id="h2_property_type_other" name="h2_property_type_other" placeholder="{{ t('survey.h.q5.other_placeholder') }}">
+          </div>
+
+          <div class="survey-q full-width">
+            <label>{{ t('survey.h.q6.label') }}</label>
+            <div class="radio-group">
+              <label><input type="radio" name="h2_ownership" value="yes" required> {{ t('common.yes') }}</label>
+              <label><input type="radio" name="h2_ownership" value="buying"> {{ t('survey.h.q6.opt.buying') }}</label>
+              <label><input type="radio" name="h2_ownership" value="rent"> {{ t('survey.h.q6.opt.rent') }}</label>
+              <label><input type="radio" name="h2_ownership" value="shared"> {{ t('survey.h.q6.opt.shared') }}</label>
+            </div>
+          </div>
+
+          <div class="survey-q full-width">
+            <label for="h2_install_timeline">{{ t('survey.h.q7.label') }}</label>
+            <select id="h2_install_timeline" name="h2_install_timeline" required>
+              <option value="">{{ t('common.select') }}</option>
+              <option value="3_months">{{ t('survey.h.q7.opt.3_months') }}</option>
+              <option value="6_12_months">{{ t('survey.h.q7.opt.6_12_months') }}</option>
+              <option value="1_2_years">{{ t('survey.h.q7.opt.1_2_years') }}</option>
+              <option value="researching">{{ t('survey.h.q7.opt.researching') }}</option>
+              <option value="unsure">{{ t('common.not_sure') }}</option>
+            </select>
+          </div>
+
+          <div class="survey-q full-width">
+            <label for="h2_monthly_bill">{{ t('survey.h.q8.label') }}</label>
+            <select id="h2_monthly_bill" name="h2_monthly_bill" required>
+              <option value="">{{ t('common.select') }}</option>
+              <option value="under75">{{ t('survey.h.q8.opt.under75') }}</option>
+              <option value="75-150">{{ t('survey.h.q8.opt.75_150') }}</option>
+              <option value="150-250">{{ t('survey.h.q8.opt.150_250') }}</option>
+              <option value="250-400">{{ t('survey.h.q8.opt.250_400') }}</option>
+              <option value="over400">{{ t('survey.h.q8.opt.over400') }}</option>
+              <option value="unknown">{{ t('common.not_sure') }}</option>
+            </select>
+          </div>
+
+          <div class="survey-q full-width">
+            <label>{{ t('survey.h.q9.label') }} <span class="survey-hint">{{ t('common.select_all') }}</span></label>
+            <div class="checkbox-group">
+              <label><input type="checkbox" name="h2_loads" value="ev"> {{ t('survey.h.q9.opt.ev') }}</label>
+              <label><input type="checkbox" name="h2_loads" value="heat_pump"> {{ t('survey.h.q9.opt.heat_pump') }}</label>
+              <label><input type="checkbox" name="h2_loads" value="water_heating"> {{ t('survey.h.q9.opt.water_heating') }}</label>
+              <label><input type="checkbox" name="h2_loads" value="ac"> {{ t('survey.h.q9.opt.ac') }}</label>
+              <label><input type="checkbox" name="h2_loads" value="pool"> {{ t('survey.h.q9.opt.pool') }}</label>
+              <label><input type="checkbox" name="h2_loads" value="home_office"> {{ t('survey.h.q9.opt.home_office') }}</label>
+              <label><input type="checkbox" name="h2_loads" value="none"> {{ t('survey.h.q9.opt.none') }}</label>
+              <label><input type="checkbox" name="h2_loads" value="unsure"> {{ t('common.not_sure') }}</label>
+            </div>
+          </div>
+
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>{{ t('survey.h.sec3') }}</legend>
+          <div class="survey-questions-grid survey-questions-single">
+
+          <div class="survey-q full-width">
+            <label for="h3_outcome_priority">{{ t('survey.h.q10.label') }}</label>
+            <select id="h3_outcome_priority" name="h3_outcome_priority" required>
+              <option value="">{{ t('common.select') }}</option>
+              <option value="lowest_cost">{{ t('survey.h.q10.opt.lowest_cost') }}</option>
+              <option value="best_value">{{ t('survey.h.q10.opt.best_value') }}</option>
+              <option value="reliable">{{ t('survey.h.q10.opt.reliable') }}</option>
+              <option value="backup">{{ t('survey.h.q10.opt.backup') }}</option>
+              <option value="carbon">{{ t('survey.h.q10.opt.carbon') }}</option>
+              <option value="property_value">{{ t('survey.h.q10.opt.property_value') }}</option>
+              <option value="future_loads">{{ t('survey.h.q10.opt.future_loads') }}</option>
+            </select>
+          </div>
+
+          <div class="survey-q full-width">
+            <label for="h3_solar_option">{{ t('survey.h.q11.label') }}</label>
+            <select id="h3_solar_option" name="h3_solar_option" required>
+              <option value="">{{ t('common.select') }}</option>
+              <option value="pv_only">{{ t('survey.h.q11.opt.pv_only') }}</option>
+              <option value="pv_battery">{{ t('survey.h.q11.opt.pv_battery') }}</option>
+              <option value="pv_backup">{{ t('survey.h.q11.opt.pv_backup') }}</option>
+              <option value="pv_heating">{{ t('survey.h.q11.opt.pv_heating') }}</option>
+              <option value="undecided">{{ t('survey.h.q11.opt.undecided') }}</option>
+            </select>
+          </div>
+
+          <div class="survey-q full-width">
+            <label for="h3_compare_quotes">{{ t('survey.h.q12.label') }}</label>
+            <select id="h3_compare_quotes" name="h3_compare_quotes" required>
+              <option value="">{{ t('common.select') }}</option>
+              <option value="yes_multiple">{{ t('survey.h.q12.opt.yes_multiple') }}</option>
+              <option value="yes_one_trusted">{{ t('survey.h.q12.opt.yes_one_trusted') }}</option>
+              <option value="maybe">{{ t('common.maybe') }}</option>
+              <option value="no">{{ t('common.no') }}</option>
+            </select>
+          </div>
+
+          <div class="survey-q full-width">
+            <label>{{ t('survey.h.q13.label') }}</label>
+            <div class="checkbox-group">
+              <label><input type="checkbox" name="h3_trust_supplier" value="certifications"> {{ t('survey.h.q13.opt.certifications') }}</label>
+              <label><input type="checkbox" name="h3_trust_supplier" value="clear_pricing"> {{ t('survey.h.q13.opt.clear_pricing') }}</label>
+              <label><input type="checkbox" name="h3_trust_supplier" value="reviews"> {{ t('survey.h.q13.opt.reviews') }}</label>
+              <label><input type="checkbox" name="h3_trust_supplier" value="warranties"> {{ t('survey.h.q13.opt.warranties') }}</label>
+              <label><input type="checkbox" name="h3_trust_supplier" value="local"> {{ t('survey.h.q13.opt.local') }}</label>
+              <label><input type="checkbox" name="h3_trust_supplier" value="response"> {{ t('survey.h.q13.opt.response') }}</label>
+              <label><input type="checkbox" name="h3_trust_supplier" value="no_pressure"> {{ t('survey.h.q13.opt.no_pressure') }}</label>
+              <label><input type="checkbox" name="h3_trust_supplier" value="referral"> {{ t('survey.h.q13.opt.referral') }}</label>
+              <label><input type="checkbox" name="h3_trust_supplier" value="platform_verify"> {{ t('survey.h.q13.opt.platform_verify') }}</label>
+            </div>
+            <label for="h3_trust_supplier_other" class="survey-other-label">{{ t('common.other') }}</label>
+            <input type="text" id="h3_trust_supplier_other" name="h3_trust_supplier_other" placeholder="{{ t('survey.h.q13.other_placeholder') }}">
+          </div>
+
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>{{ t('survey.h.sec4') }}</legend>
+          <div class="survey-questions-grid survey-questions-single">
+
+          <div class="survey-q full-width">
+            <label>{{ t('survey.h.q14.label') }}</label>
+            <div class="radio-group">
+              <label><input type="radio" name="h4_personal_estimate" value="yes" required> {{ t('common.yes') }}</label>
+              <label><input type="radio" name="h4_personal_estimate" value="maybe"> {{ t('common.maybe') }}</label>
+              <label><input type="radio" name="h4_personal_estimate" value="no"> {{ t('common.no') }}</label>
+            </div>
+          </div>
+
+          <div class="survey-q full-width">
+            <label>{{ t('survey.h.q15.label') }}</label>
+            <div class="radio-group">
+              <label><input type="radio" name="h4_followup_interview" value="yes" required> {{ t('common.yes') }}</label>
+              <label><input type="radio" name="h4_followup_interview" value="no"> {{ t('common.no') }}</label>
+            </div>
+          </div>
+
+          </div>
+        </fieldset>
+
+        <button type="submit" class="btn btn-primary btn-lg btn-block" id="surveySubmitBtn">{{ t('survey.h.submit') }}</button>
+      </form>
+
+      <div id="surveySuccess" class="hidden survey-success-panel">
+        <div class="success-icon">✓</div>
+        <h3>{{ t('common.thank_you') }}</h3>
+        <p>{{ t('survey.h.success') }}</p>
+        <p id="surveySuccessNote" class="hidden form-hint"></p>
+        <a href="/calculator" class="btn btn-primary btn-lg" style="margin-top:1.5rem">{{ t('survey.h.try_calc') }}</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/survey.js') }}?v=17"></script>
+{% endblock %}

@@ -1,0 +1,41 @@
+[
+  {
+    "id": "survey-a62093e3",
+    "responses": {
+      "q1": "yes",
+      "q2": "cost",
+      "q3": "yes",
+      "q4": "yes",
+      "q5": "value",
+      "q6": "yes",
+      "q7": "reviews"
+    },
+    "created_at": "2026-06-18T13:27:23.206520"
+  },
+  {
+    "id": "survey-0ec8877c",
+    "responses": {
+      "q1": "yes",
+      "q2": "cost",
+      "q3": "yes",
+      "q4": "yes",
+      "q5": "value",
+      "q6": "yes",
+      "q7": "reviews"
+    },
+    "created_at": "2026-06-18T13:57:08.293427"
+  },
+  {
+    "id": "survey-4e9dbd63",
+    "responses": {
+      "q1": "a",
+      "q2": "b",
+      "q3": "c",
+      "q4": "d",
+      "q5": "e",
+      "q6": "f",
+      "q7": "g"
+    },
+    "created_at": "2026-06-18T15:22:44.157434"
+  }
+]

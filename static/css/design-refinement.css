@@ -1,0 +1,363 @@
+/* Solar Path – design refinement (typography, calm surfaces, trust, results hero) */
+
+:root {
+  --font-display: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+  --color-money: #d97706;
+  --color-money-dark: #b45309;
+  --section-bg: rgba(255, 255, 255, 0.72);
+  --section-border: rgba(94, 234, 212, 0.22);
+}
+
+/* ── Typography: display font for headings ───────────── */
+h1, h2, h3,
+.page-header-hero h1,
+.calc-step h2,
+.results-panel-title,
+.matched-suppliers-title,
+.verify-framework-title,
+.results-header h1,
+.package-card h3,
+.survey-panel h2,
+.register-panel h1 {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+}
+
+/* ── Home page: hero must always be visible ──────────── */
+.home-page .hero-full,
+.home-page .hero-content,
+.home-page .hero-inner {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.home-page .hero-content h1,
+.home-page .hero-content .hero-sub {
+  color: #fff;
+}
+
+.home-page .section-reveal.is-visible,
+.home-page .stagger-children.is-visible > * {
+  opacity: 1;
+  transform: none;
+}
+
+/* ── Amber = money & primary CTAs only ───────────────── */
+.btn-accent,
+.home-page .btn-accent {
+  background: linear-gradient(135deg, var(--color-accent), var(--color-accent-light));
+  color: #1e293b;
+}
+
+.metric-money,
+.results-hero-stat--primary strong,
+.results-page .package-metrics strong.metric-money,
+.results-page .financial-model-metrics .metric-card--savings .value {
+  color: var(--color-money-dark);
+}
+
+/* Decorative bars: teal only (amber reserved for CTAs) */
+.page-header-hero::after {
+  background: linear-gradient(90deg, var(--color-primary-light), var(--color-teal-mint)) !important;
+}
+
+.glass-panel::before {
+  animation: none !important;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-primary-light), var(--color-teal-mint)) !important;
+  background-size: 100% 100% !important;
+}
+
+/* Calculator: skip top accent bar — overflow:visible breaks ::before clipping */
+.calculator-page .glass-panel::before {
+  content: none;
+  display: none;
+}
+
+/* ── Calmer backgrounds on secondary app pages ───────── */
+.survey-page .page-bg::before,
+.survey-page .page-bg::after,
+.register-page .page-bg::before,
+.register-page .page-bg::after,
+.suppliers-page .page-bg::before,
+.suppliers-page .page-bg::after,
+.dashboard-page .page-bg::before,
+.dashboard-page .page-bg::after,
+.intake-page .page-bg::before,
+.intake-page .page-bg::after,
+.compare-page .page-bg::before,
+.compare-page .page-bg::after,
+.estimate-page .page-bg::before,
+.estimate-page .page-bg::after,
+.evm-page .page-bg::before,
+.evm-page .page-bg::after,
+.prose-page .page-bg::before,
+.prose-page .page-bg::after {
+  animation: none !important;
+  opacity: 0.22 !important;
+}
+
+.survey-page.page-bg-wrap::before,
+.register-page.page-bg-wrap::before,
+.suppliers-page.page-bg-wrap::before {
+  opacity: 0.12 !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-bg::before,
+  .page-bg::after,
+  .glass-panel::before,
+  .progress-fill {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* ── Calculator: clearer progress & grouped fields ───── */
+.calculator-page .calc-progress-meta {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  background: rgba(15, 118, 110, 0.1);
+  border: 1px solid rgba(15, 118, 110, 0.15);
+  font-size: 0.95rem;
+}
+
+.calculator-page .calc-progress-meta strong {
+  color: var(--color-primary);
+  font-weight: 800;
+}
+
+.calculator-page .calc-step .form-group,
+.calculator-page .calc-step .form-row,
+.calculator-page .calc-step .calc-checkbox-row,
+.calculator-page .calc-step .existing-pv-panel,
+.calculator-page .calc-step .register-checks.calc-loads {
+  background: var(--section-bg);
+  border: 1px solid var(--section-border);
+  border-radius: var(--radius);
+  padding: 1rem 1.15rem;
+  margin-bottom: 0.85rem;
+}
+
+.calculator-page .calc-step .form-row {
+  padding: 1rem 1.15rem;
+}
+
+.calculator-page .calc-step .form-row .form-group {
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin-bottom: 0;
+}
+
+.calculator-page .calc-step h2 {
+  margin-bottom: 0.35rem;
+}
+
+.calculator-page .calc-step .step-desc {
+  margin-bottom: 1.1rem;
+}
+
+@media (max-width: 768px) {
+  .calculator-page .calc-checkbox-row input[type="checkbox"],
+  .calculator-page .calc-loads input[type="checkbox"] {
+    width: 1.35rem;
+    height: 1.35rem;
+    min-width: 1.35rem;
+    min-height: 1.35rem;
+  }
+
+  .calculator-page .calc-checkbox-label {
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+}
+
+/* ── Results hero ────────────────────────────────────── */
+.results-hero {
+  background: #fff;
+  border-radius: 20px;
+  padding: 1.5rem 1.75rem;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.results-hero-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.15rem;
+}
+
+.trust-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.trust-badge--region {
+  background: rgba(15, 118, 110, 0.12);
+  color: #0f766e;
+  border: 1px solid rgba(15, 118, 110, 0.2);
+}
+
+.trust-badge--data {
+  background: rgba(59, 130, 246, 0.1);
+  color: #1d4ed8;
+  border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+.results-hero-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.results-hero-stat {
+  padding: 1rem 1.1rem;
+  border-radius: 14px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+}
+
+.results-hero-stat--primary {
+  background: linear-gradient(145deg, #fffbeb 0%, #fff7ed 100%);
+  border-color: #fde68a;
+}
+
+.results-hero-label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #64748b;
+  margin-bottom: 0.35rem;
+}
+
+.results-hero-stat strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.1;
+}
+
+.results-hero-stat--primary strong {
+  font-size: clamp(1.75rem, 5vw, 2.35rem);
+}
+
+.results-hero-hint {
+  font-size: 0.82rem;
+  color: #64748b;
+}
+
+@media (max-width: 720px) {
+  .results-hero-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .results-page .usage-panel .usage-row {
+    grid-template-columns: 1fr;
+    gap: 0.35rem;
+    padding: 0.85rem;
+    background: #f8fafc;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    margin-bottom: 0.5rem;
+    border-bottom: none;
+  }
+
+  .results-page .usage-panel .usage-cost {
+    font-size: 0.88rem;
+  }
+}
+
+/* ── Package cards: equal height + recommended badge ─── */
+.results-page .packages-panel .packages-grid {
+  align-items: stretch;
+}
+
+.results-page .packages-panel .package-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 100%;
+  position: relative;
+  padding-top: 2rem;
+}
+
+.results-page .package-rec-badge {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  background: linear-gradient(135deg, #059669, #0f766e);
+  color: #fff;
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.3rem 0.65rem;
+  border-radius: 999px;
+  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.35);
+}
+
+.results-page .package-metrics {
+  flex: 1 1 auto;
+}
+
+.results-page .package-card .select-pkg-btn {
+  margin-top: auto;
+}
+
+.results-page .package-card.recommended {
+  border-color: #059669;
+  box-shadow: 0 12px 36px rgba(5, 150, 105, 0.15);
+}
+
+/* ── Matched suppliers trust row ─────────────────────── */
+.matched-suppliers-trust-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.match-meta-pill--region {
+  background: rgba(15, 118, 110, 0.1);
+  color: #0f766e;
+  border: 1px solid rgba(15, 118, 110, 0.2);
+}
+
+/* ── Results header slimmer below hero ───────────────── */
+.results-header {
+  margin-bottom: 1rem;
+}
+
+.results-header h1 {
+  font-size: clamp(1.5rem, 4vw, 2rem);
+}
+
+/* ── Primary CTA on results action bar ───────────────── */
+.results-page .action-bar .btn-primary {
+  background: linear-gradient(135deg, var(--color-accent), var(--color-accent-light));
+  border: none;
+  color: #1e293b;
+  font-weight: 800;
+  box-shadow: 0 6px 20px rgba(245, 158, 11, 0.35);
+}
+
+.results-page .action-bar .btn-primary:hover {
+  background: linear-gradient(135deg, #d97706, var(--color-accent));
+  color: #1e293b;
+}

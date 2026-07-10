@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block title %}{{ t('sc.success_title') }}{% endblock %}
+
+{% block body_class %}app-page{% endblock %}
+
+
+
+{% block content %}
+
+<div class="register-page page-bg-wrap">
+
+  <div class="page-bg" aria-hidden="true"></div>
+
+  <div class="page-content">
+
+    <div class="glass-panel register-panel" style="max-width:520px;margin:2rem auto;text-align:center">
+
+      <div class="success-icon">✓</div>
+
+      <h1>{{ t('sc.success_title') }}</h1>
+
+      <p>{{ t('sc.success_sub') }}</p>
+
+      <p class="form-hint checkout-verify-note" role="status"></p>
+
+      <a href="/suppliers/register?checkout={{ request.args.get('checkout', '') }}" class="btn btn-primary">{{ t('sc.continue_register') }}</a>
+
+    </div>
+
+  </div>
+
+</div>
+
+{% endblock %}
+
+
+
+{% block scripts %}
+
+<script>
+
+document.addEventListener('DOMContentLoaded', async () => {
+
+  const params = new URLSearchParams(window.location.search);
+
+  const checkoutId = params.get('checkout');
+
+  const sessionId = params.get('session_id');
+
+  const noteEl = document.querySelector('.checkout-verify-note');
+
+  if (!checkoutId) return;
+
+
+
+  async function verify(attempt = 0) {
+
+    const qs = sessionId ? `?session_id=${encodeURIComponent(sessionId)}` : '';
+
+    const resp = await fetch(`/api/checkout/verify/${encodeURIComponent(checkoutId)}${qs}`);
+
+    const data = await resp.json();
+
+    if (data.ok && data.subscription) {
+
+      sessionStorage.setItem('supplierCheckout', JSON.stringify({
+
+        checkout_id: checkoutId,
+
+        plan: data.subscription.plan,
+
+        email: data.subscription.email,
+
+      }));
+
+      if (noteEl) noteEl.textContent = '';
+
+      return true;
+
+    }
+
+    if (attempt < 5 && sessionId) {
+
+      await new Promise(r => setTimeout(r, 1500));
+
+      return verify(attempt + 1);
+
+    }
+
+    if (noteEl) {
+
+      noteEl.textContent = data.error || 'Payment confirmation pending. You can continue — we will verify shortly.';
+
+    }
+
+    sessionStorage.setItem('supplierCheckout', JSON.stringify({ checkout_id: checkoutId }));
+
+    return false;
+
+  }
+
+
+
+  try {
+
+    await verify();
+
+  } catch {
+
+    if (noteEl) noteEl.textContent = 'Could not verify payment. Try again from checkout if registration fails.';
+
+  }
+
+});
+
+</script>
+
+{% endblock %}

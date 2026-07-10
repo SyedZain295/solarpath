@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}{{ t('evm.dealer_login_title') }}{% endblock %}
+{% block body_class %}app-page evm-page{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/ev-marketplace.css') }}?v=3">
+{% endblock %}
+
+{% block content %}
+<div class="page-bg-wrap">
+  <div class="page-bg" aria-hidden="true"></div>
+  <div class="page-content">
+    <div class="page-header-hero">
+      <h1>{{ t('evm.dealer_login_title') }}</h1>
+      <p>{{ t('evm.dealer_login_sub') }}</p>
+    </div>
+    <form id="evDealerLoginForm" class="glass-panel evm-form">
+      <div class="form-group">
+        <label for="dl_email">{{ t('evm.dealer_email') }}</label>
+        <input type="email" id="dl_email" required autocomplete="username">
+      </div>
+      <div class="form-group">
+        <label for="dl_password">{{ t('evm.dealer_password') }}</label>
+        <input type="password" id="dl_password" required autocomplete="current-password">
+      </div>
+      <button type="submit" class="btn btn-primary btn-lg btn-block">{{ t('evm.dealer_login_btn') }}</button>
+      <p class="form-hint" style="margin-top:1rem"><a href="{{ invite_href('/ev/dealer/register') }}">{{ t('evm.dealer_register_btn') }}</a></p>
+    </form>
+    <p id="evDealerLoginError" class="form-error hidden"></p>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/ev_dealer_portal.js') }}?v=1"></script>
+<script>document.addEventListener('DOMContentLoaded', () => initEvDealerLogin());</script>
+{% endblock %}

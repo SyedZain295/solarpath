@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}{{ t('evm.hub_title') }}{% endblock %}
+{% block body_class %}app-page evm-page{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/ev-marketplace.css') }}?v=3">
+{% endblock %}
+
+{% block content %}
+<div class="page-bg-wrap">
+  <div class="page-bg" aria-hidden="true"></div>
+  <div class="page-content">
+    <div class="page-header-hero">
+      <p class="evm-tagline">{{ t('evm.tagline') }}</p>
+      <h1>{{ t('evm.hub_title') }}</h1>
+      <p>{{ t('evm.hub_sub') }}</p>
+      <p class="evm-phase-note">{{ t('evm.phase2_note') }}</p>
+    </div>
+
+    <div class="evm-hub-grid">
+      <a href="{{ invite_href('/ev/bundle') }}" class="evm-hub-card glass-panel evm-hub-card--featured">
+        <span class="evm-hub-icon" aria-hidden="true">🧩</span>
+        <h2>{{ t('evm.card_bundle_title') }}</h2>
+        <p>{{ t('evm.card_bundle_sub') }}</p>
+      </a>
+      <a href="{{ invite_href('/ev/find') }}" class="evm-hub-card glass-panel">
+        <span class="evm-hub-icon" aria-hidden="true">🔍</span>
+        <h2>{{ t('evm.card_find_title') }}</h2>
+        <p>{{ t('evm.card_find_sub') }}</p>
+      </a>
+      <a href="{{ invite_href('/ev/listings') }}" class="evm-hub-card glass-panel">
+        <span class="evm-hub-icon" aria-hidden="true">🚗</span>
+        <h2>{{ t('evm.card_listings_title') }}</h2>
+        <p>{{ t('evm.card_listings_sub') }}</p>
+      </a>
+      <a href="{{ invite_href('/ev/home-energy') }}" class="evm-hub-card glass-panel">
+        <span class="evm-hub-icon" aria-hidden="true">⚡</span>
+        <h2>{{ t('evm.card_energy_title') }}</h2>
+        <p>{{ t('evm.card_energy_sub') }}</p>
+      </a>
+      <a href="{{ invite_href('/ev/sell') }}" class="evm-hub-card glass-panel">
+        <span class="evm-hub-icon" aria-hidden="true">🏢</span>
+        <h2>{{ t('evm.card_sell_title') }}</h2>
+        <p>{{ t('evm.card_sell_sub') }}</p>
+      </a>
+    </div>
+
+    <p class="form-hint evm-disclaimer">{{ t('evm.disclaimer') }}</p>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}{{ t('evm.dealer_register_title') }}{% endblock %}
+{% block body_class %}app-page evm-page{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/ev-marketplace.css') }}?v=3">
+{% endblock %}
+
+{% block content %}
+<div class="page-bg-wrap">
+  <div class="page-bg" aria-hidden="true"></div>
+  <div class="page-content">
+    <div class="page-header-hero">
+      <h1>{{ t('evm.dealer_register_title') }}</h1>
+      <p>{{ t('evm.dealer_register_sub') }}</p>
+    </div>
+    <form id="evDealerRegisterForm" class="glass-panel evm-form">
+      <div class="form-group">
+        <label for="dr_company">{{ t('evm.dealer_name') }} *</label>
+        <input type="text" id="dr_company" required>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="dr_email">{{ t('evm.dealer_email') }} *</label>
+          <input type="email" id="dr_email" required>
+        </div>
+        <div class="form-group">
+          <label for="dr_phone">{{ t('evm.dealer_phone') }}</label>
+          <input type="tel" id="dr_phone">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="dr_location">{{ t('evm.dealer_location') }} *</label>
+        <input type="text" id="dr_location" placeholder="München" required>
+      </div>
+      <div class="form-group">
+        <label for="dr_password">{{ t('evm.dealer_password') }} *</label>
+        <input type="password" id="dr_password" minlength="8" required autocomplete="new-password">
+        <p class="form-hint">{{ t('evm.dealer_password_hint') }}</p>
+      </div>
+      <button type="submit" class="btn btn-primary btn-lg btn-block">{{ t('evm.dealer_register_btn') }}</button>
+      <p class="form-hint" style="margin-top:1rem">{{ t('evm.dealer_have_account') }} <a href="{{ invite_href('/ev/dealer/login') }}">{{ t('nav.sign_in') }}</a></p>
+    </form>
+    <div id="evDealerRegisterOk" class="success-message hidden"></div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/ev_dealer_portal.js') }}?v=1"></script>
+<script>document.addEventListener('DOMContentLoaded', () => initEvDealerRegister());</script>
+{% endblock %}

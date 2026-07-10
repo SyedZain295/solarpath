@@ -1,0 +1,45 @@
+{% extends "results.html" %}
+{% block title %}Demo – {{ t('results.title') }}{% endblock %}
+
+{% block content %}
+<div class="demo-banner container" role="status">
+  <p><strong>{{ t('demo.banner_label', 'Demo mode') }}</strong> — {{ t('demo.banner_text', 'Sample household in München, Bayern (fixed data). Try the full calculator when you are ready.') }}
+    <a href="{{ invite_href('/calculator') }}">{{ t('demo.try_calculator', 'Open calculator') }}</a>
+  </p>
+</div>
+<script id="demo-recommendation-data" type="application/json">{{ demo_data|tojson }}</script>
+<script>
+  (function () {
+    var el = document.getElementById('demo-recommendation-data');
+    var raw = el && el.textContent ? el.textContent.trim() : '';
+    if (!raw) return;
+    window.__DEMO_RECOMMENDATION_RAW__ = raw;
+    try { sessionStorage.setItem('solarRecommendation', raw); } catch (_) {}
+    try { localStorage.setItem('solarRecommendation', raw); } catch (_) {}
+  })();
+</script>
+{{ super() }}
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script>
+  window.__DEMO_MODE__ = true;
+  (function () {
+    function runDemoBootstrap() {
+      if (typeof window.bootstrapResultsPage !== 'function') return;
+      var raw = window.__DEMO_RECOMMENDATION_RAW__;
+      if (!raw) {
+        var el = document.getElementById('demo-recommendation-data');
+        raw = el && (el.textContent || el.innerHTML || el.innerText || '').trim();
+      }
+      if (raw) window.bootstrapResultsPage(raw);
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', runDemoBootstrap);
+    } else {
+      runDemoBootstrap();
+    }
+  })();
+</script>
+{% endblock %}

@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+{% block title %}{{ t('sc.subscribe') }} – {{ plan.name }}{% endblock %}
+{% block body_class %}app-page checkout-page{% endblock %}
+
+{% block content %}
+<div class="register-page page-bg-wrap">
+  <div class="page-bg" aria-hidden="true"></div>
+  <div class="page-content">
+    <div class="page-header-hero">
+      <h1>{{ t('supplier_checkout.complete') }}</h1>
+      <p>{{ t('supplier_checkout.sub') }}</p>
+    </div>
+
+    <div class="checkout-shell">
+      <aside class="checkout-summary-card {% if plan.featured %}checkout-summary-featured{% endif %}">
+        <div class="checkout-summary-header">
+          <span class="checkout-tier">{{ plan.tier }}</span>
+          {% if plan.featured %}<span class="checkout-popular">{{ t('sc.most_popular') }}</span>{% endif %}
+          <h2>{{ plan.name }}</h2>
+          {% if plan.trial_days %}
+          <p class="checkout-trial-banner">{{ t('home.pricing.trial_badge') }} — {{ plan.trial_note or t('plans.basic.trial_note') }}</p>
+          {% endif %}
+          <p class="checkout-tagline">{{ plan.lead_note }}</p>
+          <div class="checkout-price-row">
+            {% if plan.trial_days %}
+            <span class="checkout-price">€0</span>
+            <span class="checkout-period">{{ t('home.pricing.today') }}</span>
+            {% else %}
+            <span class="checkout-price">€{{ plan.price_eur }}</span>
+            <span class="checkout-period">{{ t('sc.period') }}</span>
+            {% endif %}
+          </div>
+        </div>
+        <div class="checkout-summary-body">
+          <p class="checkout-includes-label">{{ t('sc.whats_included') }}</p>
+          <ul class="checkout-features">
+            {% for f in plan.features %}
+            <li><span class="checkout-check" aria-hidden="true">✓</span>{{ f }}</li>
+            {% endfor %}
+          </ul>
+          <div class="checkout-trust">
+            <span>🔒 {{ t('sc.secure') }}</span>
+            <span>↩ {{ t('sc.cancel_anytime') }}</span>
+          </div>
+          <p class="checkout-disclaimer">{{ t('sc.disclaimer') }}</p>
+        </div>
+      </aside>
+
+      <div class="checkout-main">
+        <section class="checkout-plan-picker" aria-label="{{ t('sc.choose_plan') }}">
+          <h3 class="checkout-plan-picker-title">{{ t('sc.choose_plan') }}</h3>
+          <div class="checkout-plan-options">
+            {% for p in plans.values() %}
+            <a href="/suppliers/checkout?plan={{ p.id }}"
+               class="checkout-plan-option {% if p.id == plan.id %}active{% endif %} {% if p.featured %}featured{% endif %}">
+              <span class="checkout-plan-option-name">{{ p.name }}</span>
+              <span class="checkout-plan-option-price">€{{ p.price_eur }}<small>/mo</small></span>
+              {% if p.featured %}<span class="checkout-plan-option-badge">{{ t('sc.popular') }}</span>{% endif %}
+            </a>
+            {% endfor %}
+          </div>
+        </section>
+
+        <form id="checkoutForm" class="checkout-form-card" data-stripe="{{ '1' if stripe_enabled else '0' }}">
+          <input type="hidden" name="plan" value="{{ plan.id }}">
+
+          <section class="checkout-form-section">
+            <h3><span class="checkout-step-num">1</span> {{ t('sc.billing_email') }}</h3>
+            <div class="form-group">
+              <label for="checkout_email">{{ t('sc.work_email') }}</label>
+              <input type="email" id="checkout_email" name="email" required placeholder="you@company.de">
+            </div>
+          </section>
+
+          <section class="checkout-form-section checkout-payment-section{% if stripe_enabled %} hidden{% endif %}">
+            <h3><span class="checkout-step-num">2</span> {{ t('sc.payment_method') }}</h3>
+            <p class="checkout-demo-note">{{ t('sc.demo_note') }}</p>
+
+            <div class="payment-card-visual" id="paymentCardVisual" aria-hidden="true">
+              <div class="payment-card-top">
+                <span class="payment-card-brand">Solar Path</span>
+                <span class="payment-card-type">VISA</span>
+              </div>
+              <div class="payment-card-chip"></div>
+              <p class="payment-card-number" id="cardPreviewNumber">•••• •••• •••• ••••</p>
+              <div class="payment-card-meta">
+                <div class="payment-card-field">
+                  <span class="payment-card-label">{{ t('sc.card_holder') }}</span>
+                  <span class="payment-card-value" id="cardPreviewName">YOUR NAME</span>
+                </div>
+                <div class="payment-card-field">
+                  <span class="payment-card-label">{{ t('sc.expires') }}</span>
+                  <span class="payment-card-value" id="cardPreviewExp">MM/YY</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="payment-fields">
+              <div class="form-group">
+                <label for="card_name">{{ t('sc.name_on_card') }}</label>
+                <input type="text" id="card_name" name="card_name"{% if not stripe_enabled %} required{% endif %}{% if stripe_enabled %} disabled tabindex="-1"{% endif %} placeholder="Company GmbH" autocomplete="cc-name">
+              </div>
+              <div class="form-group">
+                <label for="card_number">{{ t('sc.card_number') }}</label>
+                <input type="text" id="card_number" name="card_number"{% if not stripe_enabled %} required{% endif %}{% if stripe_enabled %} disabled tabindex="-1"{% endif %}
+                  placeholder="4242 4242 4242 4242" inputmode="numeric" autocomplete="cc-number"
+                  maxlength="19" aria-describedby="cardNumberHint">
+                <span id="cardNumberHint" class="field-hint">{{ t('sc.hint_digits') }}</span>
+              </div>
+              <div class="form-row payment-card-row">
+                <div class="form-group">
+                  <label for="card_exp">{{ t('sc.expiry') }}</label>
+                  <input type="text" id="card_exp" name="card_exp"{% if not stripe_enabled %} required{% endif %}{% if stripe_enabled %} disabled tabindex="-1"{% endif %}
+                    placeholder="MM/YY" inputmode="numeric" autocomplete="cc-exp"
+                    maxlength="5" aria-describedby="cardExpHint">
+                  <span id="cardExpHint" class="field-hint">{{ t('sc.hint_mm_yy') }}</span>
+                </div>
+                <div class="form-group">
+                  <label for="card_cvc">{{ t('sc.cvc') }}</label>
+                  <input type="text" id="card_cvc" name="card_cvc"{% if not stripe_enabled %} required{% endif %}{% if stripe_enabled %} disabled tabindex="-1"{% endif %}
+                    placeholder="123" inputmode="numeric" autocomplete="cc-csc"
+                    maxlength="4" aria-describedby="cardCvcHint">
+                  <span id="cardCvcHint" class="field-hint">{{ t('sc.hint_cvc') }}</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {% if stripe_enabled %}
+          <p class="checkout-demo-note">{{ t('sc.stripe_note') }}</p>
+          {% endif %}
+          <div class="checkout-total-bar">
+            <div>
+              <span class="checkout-total-label">{{ t('sc.due_today') }}</span>
+              <span class="checkout-total-sub">{{ t('sc.renews') }}</span>
+            </div>
+            <strong class="checkout-total-amount">{% if plan.trial_days %}€0.00{% else %}€{{ plan.price_eur }}.00{% endif %}</strong>
+          </div>
+
+          <p id="checkoutError" class="form-error hidden"></p>
+          <button type="submit" class="btn btn-primary btn-lg btn-block checkout-pay-btn" data-price="{% if plan.trial_days %}0{% else %}{{ plan.price_eur }}{% endif %}">
+            {% if plan.trial_days %}{{ t('sc.trial_btn') }}{% else %}{{ t('sc.pay_btn').replace('{price}', plan.price_eur|string) }}{% endif %}
+          </button>
+          <p class="checkout-legal">{{ t('sc.legal_before') }} <a href="/terms">{{ t('terms.title') }}</a>. {{ t('sc.legal_after') }}</p>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/checkout.js') }}?v=17"></script>
+{% endblock %}

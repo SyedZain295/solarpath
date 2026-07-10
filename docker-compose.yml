@@ -1,0 +1,54 @@
+# Codespaces / Docker: secrets come from GitHub repo settings (Codespaces secrets)
+# or your shell environment — never hardcode passwords here.
+#
+# Required env vars: SECRET_KEY, ADMIN_TOKEN, POSTGRES_USER, POSTGRES_PASSWORD
+# Optional: POSTGRES_DB, BETA_ACCESS_PASSWORD, BETA_INVITE_TOKENS, SUPPORT_EMAIL
+#
+# Start: docker compose up --build
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:?Set POSTGRES_USER in GitHub Codespaces secrets}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in GitHub Codespaces secrets}
+      POSTGRES_DB: ${POSTGRES_DB:-solarpath}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 10s
+
+  web:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    environment:
+      APP_ENV: ${APP_ENV:-development}
+      SECRET_KEY: ${SECRET_KEY:?Set SECRET_KEY in GitHub Codespaces secrets}
+      ADMIN_TOKEN: ${ADMIN_TOKEN:?Set ADMIN_TOKEN in GitHub Codespaces secrets}
+      BETA_ACCESS_PASSWORD: ${BETA_ACCESS_PASSWORD:-}
+      BETA_INVITE_TOKENS: ${BETA_INVITE_TOKENS:-}
+      SUPPORT_EMAIL: ${SUPPORT_EMAIL:-}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB:-solarpath}
+      POSTGRES_HOST: db
+      POSTGRES_PORT: "5432"
+      FLASK_DEBUG: ${FLASK_DEBUG:-1}
+      # Open access for Codespaces / course review (no beta login wall)
+      BETA_DEMO_MODE: ${BETA_DEMO_MODE:-1}
+      BETA_GATE_ENABLED: ${BETA_GATE_ENABLED:-0}
+    volumes:
+      - .:/app
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  postgres_data:

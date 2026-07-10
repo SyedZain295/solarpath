@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}{{ t('evm.listings_title') }}{% endblock %}
+{% block body_class %}app-page evm-page{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/ev-marketplace.css') }}?v=3">
+{% endblock %}
+
+{% block content %}
+<div class="page-bg-wrap">
+  <div class="page-bg" aria-hidden="true"></div>
+  <div class="page-content container-wide">
+    <div class="page-header-hero">
+      <h1>{{ t('evm.listings_title') }}</h1>
+      <p>{{ t('evm.listings_sub') }}</p>
+    </div>
+
+    <div class="glass-panel evm-filter-panel">
+      <div class="filter-bar evm-filter-bar">
+        <input type="number" id="flt_budget" class="filter-input" placeholder="{{ t('evm.filter_budget') }}" value="35000">
+        <input type="number" id="flt_range" class="filter-input" placeholder="{{ t('evm.filter_range') }}" value="200">
+        <input type="number" id="flt_soh" class="filter-input" placeholder="{{ t('evm.filter_soh') }}" min="0" max="100">
+        <input type="number" id="flt_fast" class="filter-input" placeholder="{{ t('evm.filter_fast') }}" value="70">
+        <label class="checkbox-inline"><input type="checkbox" id="flt_cert"> {{ t('evm.filter_cert') }}</label>
+        <button type="button" class="btn btn-primary" id="flt_apply">{{ t('evm.filter_apply') }}</button>
+      </div>
+    </div>
+
+    <div id="evListingsGrid" class="evm-vehicle-grid"
+      data-demo="{{ t('evm.demo_badge') }}"
+      data-featured="{{ t('evm.featured') }}"
+      data-loading="{{ t('suppliers.loading') }}"></div>
+    <p class="form-hint evm-disclaimer">{{ t('evm.disclaimer') }}</p>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/ev_marketplace.js') }}?v=2"></script>
+<script>document.addEventListener('DOMContentLoaded', () => initEvListings());</script>
+{% endblock %}

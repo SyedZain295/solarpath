@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.git/
+.github/
+.venv/
+venv/
+node_modules/
+.cursor/
+agent-transcripts/
+.env
+.env.*
+!.env.example

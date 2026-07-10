@@ -1,0 +1,30 @@
+{
+  "name": "Solar Path",
+  "dockerComposeFile": "../docker-compose.codespaces.yml",
+  "service": "web",
+  "workspaceFolder": "/app",
+  "overrideCommand": false,
+  "runServices": ["web"],
+  "forwardPorts": [5000],
+  "portsAttributes": {
+    "5000": {
+      "label": "Solar Path",
+      "onAutoForward": "openBrowser",
+      "visibility": "public"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "python.defaultInterpreterPath": "/usr/local/bin/python"
+      },
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-azuretools.vscode-docker"
+      ]
+    }
+  },
+  "postCreateCommand": "python scripts/codespaces_bootstrap.py",
+  "postAttachCommand": "echo '✅ Solar Path: open the Ports tab or http://localhost:5000'"
+}

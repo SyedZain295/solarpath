@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% block title %}{{ t('admin.title') }}{% endblock %}
+{% block body_class %}app-page{% endblock %}
+{% block content %}
+<div class="register-page page-bg-wrap">
+  <div class="page-bg" aria-hidden="true"></div>
+  <div class="page-content">
+    <div class="page-header-hero"><h1>{{ t('admin.hero_title') }}</h1><p>{{ t('admin.hero_sub') }}</p>
+      <button type="button" class="btn btn-outline btn-sm" id="adminLogout" style="margin-top:0.75rem">{{ t('admin.logout') }}</button>
+    </div>
+    <div class="glass-panel register-panel" id="adminStats"
+      data-label-customers="{{ t('admin.customers') }}"
+      data-label-suppliers="{{ t('admin.suppliers') }}"
+      data-label-quotes="{{ t('admin.quotes') }}"
+      data-label-assessments="{{ t('admin.assessments') }}"
+      data-label-surveys="{{ t('admin.surveys') }}"></div>
+
+    <section class="glass-panel register-panel" style="margin-top:1.5rem">
+      <h2>Product catalog (Phase 1)</h2>
+      <p class="section-sub">Manual component database — panels, inverters, batteries. No supplier APIs required. Edit JSON and save.</p>
+      <div id="catalogCounts" class="form-hint"></div>
+      <textarea id="catalogEditor" rows="18" style="width:100%;font-family:monospace;font-size:0.8rem;margin:1rem 0"></textarea>
+      <div>
+        <button type="button" class="btn btn-primary btn-sm" id="saveCatalogBtn">Save catalog</button>
+        <span id="catalogSaveMsg" class="form-hint" style="margin-left:0.75rem"></span>
+      </div>
+    </section>
+
+    <section class="glass-panel register-panel" style="margin-top:1.5rem" id="evDealersSection">
+      <h2>Solar Path EV — dealers (Phase 2)</h2>
+      <p class="section-sub">Approve Bavarian partner dealers. Pending dealers cannot publish until approved.</p>
+      <div id="evDealerAdminList" class="form-hint">Loading…</div>
+    </section>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+async function loadAdmin() {
+  const [summaryResp, catalogResp] = await Promise.all([
+    fetch('/api/admin/summary'),
+    fetch('/api/admin/products'),
+  ]);
+  if (summaryResp.status === 401 || catalogResp.status === 401) {
+    window.location.href = '/admin';
+    return;
+  }
+  const summary = await summaryResp.json();
+  const catalog = await catalogResp.json();
+  const el = document.getElementById('adminStats');
+  el.innerHTML = `
+    <div class="admin-grid">
+      <div class="admin-stat"><strong>${summary.customers}</strong><span>${el.dataset.labelCustomers}</span></div>
+      <div class="admin-stat"><strong>${summary.suppliers}</strong><span>${el.dataset.labelSuppliers}</span></div>
+      <div class="admin-stat"><strong>${summary.quotes}</strong><span>${el.dataset.labelQuotes}</span></div>
+      <div class="admin-stat"><strong>${summary.assessments}</strong><span>${el.dataset.labelAssessments}</span></div>
+      <div class="admin-stat"><strong>${summary.surveys}</strong><span>${el.dataset.labelSurveys}</span></div>
+    </div>`;
+  const p = summary.products || {};
+  document.getElementById('catalogCounts').textContent =
+    `${p.panels || 0} panels · ${p.inverters || 0} inverters · ${p.batteries || 0} batteries · ${p.mounting || 0} mounting kits`;
+  document.getElementById('catalogEditor').value = JSON.stringify(catalog, null, 2);
+}
+
+document.getElementById('saveCatalogBtn')?.addEventListener('click', async () => {
+  const msg = document.getElementById('catalogSaveMsg');
+  try {
+    const data = JSON.parse(document.getElementById('catalogEditor').value);
+    const resp = await fetch('/api/admin/products', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    if (!resp.ok) throw new Error('Save failed');
+    msg.textContent = 'Saved ✓';
+    loadAdmin();
+  } catch (e) {
+    msg.textContent = e.message || 'Invalid JSON';
+  }
+});
+
+loadAdmin();
+
+document.getElementById('adminLogout')?.addEventListener('click', async () => {
+  await fetch('/api/admin/logout', { method: 'POST' });
+  window.location.href = '/admin';
+});
+
+async function loadEvDealersAdmin() {
+  const el = document.getElementById('evDealerAdminList');
+  if (!el) return;
+  const resp = await fetch('/api/admin/ev-dealers');
+  if (!resp.ok) { el.textContent = 'Could not load dealers'; return; }
+  const data = await resp.json();
+  const dealers = data.dealers || [];
+  if (!dealers.length) { el.innerHTML = '<p>No EV dealers yet.</p>'; return; }
+  el.innerHTML = dealers.map(d => `
+    <div style="display:flex;gap:1rem;align-items:center;margin:0.5rem 0;padding:0.5rem 0;border-bottom:1px solid #e2e8f0">
+      <div style="flex:1"><strong>${d.company_name}</strong> · ${d.email} · ${d.location} · <em>${d.status}</em></div>
+      ${d.status === 'pending' ? `<button type="button" class="btn btn-primary btn-sm" data-approve="${d.id}">Approve</button>` : ''}
+      ${d.status === 'approved' ? `<button type="button" class="btn btn-outline btn-sm" data-suspend="${d.id}">Suspend</button>` : ''}
+    </div>`).join('');
+  el.querySelectorAll('[data-approve]').forEach(btn => btn.addEventListener('click', async () => {
+    await fetch('/api/admin/ev-dealers/' + btn.dataset.approve, { method: 'PATCH', headers: {'Content-Type':'application/json'}, body: JSON.stringify({status:'approved'}) });
+    loadEvDealersAdmin();
+  }));
+  el.querySelectorAll('[data-suspend]').forEach(btn => btn.addEventListener('click', async () => {
+    await fetch('/api/admin/ev-dealers/' + btn.dataset.suspend, { method: 'PATCH', headers: {'Content-Type':'application/json'}, body: JSON.stringify({status:'suspended'}) });
+    loadEvDealersAdmin();
+  }));
+}
+loadEvDealersAdmin();
+</script>
+{% endblock %}

@@ -1,0 +1,4295 @@
+[
+  {
+    "id": "sup-02b2c2ae",
+    "company_name": "Demo Solar GmbH",
+    "email": "supplier-demo@example.com",
+    "phone": "+49 89 123456",
+    "website": "",
+    "plan": "verified",
+    "verified": true,
+    "checkout_id": "chk-8c7d83b224",
+    "locations_served": [],
+    "regions": [],
+    "products": [],
+    "certifications": [],
+    "installation_availability": "",
+    "financing_options": [],
+    "rating": 0,
+    "reviews_count": 0,
+    "description": "",
+    "earliest_survey_date": "",
+    "earliest_install_weeks": null,
+    "residential_available": true,
+    "commercial_available": false,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "created_at": "2026-06-23T12:08:25.567663+00:00",
+    "intake_slug": "demo-solar-gmbh"
+  },
+  {
+    "id": "sup-enpal-b-v",
+    "company_name": "Enpal B.V.",
+    "email": "info@enpal.de",
+    "phone": "—",
+    "website": "https://www.enpal.de",
+    "plan": "premium",
+    "verified": true,
+    "locations_served": [
+      "10115"
+    ],
+    "regions": [
+      "Berlin",
+      "Berlin"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.0,
+    "reviews_count": 8500,
+    "description": "Germany's largest residential solar platform — PV, battery, heat pump and wallbox.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 52.5321914,
+    "longitude": 13.3845571
+  },
+  {
+    "id": "sup-1komma5-gmbh",
+    "company_name": "1KOMMA5° GmbH",
+    "email": "info@1komma5grad.com",
+    "phone": "—",
+    "website": "https://www.1komma5grad.com",
+    "plan": "premium",
+    "verified": true,
+    "locations_served": [
+      "20354"
+    ],
+    "regions": [
+      "Hamburg",
+      "Hamburg"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.4,
+    "reviews_count": 3200,
+    "description": "Integrated energy provider with Heartbeat energy management software.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 53.5588299,
+    "longitude": 9.9941877
+  },
+  {
+    "id": "sup-eigensonne-gmbh",
+    "company_name": "EIGENSONNE GmbH",
+    "email": "info@eigensonne.de",
+    "phone": "—",
+    "website": "https://www.eigensonne.de",
+    "plan": "verified",
+    "verified": true,
+    "locations_served": [
+      "10117"
+    ],
+    "regions": [
+      "Berlin",
+      "Berlin"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.2,
+    "reviews_count": 1200,
+    "description": "Nationwide residential solar provider based in Berlin.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 52.5169123,
+    "longitude": 13.3873555
+  },
+  {
+    "id": "sup-energiekonzepte-deutschland-gmbh",
+    "company_name": "Energiekonzepte Deutschland GmbH",
+    "email": "info@ekd-solar.de",
+    "phone": "—",
+    "website": "https://www.ekd-solar.de",
+    "plan": "premium",
+    "verified": true,
+    "locations_served": [
+      "04103"
+    ],
+    "regions": [
+      "Leipzig",
+      "Sachsen"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.3,
+    "reviews_count": 2100,
+    "description": "Major PV installer with nationwide partner network, HQ Leipzig.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 51.3318979,
+    "longitude": 12.3905139
+  },
+  {
+    "id": "sup-securenergy-gmbh",
+    "company_name": "securenergy GmbH",
+    "email": "info@securenergy.de",
+    "phone": "—",
+    "website": "https://www.securenergy.de",
+    "plan": "verified",
+    "verified": true,
+    "locations_served": [
+      "10178"
+    ],
+    "regions": [
+      "Berlin",
+      "Berlin"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.1,
+    "reviews_count": 450,
+    "description": "Commercial and industrial solar EPC specialist.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 52.5212845,
+    "longitude": 13.4097989
+  },
+  {
+    "id": "sup-svea-solar-deutschland-gmbh",
+    "company_name": "Svea Solar Deutschland GmbH",
+    "email": "info@sveasolar.de",
+    "phone": "—",
+    "website": "https://www.sveasolar.de",
+    "plan": "verified",
+    "verified": true,
+    "locations_served": [
+      "50667"
+    ],
+    "regions": [
+      "Köln",
+      "Nordrhein-Westfalen"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.0,
+    "reviews_count": 890,
+    "description": "Residential and commercial PV installations nationwide.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 50.9386399,
+    "longitude": 6.9550296
+  },
+  {
+    "id": "sup-greencells-gmbh",
+    "company_name": "Greencells GmbH",
+    "email": "info@greencells.com",
+    "phone": "—",
+    "website": "https://www.greencells.com",
+    "plan": "verified",
+    "verified": true,
+    "locations_served": [
+      "66111"
+    ],
+    "regions": [
+      "Saarbrücken",
+      "Saarland"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.2,
+    "reviews_count": 320,
+    "description": "EPC contractor for commercial rooftop and ground-mount PV.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 49.2366735,
+    "longitude": 6.9978547
+  },
+  {
+    "id": "sup-gp-joule-gmbh",
+    "company_name": "GP JOULE GmbH",
+    "email": "info@gp-joule.de",
+    "phone": "—",
+    "website": "https://www.gp-joule.de",
+    "plan": "verified",
+    "verified": true,
+    "locations_served": [
+      "25821"
+    ],
+    "regions": [
+      "Reußenköge",
+      "Schleswig-Holstein"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.5,
+    "reviews_count": 280,
+    "description": "Utility-scale and commercial PV, agri-PV and energy management.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 54.6054055,
+    "longitude": 8.9194551
+  },
+  {
+    "id": "sup-iqony-sustainable-energy-solutions-g",
+    "company_name": "Iqony Sustainable Energy Solutions GmbH",
+    "email": "info@iqony.energy",
+    "phone": "—",
+    "website": "https://www.iqony.energy",
+    "plan": "verified",
+    "verified": true,
+    "locations_served": [
+      "97070"
+    ],
+    "regions": [
+      "Würzburg",
+      "Bayern"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.1,
+    "reviews_count": 190,
+    "description": "Commercial and industrial PV, often via contracting models.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 49.7944,
+    "longitude": 9.9340747
+  },
+  {
+    "id": "sup-goldbeck-solar-gmbh",
+    "company_name": "Goldbeck Solar GmbH",
+    "email": "info@goldbecksolar.com",
+    "phone": "—",
+    "website": "https://www.goldbecksolar.com",
+    "plan": "verified",
+    "verified": true,
+    "locations_served": [
+      "69493"
+    ],
+    "regions": [
+      "Hirschberg an der Bergstraße",
+      "Baden-Württemberg"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.4,
+    "reviews_count": 410,
+    "description": "Large-scale commercial and industrial rooftop PV specialist.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 49.5037862,
+    "longitude": 8.6624125
+  },
+  {
+    "id": "sup-wirsol-aufdach-gmbh",
+    "company_name": "WIRSOL Aufdach GmbH",
+    "email": "info@wirsol.com",
+    "phone": "—",
+    "website": "https://www.wirsol.com",
+    "plan": "verified",
+    "verified": true,
+    "locations_served": [
+      "68753"
+    ],
+    "regions": [
+      "Waghäusel",
+      "Baden-Württemberg"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.0,
+    "reviews_count": 350,
+    "description": "Commercial rooftop PV installations across Germany.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 49.2309857,
+    "longitude": 8.5363496
+  },
+  {
+    "id": "sup-enviria-energy-holding-gmbh",
+    "company_name": "ENVIRIA Energy Holding GmbH",
+    "email": "info@enivria.com",
+    "phone": "—",
+    "website": "https://www.enivria.com",
+    "plan": "verified",
+    "verified": true,
+    "locations_served": [
+      "60311"
+    ],
+    "regions": [
+      "Frankfurt am Main",
+      "Hessen"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.2,
+    "reviews_count": 220,
+    "description": "Commercial solar planning, build and operate.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 50.1106599,
+    "longitude": 8.6828854
+  },
+  {
+    "id": "sup-enerix-gmbh",
+    "company_name": "Enerix GmbH",
+    "email": "info@enerix.de",
+    "phone": "—",
+    "website": "https://www.enerix.de",
+    "plan": "premium",
+    "verified": true,
+    "locations_served": [
+      "93047"
+    ],
+    "regions": [
+      "Regensburg",
+      "Bayern"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.8,
+    "reviews_count": 1800,
+    "description": "Franchise network bundling local PV installers nationwide.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 49.0172771,
+    "longitude": 12.0962225
+  },
+  {
+    "id": "sup-eurosol-gmbh",
+    "company_name": "EUROSOL GmbH",
+    "email": "info@eurosol.de",
+    "phone": "—",
+    "website": "https://www.eurosol.de",
+    "plan": "verified",
+    "verified": true,
+    "locations_served": [
+      "67059"
+    ],
+    "regions": [
+      "Ludwigshafen",
+      "Rheinland-Pfalz"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.0,
+    "reviews_count": 270,
+    "description": "Commercial and industrial PV systems.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 49.4793335,
+    "longitude": 8.4292407
+  },
+  {
+    "id": "sup-energieversum-gmbh-co-kg",
+    "company_name": "Energieversum GmbH & Co. KG",
+    "email": "info@energieversum.de",
+    "phone": "—",
+    "website": "https://www.energieversum.de",
+    "plan": "verified",
+    "verified": true,
+    "locations_served": [
+      "33330"
+    ],
+    "regions": [
+      "Gütersloh",
+      "Nordrhein-Westfalen"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.1,
+    "reviews_count": 340,
+    "description": "Residential and commercial solar solutions.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 51.9180698,
+    "longitude": 8.3733472
+  },
+  {
+    "id": "sup-c2energy-gmbh",
+    "company_name": "c2energy GmbH",
+    "email": "info@c2energy.de",
+    "phone": "—",
+    "website": "https://www.c2energy.de",
+    "plan": "verified",
+    "verified": true,
+    "locations_served": [
+      "68159"
+    ],
+    "regions": [
+      "Mannheim",
+      "Baden-Württemberg"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.0,
+    "reviews_count": 180,
+    "description": "Commercial PV and energy efficiency projects.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 49.4949702,
+    "longitude": 8.4528104
+  },
+  {
+    "id": "sup-pvwerk-gmbh",
+    "company_name": "pvwerk GmbH",
+    "email": "info@pvwerk.de",
+    "phone": "—",
+    "website": "https://www.pvwerk.de",
+    "plan": "verified",
+    "verified": true,
+    "locations_served": [
+      "20354"
+    ],
+    "regions": [
+      "Hamburg",
+      "Hamburg"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.2,
+    "reviews_count": 290,
+    "description": "Commercial and industrial PV installations.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 53.5588299,
+    "longitude": 9.9941877
+  },
+  {
+    "id": "sup-solus-energietechnik-gmbh",
+    "company_name": "solus Energietechnik GmbH",
+    "email": "info@solus-energietechnik.de",
+    "phone": "—",
+    "website": "https://www.solus-energietechnik.de",
+    "plan": "verified",
+    "verified": true,
+    "locations_served": [
+      "79098"
+    ],
+    "regions": [
+      "Freiburg im Breisgau",
+      "Baden-Württemberg"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.3,
+    "reviews_count": 210,
+    "description": "Regional and commercial PV in southwest Germany.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 47.9948074,
+    "longitude": 7.8486764
+  },
+  {
+    "id": "sup-icarus-photovoltaik-gmbh",
+    "company_name": "ICARUS PHOTOVOLTAIK GmbH",
+    "email": "info@icarus-photovoltaik.de",
+    "phone": "—",
+    "website": "https://www.icarus-photovoltaik.de",
+    "plan": "verified",
+    "verified": true,
+    "locations_served": [
+      "79098"
+    ],
+    "regions": [
+      "Freiburg im Breisgau",
+      "Baden-Württemberg"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.1,
+    "reviews_count": 165,
+    "description": "PV planning and installation for homes and businesses.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 47.9948074,
+    "longitude": 7.8486764
+  },
+  {
+    "id": "sup-bauer-energietechnik-e-k",
+    "company_name": "Bauer Energietechnik e.K.",
+    "email": "info@bauer-energietechnik.de",
+    "phone": "—",
+    "website": "https://www.bauer-energietechnik.de",
+    "plan": "verified",
+    "verified": true,
+    "locations_served": [
+      "85049"
+    ],
+    "regions": [
+      "Ingolstadt",
+      "Bayern"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.4,
+    "reviews_count": 130,
+    "description": "Regional PV installer serving Bavaria.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 48.763007,
+    "longitude": 11.3426574
+  },
+  {
+    "id": "sup-pv-energy-solutions-gmbh",
+    "company_name": "PV Energy Solutions GmbH",
+    "email": "info@pv-energy-solutions.de",
+    "phone": "—",
+    "website": "https://www.pv-energy-solutions.de",
+    "plan": "verified",
+    "verified": true,
+    "locations_served": [
+      "22765"
+    ],
+    "regions": [
+      "Hamburg",
+      "Hamburg"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.0,
+    "reviews_count": 95,
+    "description": "Residential and commercial PV in northern Germany.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 53.5555479,
+    "longitude": 9.9349712
+  },
+  {
+    "id": "sup-yoursolar-gmbh",
+    "company_name": "YourSolar GmbH",
+    "email": "info@yoursolar.de",
+    "phone": "—",
+    "website": "https://www.yoursolar.de",
+    "plan": "verified",
+    "verified": true,
+    "locations_served": [
+      "61449"
+    ],
+    "regions": [
+      "Steinbach",
+      "Hessen"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.2,
+    "reviews_count": 110,
+    "description": "Residential solar systems in the Rhine-Main region.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 50.1708462,
+    "longitude": 8.5707818
+  },
+  {
+    "id": "sup-solprime-power-systems-gmbh",
+    "company_name": "SOLprime Power Systems GmbH",
+    "email": "info@solprime.de",
+    "phone": "—",
+    "website": "https://www.solprime.de",
+    "plan": "verified",
+    "verified": true,
+    "locations_served": [
+      "24103"
+    ],
+    "regions": [
+      "Kiel",
+      "Schleswig-Holstein"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.1,
+    "reviews_count": 88,
+    "description": "PV systems for northern Germany.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 54.322678,
+    "longitude": 10.134688
+  },
+  {
+    "id": "sup-suntec-energiesysteme-gmbh",
+    "company_name": "SUNTEC Energiesysteme GmbH",
+    "email": "info@suntec-energiesysteme.de",
+    "phone": "—",
+    "website": "https://www.suntec-energiesysteme.de",
+    "plan": "verified",
+    "verified": true,
+    "locations_served": [
+      "97261"
+    ],
+    "regions": [
+      "Güntersleben",
+      "Bayern"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.3,
+    "reviews_count": 142,
+    "description": "Regional PV specialist in Lower Franconia.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 49.8741046,
+    "longitude": 9.9028362
+  },
+  {
+    "id": "sup-seco-solar-gmbh",
+    "company_name": "Seco Solar GmbH",
+    "email": "info@seco-solar.de",
+    "phone": "—",
+    "website": "https://www.seco-solar.de",
+    "plan": "verified",
+    "verified": true,
+    "locations_served": [
+      "34253"
+    ],
+    "regions": [
+      "Lohfelden",
+      "Hessen"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.0,
+    "reviews_count": 76,
+    "description": "Commercial and residential PV near Kassel.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 51.2688069,
+    "longitude": 9.553128
+  },
+  {
+    "id": "sup-ibc-solar-ag",
+    "company_name": "IBC SOLAR AG",
+    "email": "info@ibc-solar.de",
+    "phone": "—",
+    "website": "https://www.ibc-solar.de",
+    "plan": "premium",
+    "verified": true,
+    "locations_served": [
+      "96231"
+    ],
+    "regions": [
+      "Bad Staffelstein",
+      "Bayern"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.5,
+    "reviews_count": 620,
+    "description": "Major PV wholesaler and installation partner network.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 50.1002335,
+    "longitude": 11.0211021
+  },
+  {
+    "id": "sup-baywa-r-e-solar-projects-gmbh",
+    "company_name": "BayWa r.e. Solar Projects GmbH",
+    "email": "info@baywa-re.com",
+    "phone": "—",
+    "website": "https://www.baywa-re.com",
+    "plan": "premium",
+    "verified": true,
+    "locations_served": [
+      "80331"
+    ],
+    "regions": [
+      "München",
+      "Bayern"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.3,
+    "reviews_count": 480,
+    "description": "Large commercial and utility-scale solar developer and installer.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 48.1359146,
+    "longitude": 11.5730984
+  },
+  {
+    "id": "sup-s-a-g-solarstrom-ag",
+    "company_name": "S.A.G. Solarstrom AG",
+    "email": "info@sag-solarstrom.de",
+    "phone": "—",
+    "website": "https://www.sag-solarstrom.de",
+    "plan": "verified",
+    "verified": true,
+    "locations_served": [
+      "10115"
+    ],
+    "regions": [
+      "Berlin",
+      "Berlin"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.0,
+    "reviews_count": 390,
+    "description": "Residential and commercial PV across Germany.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 52.5321914,
+    "longitude": 13.3845571
+  },
+  {
+    "id": "sup-klarsolar-gmbh",
+    "company_name": "Klarsolar GmbH",
+    "email": "info@klarsolar.de",
+    "phone": "—",
+    "website": "https://www.klarsolar.de",
+    "plan": "verified",
+    "verified": true,
+    "locations_served": [
+      "70173"
+    ],
+    "regions": [
+      "Stuttgart",
+      "Baden-Württemberg"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.6,
+    "reviews_count": 980,
+    "description": "Digital-first residential solar provider.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 48.7814058,
+    "longitude": 9.1818299
+  },
+  {
+    "id": "sup-zolar-gmbh",
+    "company_name": "Zolar GmbH",
+    "email": "info@zolar.de",
+    "phone": "—",
+    "website": "https://www.zolar.de",
+    "plan": "verified",
+    "verified": true,
+    "locations_served": [
+      "10119"
+    ],
+    "regions": [
+      "Berlin",
+      "Berlin"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.1,
+    "reviews_count": 720,
+    "description": "Online solar configurator and installation platform.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 52.5304785,
+    "longitude": 13.4053272
+  },
+  {
+    "id": "sup-rucker-elektro-gmbh",
+    "company_name": "Rucker Elektro GmbH",
+    "email": "info@rucker-elektro.de",
+    "phone": "—",
+    "website": "https://www.rucker-elektro.de",
+    "plan": "verified",
+    "verified": true,
+    "locations_served": [
+      "80331"
+    ],
+    "regions": [
+      "München",
+      "Bayern"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.7,
+    "reviews_count": 156,
+    "description": "Master electrician and PV installer in Munich since 1966.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 48.1359146,
+    "longitude": 11.5730984
+  },
+  {
+    "id": "sup-elektro-niedermeier-gmbh",
+    "company_name": "Elektro Niedermeier GmbH",
+    "email": "info@elektro-niedermeier.de",
+    "phone": "—",
+    "website": "https://www.elektro-niedermeier.de",
+    "plan": "verified",
+    "verified": true,
+    "locations_served": [
+      "84347"
+    ],
+    "regions": [
+      "Pfarrkirchen",
+      "Bayern"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.6,
+    "reviews_count": 48,
+    "description": "Local PV and electrical contractor in Pfarrkirchen.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 48.4414386,
+    "longitude": 12.9576204
+  },
+  {
+    "id": "sup-e-s-pv-montage-ug",
+    "company_name": "E&S PV Montage UG",
+    "email": "kontakt@e-s-pv-montage-ug.de",
+    "phone": "—",
+    "website": "",
+    "plan": "basic",
+    "verified": true,
+    "locations_served": [
+      "84347"
+    ],
+    "regions": [
+      "Pfarrkirchen",
+      "Bayern"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.4,
+    "reviews_count": 22,
+    "description": "Photovoltaic installation specialist in Pfarrkirchen.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 48.4414386,
+    "longitude": 12.9576204
+  },
+  {
+    "id": "sup-pv-m-ding-gmbh-co-kg",
+    "company_name": "PV Möding GmbH & Co. KG",
+    "email": "kontakt@pv-m-ding-gmbh-co-kg.de",
+    "phone": "—",
+    "website": "",
+    "plan": "basic",
+    "verified": true,
+    "locations_served": [
+      "84347"
+    ],
+    "regions": [
+      "Pfarrkirchen",
+      "Bayern"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.3,
+    "reviews_count": 31,
+    "description": "Regional PV installer in Rottal-Inn.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 48.4414386,
+    "longitude": 12.9576204
+  },
+  {
+    "id": "sup-lichtzentrum-bayerns-d-gmbh",
+    "company_name": "Lichtzentrum BayernSüd GmbH",
+    "email": "info@lichtzentrum-bayernsued.de",
+    "phone": "—",
+    "website": "https://www.lichtzentrum-bayernsued.de",
+    "plan": "verified",
+    "verified": true,
+    "locations_served": [
+      "84332"
+    ],
+    "regions": [
+      "Hebertsfelden",
+      "Bayern"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.5,
+    "reviews_count": 67,
+    "description": "Solar specialist near Pfarrkirchen, Lower Bavaria.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 48.4270607,
+    "longitude": 12.8193994
+  },
+  {
+    "id": "sup-hawi-energietechnik-gmbh",
+    "company_name": "HaWi Energietechnik GmbH",
+    "email": "info@hawi-energietechnik.de",
+    "phone": "—",
+    "website": "https://www.hawi-energietechnik.de",
+    "plan": "verified",
+    "verified": true,
+    "locations_served": [
+      "84307"
+    ],
+    "regions": [
+      "Eggenfelden",
+      "Bayern"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.4,
+    "reviews_count": 54,
+    "description": "PV and energy technology in Eggenfelden region.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 48.4061737,
+    "longitude": 12.7507328
+  },
+  {
+    "id": "sup-tst-arge-solarstrom",
+    "company_name": "TST Arge Solarstrom",
+    "email": "kontakt@tst-arge-solarstrom.de",
+    "phone": "—",
+    "website": "",
+    "plan": "basic",
+    "verified": true,
+    "locations_served": [
+      "84337"
+    ],
+    "regions": [
+      "Schönau",
+      "Bayern"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.2,
+    "reviews_count": 19,
+    "description": "Regional solar installation cooperative near Pfarrkirchen.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 48.4931427,
+    "longitude": 12.8402345
+  },
+  {
+    "id": "sup-solartechnik-gerald-schmidt",
+    "company_name": "Solartechnik Gerald Schmidt",
+    "email": "kontakt@solartechnik-gerald-schmidt.de",
+    "phone": "—",
+    "website": "",
+    "plan": "basic",
+    "verified": true,
+    "locations_served": [
+      "84326"
+    ],
+    "regions": [
+      "Falkenberg",
+      "Bayern"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.3,
+    "reviews_count": 28,
+    "description": "PV specialist in Falkenberg, Rottal-Inn.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 48.4701453,
+    "longitude": 12.7097065
+  },
+  {
+    "id": "sup-schnitt-energy-gmbh-co-kg",
+    "company_name": "Schnitt Energy GmbH & Co. KG",
+    "email": "info@schnitt-energy.de",
+    "phone": "—",
+    "website": "https://www.schnitt-energy.de",
+    "plan": "verified",
+    "verified": true,
+    "locations_served": [
+      "94419"
+    ],
+    "regions": [
+      "Reisbach",
+      "Bayern"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.4,
+    "reviews_count": 41,
+    "description": "Solar and energy systems in Lower Bavaria.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 48.5681874,
+    "longitude": 12.6325764
+  },
+  {
+    "id": "sup-herbert-salzeder-photovoltaik",
+    "company_name": "Herbert Salzeder Photovoltaik",
+    "email": "kontakt@herbert-salzeder-photovoltaik.de",
+    "phone": "—",
+    "website": "",
+    "plan": "basic",
+    "verified": true,
+    "locations_served": [
+      "84556"
+    ],
+    "regions": [
+      "Kastl",
+      "Bayern"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.5,
+    "reviews_count": 35,
+    "description": "Photovoltaic installations near Altötting.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 48.1877838,
+    "longitude": 12.686794
+  },
+  {
+    "id": "sup-kiermaier-elektrotechnik-gmbh",
+    "company_name": "Kiermaier Elektrotechnik GmbH",
+    "email": "kontakt@kiermaier-elektrotechnik-gmbh.de",
+    "phone": "—",
+    "website": "",
+    "plan": "basic",
+    "verified": true,
+    "locations_served": [
+      "94439"
+    ],
+    "regions": [
+      "Roßbach",
+      "Bayern"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.2,
+    "reviews_count": 18,
+    "description": "Electrical and PV services in Rottal-Inn.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 48.5818446,
+    "longitude": 12.9283386
+  },
+  {
+    "id": "sup-solartech-deutschland-gmbh",
+    "company_name": "SolarTech Deutschland GmbH",
+    "email": "info@solartech-de.example",
+    "phone": "—",
+    "website": "https://solartech-de.example",
+    "plan": "verified",
+    "verified": true,
+    "locations_served": [
+      "80331"
+    ],
+    "regions": [
+      "München",
+      "Bayern"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.8,
+    "reviews_count": 127,
+    "description": "Leading residential and commercial solar installer across Germany.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 48.1359146,
+    "longitude": 11.5730984
+  },
+  {
+    "id": "sup-greenwatt-solutions",
+    "company_name": "GreenWatt Solutions",
+    "email": "info@greenwatt.example",
+    "phone": "—",
+    "website": "https://greenwatt.example",
+    "plan": "premium",
+    "verified": true,
+    "locations_served": [
+      "80335"
+    ],
+    "regions": [
+      "München",
+      "Bayern"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.6,
+    "reviews_count": 89,
+    "description": "Affordable solar solutions with excellent after-sales support.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 48.1455189,
+    "longitude": 11.5539793
+  },
+  {
+    "id": "sup-agrisolar-pro",
+    "company_name": "AgriSolar Pro",
+    "email": "info@agrisolar.example",
+    "phone": "—",
+    "website": "https://agrisolar.example",
+    "plan": "verified",
+    "verified": true,
+    "locations_served": [
+      "30159"
+    ],
+    "regions": [
+      "Hannover",
+      "Niedersachsen"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.9,
+    "reviews_count": 45,
+    "description": "Agricultural solar, ground-mount systems, and EV infrastructure.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 52.3742443,
+    "longitude": 9.7390577
+  },
+  {
+    "id": "sup-solarwatt-gmbh",
+    "company_name": "Solarwatt GmbH",
+    "email": "info@solarwatt.de",
+    "phone": "—",
+    "website": "https://www.solarwatt.de",
+    "plan": "premium",
+    "verified": true,
+    "locations_served": [
+      "01139"
+    ],
+    "regions": [
+      "Dresden",
+      "Sachsen"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.5,
+    "reviews_count": 540,
+    "description": "German module manufacturer with installation partner network.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 51.0806055,
+    "longitude": 13.6884411
+  },
+  {
+    "id": "sup-sonnen-gmbh",
+    "company_name": "Sonnen GmbH",
+    "email": "info@sonnen.de",
+    "phone": "—",
+    "website": "https://www.sonnen.de",
+    "plan": "premium",
+    "verified": true,
+    "locations_served": [
+      "87499"
+    ],
+    "regions": [
+      "Wildpoldsried",
+      "Bayern"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.3,
+    "reviews_count": 1100,
+    "description": "Home battery and virtual power plant pioneer.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 47.7757452,
+    "longitude": 10.4153363
+  },
+  {
+    "id": "sup-voltark-gmbh",
+    "company_name": "Voltark GmbH",
+    "email": "info@voltark.de",
+    "phone": "—",
+    "website": "https://www.voltark.de",
+    "plan": "verified",
+    "verified": true,
+    "locations_served": [
+      "20095"
+    ],
+    "regions": [
+      "Hamburg",
+      "Hamburg"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.2,
+    "reviews_count": 230,
+    "description": "Residential PV and storage in northern Germany.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 53.5514245,
+    "longitude": 10.0003864
+  },
+  {
+    "id": "sup-sunlit-gmbh",
+    "company_name": "Sunlit GmbH",
+    "email": "info@sunlit.energy",
+    "phone": "—",
+    "website": "https://www.sunlit.energy",
+    "plan": "verified",
+    "verified": true,
+    "locations_served": [
+      "40213"
+    ],
+    "regions": [
+      "Düsseldorf",
+      "Nordrhein-Westfalen"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.1,
+    "reviews_count": 175,
+    "description": "Commercial and residential solar in NRW.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 51.2244597,
+    "longitude": 6.7725465
+  },
+  {
+    "id": "sup-maxsolar-gmbh",
+    "company_name": "MaxSolar GmbH",
+    "email": "info@maxsolar.de",
+    "phone": "—",
+    "website": "https://www.maxsolar.de",
+    "plan": "verified",
+    "verified": true,
+    "locations_served": [
+      "93055"
+    ],
+    "regions": [
+      "Regensburg",
+      "Bayern"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.0,
+    "reviews_count": 140,
+    "description": "Large-scale and commercial PV projects.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 49.0048866,
+    "longitude": 12.1513034
+  },
+  {
+    "id": "sup-sunfire-gmbh",
+    "company_name": "Sunfire GmbH",
+    "email": "info@sunfire.de",
+    "phone": "—",
+    "website": "https://www.sunfire.de",
+    "plan": "verified",
+    "verified": true,
+    "locations_served": [
+      "01109"
+    ],
+    "regions": [
+      "Dresden",
+      "Sachsen"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.2,
+    "reviews_count": 85,
+    "description": "Clean energy technology and solar solutions.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 51.1204752,
+    "longitude": 13.7552401
+  },
+  {
+    "id": "sup-priwatt-gmbh",
+    "company_name": "Priwatt GmbH",
+    "email": "info@priwatt.de",
+    "phone": "—",
+    "website": "https://www.priwatt.de",
+    "plan": "verified",
+    "verified": true,
+    "locations_served": [
+      "04109"
+    ],
+    "regions": [
+      "Leipzig",
+      "Sachsen"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.4,
+    "reviews_count": 890,
+    "description": "Balcony solar and plug-in PV systems.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 51.3386547,
+    "longitude": 12.365381
+  },
+  {
+    "id": "sup-solaranlage-de-gmbh",
+    "company_name": "Solaranlage.de GmbH",
+    "email": "info@solaranlage.de",
+    "phone": "—",
+    "website": "https://www.solaranlage.de",
+    "plan": "verified",
+    "verified": true,
+    "locations_served": [
+      "50667"
+    ],
+    "regions": [
+      "Köln",
+      "Nordrhein-Westfalen"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.0,
+    "reviews_count": 310,
+    "description": "Online solar marketplace connecting homeowners with installers.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 50.9386399,
+    "longitude": 6.9550296
+  },
+  {
+    "id": "sup-meister-solar-gmbh",
+    "company_name": "Meister Solar GmbH",
+    "email": "info@meister-solar.de",
+    "phone": "—",
+    "website": "https://www.meister-solar.de",
+    "plan": "verified",
+    "verified": true,
+    "locations_served": [
+      "90402"
+    ],
+    "regions": [
+      "Nürnberg",
+      "Bayern"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.3,
+    "reviews_count": 198,
+    "description": "Franconia regional PV installer.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 49.4501458,
+    "longitude": 11.0901865
+  },
+  {
+    "id": "sup-solar-expert-gmbh",
+    "company_name": "Solar-Expert GmbH",
+    "email": "info@solar-expert.de",
+    "phone": "—",
+    "website": "https://www.solar-expert.de",
+    "plan": "verified",
+    "verified": true,
+    "locations_served": [
+      "28195"
+    ],
+    "regions": [
+      "Bremen",
+      "Bremen"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.1,
+    "reviews_count": 112,
+    "description": "PV systems in Bremen and Lower Saxony.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 53.080418,
+    "longitude": 8.8051764
+  },
+  {
+    "id": "sup-photovoltaik-beratung-hamburg",
+    "company_name": "Photovoltaik Beratung Hamburg",
+    "email": "kontakt@photovoltaik-beratung-hamburg.de",
+    "phone": "—",
+    "website": "",
+    "plan": "basic",
+    "verified": true,
+    "locations_served": [
+      "22087"
+    ],
+    "regions": [
+      "Hamburg",
+      "Hamburg"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.0,
+    "reviews_count": 64,
+    "description": "Regional PV planning and installation in Hamburg.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 53.5635029,
+    "longitude": 10.0241426
+  },
+  {
+    "id": "sup-solaranlagen-karlsruhe-gmbh",
+    "company_name": "Solaranlagen Karlsruhe GmbH",
+    "email": "kontakt@solaranlagen-karlsruhe-gmbh.de",
+    "phone": "—",
+    "website": "",
+    "plan": "basic",
+    "verified": true,
+    "locations_served": [
+      "76131"
+    ],
+    "regions": [
+      "Karlsruhe",
+      "Baden-Württemberg"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.2,
+    "reviews_count": 87,
+    "description": "Local PV installer in Karlsruhe region.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 49.0394384,
+    "longitude": 8.4221763
+  },
+  {
+    "id": "sup-solaranlagen-stuttgart-gmbh",
+    "company_name": "Solaranlagen Stuttgart GmbH",
+    "email": "kontakt@solaranlagen-stuttgart-gmbh.de",
+    "phone": "—",
+    "website": "",
+    "plan": "basic",
+    "verified": true,
+    "locations_served": [
+      "70173"
+    ],
+    "regions": [
+      "Stuttgart",
+      "Baden-Württemberg"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.1,
+    "reviews_count": 93,
+    "description": "Residential PV in Stuttgart and surrounding areas.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 48.7814058,
+    "longitude": 9.1818299
+  },
+  {
+    "id": "sup-photovoltaik-aachen-e-k",
+    "company_name": "Photovoltaik Aachen e.K.",
+    "email": "kontakt@photovoltaik-aachen-e-k.de",
+    "phone": "—",
+    "website": "",
+    "plan": "basic",
+    "verified": true,
+    "locations_served": [
+      "52062"
+    ],
+    "regions": [
+      "Aachen",
+      "Nordrhein-Westfalen"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.3,
+    "reviews_count": 71,
+    "description": "PV installation in Aachen and Eifel region.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 50.7770788,
+    "longitude": 6.0864398
+  },
+  {
+    "id": "sup-solaranlagen-bonn-gmbh",
+    "company_name": "Solaranlagen Bonn GmbH",
+    "email": "kontakt@solaranlagen-bonn-gmbh.de",
+    "phone": "—",
+    "website": "",
+    "plan": "basic",
+    "verified": true,
+    "locations_served": [
+      "53111"
+    ],
+    "regions": [
+      "Bonn",
+      "Nordrhein-Westfalen"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.0,
+    "reviews_count": 58,
+    "description": "Regional solar installer in Bonn area.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 50.7401827,
+    "longitude": 7.0983811
+  },
+  {
+    "id": "sup-solaranlagen-m-nster-gmbh",
+    "company_name": "Solaranlagen Münster GmbH",
+    "email": "kontakt@solaranlagen-m-nster-gmbh.de",
+    "phone": "—",
+    "website": "",
+    "plan": "basic",
+    "verified": true,
+    "locations_served": [
+      "48143"
+    ],
+    "regions": [
+      "Münster",
+      "Nordrhein-Westfalen"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.2,
+    "reviews_count": 66,
+    "description": "PV systems in Münsterland.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 51.9613324,
+    "longitude": 7.626396
+  },
+  {
+    "id": "sup-photovoltaik-dortmund-gmbh",
+    "company_name": "Photovoltaik Dortmund GmbH",
+    "email": "kontakt@photovoltaik-dortmund-gmbh.de",
+    "phone": "—",
+    "website": "",
+    "plan": "basic",
+    "verified": true,
+    "locations_served": [
+      "44135"
+    ],
+    "regions": [
+      "Dortmund",
+      "Nordrhein-Westfalen"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.0,
+    "reviews_count": 52,
+    "description": "Ruhr area residential and commercial PV.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 51.5128342,
+    "longitude": 7.4759757
+  },
+  {
+    "id": "sup-solaranlagen-essen-gmbh",
+    "company_name": "Solaranlagen Essen GmbH",
+    "email": "kontakt@solaranlagen-essen-gmbh.de",
+    "phone": "—",
+    "website": "",
+    "plan": "basic",
+    "verified": true,
+    "locations_served": [
+      "45127"
+    ],
+    "regions": [
+      "Essen",
+      "Nordrhein-Westfalen"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.1,
+    "reviews_count": 49,
+    "description": "PV installation in Essen and Ruhrgebiet.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 51.457406,
+    "longitude": 7.0105847
+  },
+  {
+    "id": "sup-photovoltaik-hannover-gmbh",
+    "company_name": "Photovoltaik Hannover GmbH",
+    "email": "kontakt@photovoltaik-hannover-gmbh.de",
+    "phone": "—",
+    "website": "",
+    "plan": "basic",
+    "verified": true,
+    "locations_served": [
+      "30159"
+    ],
+    "regions": [
+      "Hannover",
+      "Niedersachsen"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.2,
+    "reviews_count": 74,
+    "description": "Regional PV installer in Hannover region.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 52.3742443,
+    "longitude": 9.7390577
+  },
+  {
+    "id": "sup-solaranlagen-kiel-gmbh",
+    "company_name": "Solaranlagen Kiel GmbH",
+    "email": "kontakt@solaranlagen-kiel-gmbh.de",
+    "phone": "—",
+    "website": "",
+    "plan": "basic",
+    "verified": true,
+    "locations_served": [
+      "24103"
+    ],
+    "regions": [
+      "Kiel",
+      "Schleswig-Holstein"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.0,
+    "reviews_count": 43,
+    "description": "Coastal region PV specialist.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 54.322678,
+    "longitude": 10.134688
+  },
+  {
+    "id": "sup-photovoltaik-rostock-gmbh",
+    "company_name": "Photovoltaik Rostock GmbH",
+    "email": "kontakt@photovoltaik-rostock-gmbh.de",
+    "phone": "—",
+    "website": "",
+    "plan": "basic",
+    "verified": true,
+    "locations_served": [
+      "18055"
+    ],
+    "regions": [
+      "Rostock",
+      "Mecklenburg-Vorpommern"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.1,
+    "reviews_count": 38,
+    "description": "PV systems in Mecklenburg-Vorpommern.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 54.083515,
+    "longitude": 12.1659251
+  },
+  {
+    "id": "sup-solaranlagen-magdeburg-gmbh",
+    "company_name": "Solaranlagen Magdeburg GmbH",
+    "email": "kontakt@solaranlagen-magdeburg-gmbh.de",
+    "phone": "—",
+    "website": "",
+    "plan": "basic",
+    "verified": true,
+    "locations_served": [
+      "39104"
+    ],
+    "regions": [
+      "Magdeburg",
+      "Sachsen-Anhalt"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.0,
+    "reviews_count": 41,
+    "description": "Regional PV in Saxony-Anhalt.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 52.1187251,
+    "longitude": 11.6365142
+  },
+  {
+    "id": "sup-photovoltaik-erfurt-gmbh",
+    "company_name": "Photovoltaik Erfurt GmbH",
+    "email": "kontakt@photovoltaik-erfurt-gmbh.de",
+    "phone": "—",
+    "website": "",
+    "plan": "basic",
+    "verified": true,
+    "locations_served": [
+      "99084"
+    ],
+    "regions": [
+      "Erfurt",
+      "Thüringen"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.1,
+    "reviews_count": 36,
+    "description": "Thuringia regional solar installer.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 50.9764678,
+    "longitude": 11.026962
+  },
+  {
+    "id": "sup-solaranlagen-mainz-gmbh",
+    "company_name": "Solaranlagen Mainz GmbH",
+    "email": "kontakt@solaranlagen-mainz-gmbh.de",
+    "phone": "—",
+    "website": "",
+    "plan": "basic",
+    "verified": true,
+    "locations_served": [
+      "55116"
+    ],
+    "regions": [
+      "Mainz",
+      "Rheinland-Pfalz"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.0,
+    "reviews_count": 44,
+    "description": "PV installation in Rheinhessen.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 50.0005665,
+    "longitude": 8.2724155
+  },
+  {
+    "id": "sup-photovoltaik-saarbr-cken-gmbh",
+    "company_name": "Photovoltaik Saarbrücken GmbH",
+    "email": "kontakt@photovoltaik-saarbr-cken-gmbh.de",
+    "phone": "—",
+    "website": "",
+    "plan": "basic",
+    "verified": true,
+    "locations_served": [
+      "66111"
+    ],
+    "regions": [
+      "Saarbrücken",
+      "Saarland"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.1,
+    "reviews_count": 39,
+    "description": "Saarland regional PV specialist.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 49.2366735,
+    "longitude": 6.9978547
+  },
+  {
+    "id": "sup-solaranlagen-potsdam-gmbh",
+    "company_name": "Solaranlagen Potsdam GmbH",
+    "email": "kontakt@solaranlagen-potsdam-gmbh.de",
+    "phone": "—",
+    "website": "",
+    "plan": "basic",
+    "verified": true,
+    "locations_served": [
+      "14467"
+    ],
+    "regions": [
+      "Potsdam",
+      "Brandenburg"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.0,
+    "reviews_count": 47,
+    "description": "Brandenburg PV installation services.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 52.4030431,
+    "longitude": 13.0670995
+  },
+  {
+    "id": "sup-photovoltaik-schwerin-gmbh",
+    "company_name": "Photovoltaik Schwerin GmbH",
+    "email": "kontakt@photovoltaik-schwerin-gmbh.de",
+    "phone": "—",
+    "website": "",
+    "plan": "basic",
+    "verified": true,
+    "locations_served": [
+      "19053"
+    ],
+    "regions": [
+      "Schwerin",
+      "Mecklenburg-Vorpommern"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.0,
+    "reviews_count": 29,
+    "description": "Northern Germany PV installer.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 53.6257897,
+    "longitude": 11.4065274
+  },
+  {
+    "id": "sup-solaranlagen-augsburg-gmbh",
+    "company_name": "Solaranlagen Augsburg GmbH",
+    "email": "kontakt@solaranlagen-augsburg-gmbh.de",
+    "phone": "—",
+    "website": "",
+    "plan": "basic",
+    "verified": true,
+    "locations_served": [
+      "86150"
+    ],
+    "regions": [
+      "Augsburg",
+      "Bayern"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.2,
+    "reviews_count": 63,
+    "description": "Swabia regional PV installer.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 48.3644529,
+    "longitude": 10.8928079
+  },
+  {
+    "id": "sup-photovoltaik-ulm-gmbh",
+    "company_name": "Photovoltaik Ulm GmbH",
+    "email": "kontakt@photovoltaik-ulm-gmbh.de",
+    "phone": "—",
+    "website": "",
+    "plan": "basic",
+    "verified": true,
+    "locations_served": [
+      "89073"
+    ],
+    "regions": [
+      "Ulm",
+      "Baden-Württemberg"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.1,
+    "reviews_count": 55,
+    "description": "PV systems in Ulm and Donau region.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 48.4039741,
+    "longitude": 10.000012
+  },
+  {
+    "id": "sup-solaranlagen-heidelberg-gmbh",
+    "company_name": "Solaranlagen Heidelberg GmbH",
+    "email": "kontakt@solaranlagen-heidelberg-gmbh.de",
+    "phone": "—",
+    "website": "",
+    "plan": "basic",
+    "verified": true,
+    "locations_served": [
+      "69117"
+    ],
+    "regions": [
+      "Heidelberg",
+      "Baden-Württemberg"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.2,
+    "reviews_count": 61,
+    "description": "Rhine-Neckar regional PV installer.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 49.3926269,
+    "longitude": 8.7252374
+  },
+  {
+    "id": "sup-photovoltaik-kassel-gmbh",
+    "company_name": "Photovoltaik Kassel GmbH",
+    "email": "kontakt@photovoltaik-kassel-gmbh.de",
+    "phone": "—",
+    "website": "",
+    "plan": "basic",
+    "verified": true,
+    "locations_served": [
+      "34117"
+    ],
+    "regions": [
+      "Kassel",
+      "Hessen"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.0,
+    "reviews_count": 50,
+    "description": "North Hesse PV installation.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 51.3159596,
+    "longitude": 9.4915991
+  },
+  {
+    "id": "sup-solaranlagen-oldenburg-gmbh",
+    "company_name": "Solaranlagen Oldenburg GmbH",
+    "email": "kontakt@solaranlagen-oldenburg-gmbh.de",
+    "phone": "—",
+    "website": "",
+    "plan": "basic",
+    "verified": true,
+    "locations_served": [
+      "26122"
+    ],
+    "regions": [
+      "Oldenburg",
+      "Niedersachsen"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.1,
+    "reviews_count": 42,
+    "description": "Northwest Germany PV specialist.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 53.1373504,
+    "longitude": 8.2085023
+  },
+  {
+    "id": "sup-photovoltaik-osnabr-ck-gmbh",
+    "company_name": "Photovoltaik Osnabrück GmbH",
+    "email": "kontakt@photovoltaik-osnabr-ck-gmbh.de",
+    "phone": "—",
+    "website": "",
+    "plan": "basic",
+    "verified": true,
+    "locations_served": [
+      "49074"
+    ],
+    "regions": [
+      "Osnabrück",
+      "Niedersachsen"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.0,
+    "reviews_count": 37,
+    "description": "Regional PV in Osnabrück area.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 52.2770776,
+    "longitude": 8.0544842
+  },
+  {
+    "id": "sup-solaranlagen-trier-gmbh",
+    "company_name": "Solaranlagen Trier GmbH",
+    "email": "kontakt@solaranlagen-trier-gmbh.de",
+    "phone": "—",
+    "website": "",
+    "plan": "basic",
+    "verified": true,
+    "locations_served": [
+      "54290"
+    ],
+    "regions": [
+      "Trier",
+      "Rheinland-Pfalz"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.1,
+    "reviews_count": 33,
+    "description": "Mosel region PV installer.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 49.7513523,
+    "longitude": 6.6357514
+  },
+  {
+    "id": "sup-photovoltaik-chemnitz-gmbh",
+    "company_name": "Photovoltaik Chemnitz GmbH",
+    "email": "kontakt@photovoltaik-chemnitz-gmbh.de",
+    "phone": "—",
+    "website": "",
+    "plan": "basic",
+    "verified": true,
+    "locations_served": [
+      "09111"
+    ],
+    "regions": [
+      "Chemnitz",
+      "Sachsen"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.0,
+    "reviews_count": 34,
+    "description": "Eastern Saxony PV specialist.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 50.8348662,
+    "longitude": 12.9242107
+  },
+  {
+    "id": "sup-solaranlagen-halle-gmbh",
+    "company_name": "Solaranlagen Halle GmbH",
+    "email": "kontakt@solaranlagen-halle-gmbh.de",
+    "phone": "—",
+    "website": "",
+    "plan": "basic",
+    "verified": true,
+    "locations_served": [
+      "06108"
+    ],
+    "regions": [
+      "Halle",
+      "Sachsen-Anhalt"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.0,
+    "reviews_count": 31,
+    "description": "Central Germany PV installation.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 51.4872454,
+    "longitude": 11.9615869
+  },
+  {
+    "id": "sup-photovoltaik-jena-gmbh",
+    "company_name": "Photovoltaik Jena GmbH",
+    "email": "kontakt@photovoltaik-jena-gmbh.de",
+    "phone": "—",
+    "website": "",
+    "plan": "basic",
+    "verified": true,
+    "locations_served": [
+      "07743"
+    ],
+    "regions": [
+      "Jena",
+      "Thüringen"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.1,
+    "reviews_count": 28,
+    "description": "Thuringia university city PV installer.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 50.9493973,
+    "longitude": 11.5939824
+  },
+  {
+    "id": "sup-solaranlagen-g-ttingen-gmbh",
+    "company_name": "Solaranlagen Göttingen GmbH",
+    "email": "kontakt@solaranlagen-g-ttingen-gmbh.de",
+    "phone": "—",
+    "website": "",
+    "plan": "basic",
+    "verified": true,
+    "locations_served": [
+      "37073"
+    ],
+    "regions": [
+      "Göttingen",
+      "Niedersachsen"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.0,
+    "reviews_count": 35,
+    "description": "Southern Lower Saxony PV services.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 51.5346955,
+    "longitude": 9.9332008
+  },
+  {
+    "id": "sup-photovoltaik-passau-gmbh",
+    "company_name": "Photovoltaik Passau GmbH",
+    "email": "kontakt@photovoltaik-passau-gmbh.de",
+    "phone": "—",
+    "website": "",
+    "plan": "basic",
+    "verified": true,
+    "locations_served": [
+      "94032"
+    ],
+    "regions": [
+      "Passau",
+      "Bayern"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.2,
+    "reviews_count": 40,
+    "description": "Eastern Bavaria PV installer near Pfarrkirchen region.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 48.568265,
+    "longitude": 13.4646832
+  },
+  {
+    "id": "sup-solaranlagen-landshut-gmbh",
+    "company_name": "Solaranlagen Landshut GmbH",
+    "email": "kontakt@solaranlagen-landshut-gmbh.de",
+    "phone": "—",
+    "website": "",
+    "plan": "basic",
+    "verified": true,
+    "locations_served": [
+      "84028"
+    ],
+    "regions": [
+      "Landshut",
+      "Bayern"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.1,
+    "reviews_count": 45,
+    "description": "Lower Bavaria regional PV specialist.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 48.5415274,
+    "longitude": 12.1674963
+  },
+  {
+    "id": "sup-photovoltaik-straubing-gmbh",
+    "company_name": "Photovoltaik Straubing GmbH",
+    "email": "kontakt@photovoltaik-straubing-gmbh.de",
+    "phone": "—",
+    "website": "",
+    "plan": "basic",
+    "verified": true,
+    "locations_served": [
+      "94315"
+    ],
+    "regions": [
+      "Straubing",
+      "Bayern"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.0,
+    "reviews_count": 32,
+    "description": "PV installation in Straubing-Bogen region.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 48.8809803,
+    "longitude": 12.5742356
+  },
+  {
+    "id": "sup-solaranlagen-rosenheim-gmbh",
+    "company_name": "Solaranlagen Rosenheim GmbH",
+    "email": "kontakt@solaranlagen-rosenheim-gmbh.de",
+    "phone": "—",
+    "website": "",
+    "plan": "basic",
+    "verified": true,
+    "locations_served": [
+      "83022"
+    ],
+    "regions": [
+      "Rosenheim",
+      "Bayern"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.2,
+    "reviews_count": 56,
+    "description": "Upper Bavaria PV installer.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 47.8549169,
+    "longitude": 12.1292231
+  },
+  {
+    "id": "sup-photovoltaik-kempten-gmbh",
+    "company_name": "Photovoltaik Kempten GmbH",
+    "email": "kontakt@photovoltaik-kempten-gmbh.de",
+    "phone": "—",
+    "website": "",
+    "plan": "basic",
+    "verified": true,
+    "locations_served": [
+      "87435"
+    ],
+    "regions": [
+      "Kempten",
+      "Bayern"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.1,
+    "reviews_count": 38,
+    "description": "Allgäu region solar installation.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 47.7102962,
+    "longitude": 10.3041858
+  },
+  {
+    "id": "sup-solaranlagen-freising-gmbh",
+    "company_name": "Solaranlagen Freising GmbH",
+    "email": "kontakt@solaranlagen-freising-gmbh.de",
+    "phone": "—",
+    "website": "",
+    "plan": "basic",
+    "verified": true,
+    "locations_served": [
+      "85354"
+    ],
+    "regions": [
+      "Freising",
+      "Bayern"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.0,
+    "reviews_count": 42,
+    "description": "PV systems north of Munich.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 48.393429,
+    "longitude": 11.706133
+  },
+  {
+    "id": "sup-photovoltaik-bamberg-gmbh",
+    "company_name": "Photovoltaik Bamberg GmbH",
+    "email": "kontakt@photovoltaik-bamberg-gmbh.de",
+    "phone": "—",
+    "website": "",
+    "plan": "basic",
+    "verified": true,
+    "locations_served": [
+      "96047"
+    ],
+    "regions": [
+      "Bamberg",
+      "Bayern"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.1,
+    "reviews_count": 36,
+    "description": "Upper Franconia PV installer.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 49.8910346,
+    "longitude": 10.8899602
+  },
+  {
+    "id": "sup-solaranlagen-bayreuth-gmbh",
+    "company_name": "Solaranlagen Bayreuth GmbH",
+    "email": "kontakt@solaranlagen-bayreuth-gmbh.de",
+    "phone": "—",
+    "website": "",
+    "plan": "basic",
+    "verified": true,
+    "locations_served": [
+      "95444"
+    ],
+    "regions": [
+      "Bayreuth",
+      "Bayern"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.0,
+    "reviews_count": 30,
+    "description": "Franconia regional solar services.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 49.9429498,
+    "longitude": 11.5769491
+  },
+  {
+    "id": "sup-photovoltaik-coburg-gmbh",
+    "company_name": "Photovoltaik Coburg GmbH",
+    "email": "kontakt@photovoltaik-coburg-gmbh.de",
+    "phone": "—",
+    "website": "",
+    "plan": "basic",
+    "verified": true,
+    "locations_served": [
+      "96450"
+    ],
+    "regions": [
+      "Coburg",
+      "Bayern"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.0,
+    "reviews_count": 27,
+    "description": "Northern Bavaria PV installation.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 50.2640768,
+    "longitude": 10.9641143
+  },
+  {
+    "id": "sup-solaranlagen-l-beck-gmbh",
+    "company_name": "Solaranlagen Lübeck GmbH",
+    "email": "kontakt@solaranlagen-l-beck-gmbh.de",
+    "phone": "—",
+    "website": "",
+    "plan": "basic",
+    "verified": true,
+    "locations_served": [
+      "23552"
+    ],
+    "regions": [
+      "Lübeck",
+      "Schleswig-Holstein"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.1,
+    "reviews_count": 44,
+    "description": "Baltic coast region PV installer.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 53.8669961,
+    "longitude": 10.6880331
+  },
+  {
+    "id": "sup-photovoltaik-flensburg-gmbh",
+    "company_name": "Photovoltaik Flensburg GmbH",
+    "email": "kontakt@photovoltaik-flensburg-gmbh.de",
+    "phone": "—",
+    "website": "",
+    "plan": "basic",
+    "verified": true,
+    "locations_served": [
+      "24937"
+    ],
+    "regions": [
+      "Flensburg",
+      "Schleswig-Holstein"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.0,
+    "reviews_count": 26,
+    "description": "Northern Schleswig-Holstein PV services.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 54.7843464,
+    "longitude": 9.4301308
+  },
+  {
+    "id": "sup-solaranlagen-braunschweig-gmbh",
+    "company_name": "Solaranlagen Braunschweig GmbH",
+    "email": "kontakt@solaranlagen-braunschweig-gmbh.de",
+    "phone": "—",
+    "website": "",
+    "plan": "basic",
+    "verified": true,
+    "locations_served": [
+      "38100"
+    ],
+    "regions": [
+      "Braunschweig",
+      "Niedersachsen"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.1,
+    "reviews_count": 48,
+    "description": "Eastern Lower Saxony PV installer.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 52.263523,
+    "longitude": 10.5236546
+  },
+  {
+    "id": "sup-photovoltaik-wolfsburg-gmbh",
+    "company_name": "Photovoltaik Wolfsburg GmbH",
+    "email": "kontakt@photovoltaik-wolfsburg-gmbh.de",
+    "phone": "—",
+    "website": "",
+    "plan": "basic",
+    "verified": true,
+    "locations_served": [
+      "38440"
+    ],
+    "regions": [
+      "Wolfsburg",
+      "Niedersachsen"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.0,
+    "reviews_count": 33,
+    "description": "PV installation in Wolfsburg region.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 52.4256438,
+    "longitude": 10.7677797
+  },
+  {
+    "id": "sup-solaranlagen-bielefeld-gmbh",
+    "company_name": "Solaranlagen Bielefeld GmbH",
+    "email": "kontakt@solaranlagen-bielefeld-gmbh.de",
+    "phone": "—",
+    "website": "",
+    "plan": "basic",
+    "verified": true,
+    "locations_served": [
+      "33602"
+    ],
+    "regions": [
+      "Bielefeld",
+      "Nordrhein-Westfalen"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.0,
+    "reviews_count": 46,
+    "description": "Ostwestfalen PV specialist.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 52.0226608,
+    "longitude": 8.5363015
+  },
+  {
+    "id": "sup-photovoltaik-wuppertal-gmbh",
+    "company_name": "Photovoltaik Wuppertal GmbH",
+    "email": "kontakt@photovoltaik-wuppertal-gmbh.de",
+    "phone": "—",
+    "website": "",
+    "plan": "basic",
+    "verified": true,
+    "locations_served": [
+      "42103"
+    ],
+    "regions": [
+      "Wuppertal",
+      "Nordrhein-Westfalen"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.0,
+    "reviews_count": 40,
+    "description": "Bergisches Land PV installer.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 51.2551103,
+    "longitude": 7.1456281
+  },
+  {
+    "id": "sup-solaranlagen-wiesbaden-gmbh",
+    "company_name": "Solaranlagen Wiesbaden GmbH",
+    "email": "kontakt@solaranlagen-wiesbaden-gmbh.de",
+    "phone": "—",
+    "website": "",
+    "plan": "basic",
+    "verified": true,
+    "locations_served": [
+      "65183"
+    ],
+    "regions": [
+      "Wiesbaden",
+      "Hessen"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.1,
+    "reviews_count": 51,
+    "description": "Rhein-Main PV installation services.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 50.0845344,
+    "longitude": 8.2374347
+  },
+  {
+    "id": "sup-photovoltaik-darmstadt-gmbh",
+    "company_name": "Photovoltaik Darmstadt GmbH",
+    "email": "kontakt@photovoltaik-darmstadt-gmbh.de",
+    "phone": "—",
+    "website": "",
+    "plan": "basic",
+    "verified": true,
+    "locations_served": [
+      "64283"
+    ],
+    "regions": [
+      "Darmstadt",
+      "Hessen"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.0,
+    "reviews_count": 43,
+    "description": "South Hesse regional PV installer.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 49.8704942,
+    "longitude": 8.6523759
+  },
+  {
+    "id": "sup-solaranlagen-pforzheim-gmbh",
+    "company_name": "Solaranlagen Pforzheim GmbH",
+    "email": "kontakt@solaranlagen-pforzheim-gmbh.de",
+    "phone": "—",
+    "website": "",
+    "plan": "basic",
+    "verified": true,
+    "locations_served": [
+      "75172"
+    ],
+    "regions": [
+      "Pforzheim",
+      "Baden-Württemberg"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.0,
+    "reviews_count": 37,
+    "description": "Northern Black Forest PV services.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 48.8908375,
+    "longitude": 8.6843219
+  },
+  {
+    "id": "sup-photovoltaik-reutlingen-gmbh",
+    "company_name": "Photovoltaik Reutlingen GmbH",
+    "email": "kontakt@photovoltaik-reutlingen-gmbh.de",
+    "phone": "—",
+    "website": "",
+    "plan": "basic",
+    "verified": true,
+    "locations_served": [
+      "72764"
+    ],
+    "regions": [
+      "Reutlingen",
+      "Baden-Württemberg"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.1,
+    "reviews_count": 41,
+    "description": "Swabian Alb region PV installer.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 48.4881177,
+    "longitude": 9.2172904
+  },
+  {
+    "id": "sup-solaranlagen-konstanz-gmbh",
+    "company_name": "Solaranlagen Konstanz GmbH",
+    "email": "kontakt@solaranlagen-konstanz-gmbh.de",
+    "phone": "—",
+    "website": "",
+    "plan": "basic",
+    "verified": true,
+    "locations_served": [
+      "78462"
+    ],
+    "regions": [
+      "Konstanz",
+      "Baden-Württemberg"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.2,
+    "reviews_count": 53,
+    "description": "Lake Constance region PV specialist.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 47.6630314,
+    "longitude": 9.1697191
+  },
+  {
+    "id": "sup-photovoltaik-cottbus-gmbh",
+    "company_name": "Photovoltaik Cottbus GmbH",
+    "email": "kontakt@photovoltaik-cottbus-gmbh.de",
+    "phone": "—",
+    "website": "",
+    "plan": "basic",
+    "verified": true,
+    "locations_served": [
+      "03046"
+    ],
+    "regions": [
+      "Cottbus",
+      "Brandenburg"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.0,
+    "reviews_count": 25,
+    "description": "Lusatia region PV installation.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 51.7588503,
+    "longitude": 14.3108889
+  },
+  {
+    "id": "sup-solaranlagen-frankfurt-oder-gmbh",
+    "company_name": "Solaranlagen Frankfurt Oder GmbH",
+    "email": "kontakt@solaranlagen-frankfurt-oder-gmbh.de",
+    "phone": "—",
+    "website": "",
+    "plan": "basic",
+    "verified": true,
+    "locations_served": [
+      "15230"
+    ],
+    "regions": [
+      "Frankfurt (Oder)",
+      "Brandenburg"
+    ],
+    "products": [
+      {
+        "name": "Residential PV system",
+        "type": "system",
+        "price_per_unit": 0,
+        "warranty_years": 0
+      }
+    ],
+    "certifications": [
+      "VDE"
+    ],
+    "installation_availability": "2-6 weeks",
+    "financing_options": [],
+    "rating": 4.0,
+    "reviews_count": 22,
+    "description": "Eastern Brandenburg PV services.",
+    "source": "public_directory",
+    "residential_available": true,
+    "commercial_available": true,
+    "battery_capable": true,
+    "ev_charger_capable": false,
+    "heat_pump_capable": false,
+    "agricultural_available": false,
+    "latitude": 52.336585,
+    "longitude": 14.5517922
+  }
+]

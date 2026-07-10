@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% block title %}{{ t('evm.find_title') }}{% endblock %}
+{% block body_class %}app-page evm-page{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/ev-marketplace.css') }}?v=3">
+{% endblock %}
+
+{% block content %}
+<div class="page-bg-wrap">
+  <div class="page-bg" aria-hidden="true"></div>
+  <div class="page-content">
+    <div class="page-header-hero">
+      <h1>{{ t('evm.find_title') }}</h1>
+      <p>{{ t('evm.find_sub') }}</p>
+    </div>
+
+    <form id="evFindForm" class="glass-panel evm-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="ev_budget">{{ t('evm.budget') }}</label>
+          <input type="number" id="ev_budget" min="5000" step="500" value="28000" required>
+        </div>
+        <div class="form-group">
+          <label for="ev_weekly_km">{{ t('evm.weekly_km') }}</label>
+          <input type="number" id="ev_weekly_km" min="20" step="10" value="290" required>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="ev_long_trips">{{ t('evm.long_trips') }}</label>
+          <input type="number" id="ev_long_trips" min="0" max="52" value="4">
+        </div>
+        <div class="form-group">
+          <label for="ev_family">{{ t('evm.family_size') }}</label>
+          <input type="number" id="ev_family" min="1" max="7" value="4">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="ev_boot">{{ t('evm.boot_priority') }}</label>
+        <select id="ev_boot">
+          <option value="small">{{ t('evm.boot.small') }}</option>
+          <option value="medium" selected>{{ t('evm.boot.medium') }}</option>
+          <option value="large">{{ t('evm.boot.large') }}</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="ev_owner">{{ t('evm.owner_status') }}</label>
+          <select id="ev_owner">
+            <option value="owner">{{ t('estimate.owner.owner') }}</option>
+            <option value="renter">{{ t('estimate.owner.renter') }}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="ev_home_charge">{{ t('evm.home_charging') }}</label>
+          <select id="ev_home_charge">
+            <option value="yes">{{ t('common.yes') }}</option>
+            <option value="limited">{{ t('calc.ev.home_charging.limited') }}</option>
+            <option value="no">{{ t('common.no') }}</option>
+          </select>
+        </div>
+      </div>
+      <div class="evm-check-grid">
+        <label class="checkbox-inline"><input type="checkbox" id="ev_has_pv"> {{ t('evm.has_pv') }}</label>
+        <label class="checkbox-inline"><input type="checkbox" id="ev_has_battery"> {{ t('evm.has_battery') }}</label>
+        <label class="checkbox-inline"><input type="checkbox" id="ev_has_wallbox"> {{ t('evm.has_wallbox') }}</label>
+      </div>
+      <div class="form-group">
+        <label for="ev_kwp">{{ t('evm.system_kwp') }}</label>
+        <input type="number" id="ev_kwp" min="0" step="0.5" placeholder="5.04">
+      </div>
+      <div class="form-group">
+        <label for="ev_priority">{{ t('evm.priority') }}</label>
+        <select id="ev_priority">
+          <option value="running_cost">{{ t('evm.priority.running_cost') }}</option>
+          <option value="range">{{ t('evm.priority.range') }}</option>
+          <option value="fast_charging">{{ t('evm.priority.fast_charging') }}</option>
+          <option value="practical">{{ t('evm.priority.practical') }}</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary btn-lg btn-block">{{ t('evm.submit_find') }}</button>
+    </form>
+
+    <div id="evFindResults" class="evm-results hidden" aria-live="polite"></div>
+    <p class="form-hint evm-disclaimer">{{ t('evm.disclaimer') }}</p>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/ev_marketplace.js') }}?v=2"></script>
+<script>document.addEventListener('DOMContentLoaded', () => initEvFind());</script>
+{% endblock %}

@@ -1,0 +1,29 @@
+# GitHub Codespaces — single container, SQLite, secrets from repo settings.
+# Open: Code → Codespaces → Create codespace (or use badge in README)
+
+services:
+  web:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    environment:
+      APP_ENV: development
+      SOLARPATH_SQLITE: "1"
+      SECRET_KEY: ${SECRET_KEY:?Set SECRET_KEY in GitHub Codespaces secrets}
+      ADMIN_TOKEN: ${ADMIN_TOKEN:?Set ADMIN_TOKEN in GitHub Codespaces secrets}
+      BETA_ACCESS_PASSWORD: ${BETA_ACCESS_PASSWORD:-}
+      BETA_INVITE_TOKENS: ${BETA_INVITE_TOKENS:-}
+      SUPPORT_EMAIL: ${SUPPORT_EMAIL:-}
+      FLASK_DEBUG: "1"
+      BETA_DEMO_MODE: "1"
+      BETA_GATE_ENABLED: "0"
+      PYTHONPATH: /app
+    volumes:
+      - .:/app
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:5000/health')"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 40s

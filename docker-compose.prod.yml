@@ -1,0 +1,50 @@
+version: "3.9"
+
+# Production compose — all secrets from environment (never hardcoded).
+# Usage: docker compose -f docker-compose.prod.yml up --build -d
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:?Set POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB:-solarpath}
+    volumes:
+      - solar_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+  web:
+    build: .
+    ports:
+      - "8000:5000"
+    environment:
+      APP_ENV: production
+      SECRET_KEY: ${SECRET_KEY:?Set SECRET_KEY}
+      ADMIN_TOKEN: ${ADMIN_TOKEN:?Set ADMIN_TOKEN}
+      BETA_ACCESS_PASSWORD: ${BETA_ACCESS_PASSWORD:-}
+      BETA_INVITE_TOKENS: ${BETA_INVITE_TOKENS:-}
+      SUPPORT_EMAIL: ${SUPPORT_EMAIL:-}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB:-solarpath}
+      POSTGRES_HOST: db
+      POSTGRES_PORT: "5432"
+      STRIPE_LIVE_ENABLED: "0"
+      FLASK_ENV: production
+      FLASK_DEBUG: "0"
+    volumes:
+      - solar_data:/app/data
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  solar_data:
+  solar_pg_data:

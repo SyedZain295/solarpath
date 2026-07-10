@@ -1,0 +1,238 @@
+{% extends "base.html" %}
+{% block title %}{{ t('supplier_dashboard.title') }}{% endblock %}
+{% block body_class %}app-page{% endblock %}
+
+{% block content %}
+<div class="dashboard-page page-bg-wrap">
+  <div class="page-bg" aria-hidden="true"></div>
+  <div class="page-content">
+    <div class="page-header-hero">
+      <h1>{{ t('supplier_dashboard.hero_title') }}</h1>
+      <p>{{ t('supplier_dashboard.hero_sub') }}</p>
+    </div>
+
+    <div class="glass-panel">
+    <div class="dashboard-tabs">
+      <button class="tab-btn active" data-tab="leads">{{ t('sd.tab.leads') }}</button>
+      <button class="tab-btn" data-tab="intake">{{ t('sd.tab.intake') }}</button>
+      <button class="tab-btn" data-tab="profile">{{ t('sd.tab.profile') }}</button>
+      <button class="tab-btn" data-tab="products">{{ t('sd.tab.products') }}</button>
+      <button class="tab-btn" data-tab="submit-quote">{{ t('sd.tab.submit_quote', 'Submit quote') }}</button>
+      <button class="tab-btn" data-tab="analytics">{{ t('sd.tab.analytics') }}</button>
+    </div>
+
+    <div class="tab-panel active" id="tab-leads">
+      <h2>{{ t('sd.quote_requests') }}</h2>
+      <div id="leadsList" class="leads-list">
+        <p class="empty-state">{{ t('sd.no_leads') }}</p>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="tab-intake">
+      <h2>{{ t('sd.intake_title') }}</h2>
+      <p class="section-sub">{{ t('sd.intake_sub') }}</p>
+      <div id="intakeEmpty" class="empty-state hidden">
+        <p>{{ t('sd.intake_empty') }}</p>
+        <a href="/suppliers/register" class="btn btn-outline btn-sm">{{ t('nav.for_suppliers') }}</a>
+      </div>
+      <div id="intakeLinkBox" class="intake-link-box">
+        <label>{{ t('sd.intake_url') }}</label>
+        <div class="intake-link-row">
+          <input type="text" id="intakeLinkUrl" readonly placeholder="…">
+          <button type="button" class="btn btn-outline btn-sm" id="copyIntakeLink">{{ t('sd.copy_link') }}</button>
+        </div>
+        <p id="intakeLinkError" class="form-error hidden">{{ t('sd.intake_load_error') }}</p>
+        <p class="form-hint">{{ t('sd.intake_hint') }}</p>
+      </div>
+      <ul class="intake-feature-list">
+        <li>{{ t('sd.intake_f1') }}</li>
+        <li>{{ t('sd.intake_f2') }}</li>
+        <li>{{ t('sd.intake_f3') }}</li>
+      </ul>
+    </div>
+
+    <div class="tab-panel" id="tab-profile">
+      <h2>{{ t('sd.company_profile') }}</h2>
+      <form id="profileForm" class="register-form">
+        <div class="form-group">
+          <label>{{ t('sd.supplier_id') }}</label>
+          <input type="text" id="supplierId" readonly placeholder="{{ t('sd.supplier_id_ph') }}">
+        </div>
+        <div class="form-group">
+          <label for="dash_company">{{ t('sd.company_name') }}</label>
+          <input type="text" id="dash_company" name="company_name">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="dash_email">{{ t('common.email') }}</label>
+            <input type="email" id="dash_email" name="email">
+          </div>
+          <div class="form-group">
+            <label for="dash_phone">{{ t('common.phone') }}</label>
+            <input type="tel" id="dash_phone" name="phone">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="dash_description">{{ t('sd.description') }}</label>
+          <textarea id="dash_description" name="description" rows="3"></textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="dash_survey_date">{{ t('sd.earliest_survey') }}</label>
+            <input type="date" id="dash_survey_date" name="earliest_survey_date">
+          </div>
+          <div class="form-group">
+            <label for="dash_install_weeks">{{ t('sd.earliest_install') }}</label>
+            <input type="number" id="dash_install_weeks" name="earliest_install_weeks" min="1">
+          </div>
+        </div>
+        <div class="register-checks">
+          <label><input type="checkbox" id="dash_residential" name="residential_available" checked> {{ t('sd.residential') }}</label>
+          <label><input type="checkbox" id="dash_commercial" name="commercial_available"> {{ t('sd.commercial') }}</label>
+          <label><input type="checkbox" id="dash_battery" name="battery_capable" checked> {{ t('sd.battery_installs') }}</label>
+          <label><input type="checkbox" id="dash_ev" name="ev_charger_capable"> {{ t('sd.ev_charger') }}</label>
+          <label><input type="checkbox" id="dash_hp" name="heat_pump_capable"> {{ t('sd.heat_pump') }}</label>
+        </div>
+        <button type="submit" class="btn btn-primary">{{ t('sd.save_profile') }}</button>
+      </form>
+    </div>
+
+    <div class="tab-panel" id="tab-products">
+      <h2>{{ t('sd.product_catalog') }}</h2>
+      <div id="productsList" class="products-list"></div>
+      <form id="addProductForm" class="add-product-form">
+        <h3>{{ t('sd.add_product') }}</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="prod_brand">{{ t('sd.brand') }}</label>
+            <input type="text" id="prod_brand" name="brand">
+          </div>
+          <div class="form-group">
+            <label for="prod_model">{{ t('sd.model') }}</label>
+            <input type="text" id="prod_model" name="model">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="prod_name">{{ t('sd.product_name') }}</label>
+            <input type="text" id="prod_name" name="name" required>
+          </div>
+          <div class="form-group">
+            <label for="prod_type">{{ t('sd.product_type') }}</label>
+            <select id="prod_type" name="type">
+              <option value="panel">{{ t('sd.pt.panel') }}</option>
+              <option value="inverter">{{ t('sd.pt.inverter') }}</option>
+              <option value="battery">{{ t('sd.pt.battery') }}</option>
+              <option value="thermal">{{ t('sd.pt.thermal') }}</option>
+              <option value="ev_charger">{{ t('sd.pt.ev_charger') }}</option>
+              <option value="mounting">{{ t('sd.pt.mounting') }}</option>
+              <option value="system">{{ t('sd.pt.system') }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="prod_price">{{ t('sd.price') }}</label>
+            <input type="number" id="prod_price" name="price_per_unit" min="0" step="1">
+          </div>
+          <div class="form-group">
+            <label for="prod_warranty">{{ t('sd.warranty_years') }}</label>
+            <input type="number" id="prod_warranty" name="warranty_years" min="1" value="10">
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-sm">{{ t('sd.add_product_btn') }}</button>
+      </form>
+      <hr style="margin:1.5rem 0;opacity:0.2">
+      <h3>{{ t('sd.csv_upload') }}</h3>
+      <p class="form-hint">{{ t('sd.csv_upload_sub') }}</p>
+      <form id="csvUploadForm" enctype="multipart/form-data">
+        <input type="file" id="csvFile" accept=".csv,text/csv" required>
+        <label class="checkbox-inline"><input type="checkbox" id="csvReplace"> {{ t('sd.csv_replace') }}</label>
+        <button type="submit" class="btn btn-outline btn-sm">{{ t('sd.csv_upload_btn') }}</button>
+      </form>
+      <p id="csvUploadMsg" class="form-hint"></p>
+    </div>
+
+    <div class="tab-panel" id="tab-submit-quote">
+      <h2>{{ t('sd.structured_quote_title', 'Structured quote for a lead') }}</h2>
+      <p class="section-sub">{{ t('sd.structured_quote_sub', 'Enter a complete quote so homeowners can compare offers fairly — no PDF needed.') }}</p>
+      <form id="structuredQuoteForm" class="register-form">
+        <div class="form-group">
+          <label for="sq_quote_request_id">{{ t('sd.quote_request_id', 'Lead / quote request ID (optional)') }}</label>
+          <input type="text" id="sq_quote_request_id" name="quote_request_id" placeholder="quote-…">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="sq_system_kwp">{{ t('sd.system_kwp', 'System size (kWp)') }} *</label>
+            <input type="number" step="0.1" min="1" id="sq_system_kwp" name="system_kwp" required>
+          </div>
+          <div class="form-group">
+            <label for="sq_total_eur">{{ t('sd.total_eur', 'Total price (€ gross)') }} *</label>
+            <input type="number" min="1" id="sq_total_eur" name="total_eur" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="sq_panel_model">{{ t('sd.panel_model', 'Panel model') }} *</label>
+          <input type="text" id="sq_panel_model" name="panel_model" required>
+        </div>
+        <div class="form-group">
+          <label for="sq_inverter_model">{{ t('sd.inverter_model', 'Inverter model') }} *</label>
+          <input type="text" id="sq_inverter_model" name="inverter_model" required>
+        </div>
+        <div class="form-group">
+          <label for="sq_battery_model">{{ t('sd.battery_model', 'Battery model (if any)') }}</label>
+          <input type="text" id="sq_battery_model" name="battery_model">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="sq_warranty_years">{{ t('sd.warranty_years', 'Product warranty (years)') }}</label>
+            <input type="number" min="1" max="30" id="sq_warranty_years" name="warranty_years">
+          </div>
+          <div class="form-group">
+            <label for="sq_install_weeks">{{ t('sd.install_weeks', 'Install lead time (weeks)') }}</label>
+            <input type="number" min="1" max="52" id="sq_install_weeks" name="install_weeks">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="sq_exclusions">{{ t('sd.exclusions', 'Exclusions / not included') }}</label>
+          <textarea id="sq_exclusions" name="exclusions" rows="2"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="sq_notes">{{ t('sd.quote_notes', 'Notes for customer') }}</label>
+          <textarea id="sq_notes" name="notes" rows="2"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">{{ t('sd.submit_quote_btn', 'Submit structured quote') }}</button>
+        <p id="structuredQuoteMsg" class="form-hint hidden"></p>
+      </form>
+    </div>
+
+    <div class="tab-panel" id="tab-analytics">
+      <h2>{{ t('sd.demand_analytics') }}</h2>
+      <div class="analytics-grid">
+        <div class="analytics-card">
+          <div class="analytics-value" id="totalLeads">0</div>
+          <div class="analytics-label">{{ t('sd.total_leads') }}</div>
+        </div>
+        <div class="analytics-card">
+          <div class="analytics-value" id="pendingLeads">0</div>
+          <div class="analytics-label">{{ t('sd.pending') }}</div>
+        </div>
+        <div class="analytics-card">
+          <div class="analytics-value" id="profileViews">—</div>
+          <div class="analytics-label">{{ t('sd.profile_views') }}</div>
+        </div>
+        <div class="analytics-card">
+          <div class="analytics-value" id="conversionRate">—</div>
+          <div class="analytics-label">{{ t('sd.conversion_rate') }}</div>
+        </div>
+      </div>
+      <p class="form-hint">{{ t('sd.analytics_hint') }}</p>
+    </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/supplier_portal.js') }}?v=19"></script>
+{% endblock %}
